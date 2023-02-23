@@ -354,15 +354,15 @@ function fileAction()
     global $em;
 
     /** @var Appointments $appointment */
-    $appointmnet = $_GET['id'] ? $em->find(Appointments::class, $_GET['id']) : null;
+    $appointment = $_GET['id'] ? $em->find(Appointments::class, $_GET['id']) : null;
 
-    if (!$appointmnet || !$appointmnet->getFile() || !is_file(APPLICATION_TOP_PATH.'/public/files/'.$appointmnet->getFile()))
+    if (!$appointment || !$appointment->getFile() || !is_file(APPLICATION_TOP_PATH.'/public/files/'.$appointment->getFile()))
     {
         http_response_code(404);
         die('<h1>404 сторінку не знайдено</h1>');
     }
 
-    $file_path=APPLICATION_TOP_PATH.'/public/files/'.$appointmnet->getFile();
+    $file_path=APPLICATION_TOP_PATH.'/public/files/'.$appointment->getFile();
 
     header('Content-Description: File Transfer');
     header('Content-Type: application/octet-stream');
