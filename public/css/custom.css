@@ -1,0 +1,129 @@
+body
+{
+    color:#222222;
+}
+
+.masthead
+{
+    /*background:url("../img/cover.jpg?date=22-04-2021") no-repeat top right;*/
+    /*background-size:cover;*/
+    padding-top:calc(6rem + 104px);
+    padding-bottom:6rem;
+}
+
+.article
+{
+    height:12rem;
+}
+
+.dataTables_wrapper .dataTables_processing
+{
+    top:5rem;
+    z-index:1000;
+    background:none;
+}
+
+.client_icon
+{
+    font-size:0.7rem;
+    vertical-align:5%;
+    display:inline;
+}
+
+.help-block ul
+{
+    list-style-type:none;
+    padding-left:0;
+}
+
+.datepicker table tr td.highlighted.disabled
+{
+    background-color:white !important;
+}
+
+.datepicker table tr td.highlighted
+{
+    background-color:hsl(106, 73%, 87%);
+}
+
+.datepicker table tr td:not(.disabled):hover
+{
+    background-color:hsl(106, 73%, 75%) !important;
+}
+
+#appointments_calendar
+{
+    -webkit-overflow-scrolling:touch;
+    -ms-overflow-style:none;
+    scrollbar-width:none;
+}
+
+.hidden_file_upload input[type=file]
+{
+    display:none;
+}
+
+.hidden_file_upload label
+{
+    cursor:pointer;
+    font-size:inherit;
+}
+
+.article >IMG
+{
+    transition:all .5s;
+}
+
+.article:hover >IMG
+{
+    transform:scale(1.1);
+}
+
+#contact_links A
+{
+    text-decoration:none;
+}
+
+#contact_links A:hover
+{
+    text-decoration:underline;
+}
+
+@media (max-width:992px)
+{
+    #top_menu A
+    {
+        font-size:85%;
+    }
+}
+
+.multiselect
+{
+    text-align:left !important;
+}
+
+.multiselect-container
+{
+    width:100%;
+}
+
+#suggestions .badge
+{
+    cursor:pointer;
+}
+
+.datepicker table tr td.today
+{
+    border-radius:50% !important;
+}
+
+#dates_disabled table
+{
+    border-spacing:0.2rem;
+    border-collapse:separate;
+}
+
+#dates_disabled table td
+{
+    padding:0.45rem 0.7rem;
+}

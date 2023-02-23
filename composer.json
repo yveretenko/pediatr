@@ -1,0 +1,19 @@
+{
+  "require": {
+    "php": "^8.0",
+
+    "phpmailer/phpmailer": "^6.1",
+    "doctrine/orm": "^2.7",
+    "ext-json": "*",
+    "ext-mbstring": "*",
+    "doctrine/cache": "^1.0",
+    "doctrine/annotations": "^1.13",
+    "spatie/dropbox-api": "^1.21"
+  },
+  "autoload": {
+    "classmap": [
+        "model/",
+        "helpers/"
+    ]
+  }
+}
