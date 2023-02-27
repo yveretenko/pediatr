@@ -317,7 +317,7 @@ $(document).ready(function(){
                                 vaccines.push('<span class="badge badge-info" title="'+vaccine.name+'">'+vaccine.short_name+'</span>');
                             });
 
-                            html+='<tr><td>'+row.date+'</td><td>'+row.name+'</td><td>'+row.comment+'<div>'+(row.neurology ? '<span class="badge badge-danger">Невр</span> ' : '')+vaccines.join(' ')+'</div>'+(row.file ? '<div><A href="/admin/appointments/file/?id='+row.id+'"><i class="fa fa-paperclip mr-1"></i>'+row.file+'</A></div>' : '')+'</td></tr>';
+                            html+='<tr><td>'+row.date+'<div class="small text-muted">'+row.days_ago+'</div>'+'</td><td>'+row.name+'</td><td>'+row.comment+'<div>'+(row.neurology ? '<span class="badge badge-danger">Невр</span> ' : '')+vaccines.join(' ')+'</div>'+(row.file ? '<div><A href="/admin/appointments/file/?id='+row.id+'"><i class="fa fa-paperclip mr-1"></i>'+row.file+'</A></div>' : '')+'</td></tr>';
                         });
 
                         modal.find('table').find('tbody').html(html);

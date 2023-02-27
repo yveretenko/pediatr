@@ -6,6 +6,34 @@ use App\Entity\Vaccines;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 
+function days_ago($timestamp)
+{
+    $days_ago=(time()-$timestamp)/86400;
+
+    if ($days_ago<1)
+        return '<div class="text-success font-weight-bold">сьогодні</div>';
+    elseif ($days_ago<2)
+        return '<div class="text-success font-weight-bold">&lt;вчора</div>';
+    elseif ($days_ago<7)
+        return '<div class="text-success font-weight-bold">&lt;7д</div>';
+    elseif ($days_ago<14)
+        return '<14д';
+    elseif ($days_ago<30)
+        return '<1м';
+    elseif ($days_ago<60)
+        return '<2м';
+    elseif ($days_ago<90)
+        return '<3м';
+    elseif ($days_ago<180)
+        return '<6м';
+    elseif ($days_ago<365)
+        return '<1р';
+    elseif ($days_ago<365*2)
+        return '<div class="text-danger font-weight-bold">&gt;1р</div>';
+    else
+        return '<div class="text-danger font-weight-bold">&gt;2р</div>';
+}
+
 function format_date($timestamp)
 {
     if (!$timestamp)
@@ -277,6 +305,7 @@ function historyAction()
         $data[]=[
             'id'        => $appointment->getId(),
             'date'      => date('Y-m-d', $appointment->getDate())===date('Y-m-d') ? 'Сьогодні' : date('d/m/y', $appointment->getDate()),
+            'days_ago'  => days_ago($appointment->getDate()),
             'name'      => $appointment->getName(),
             'comment'   => nl2br($appointment->getComment()),
             'file'      => $appointment->getFile(),
