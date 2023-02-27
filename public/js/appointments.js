@@ -64,6 +64,8 @@ $(document).ready(function(){
                     });
                 else
                     $('#date_comment').empty();
+
+                $('.appointment_comment').mark($('#appointments_filter_form').find('input[name="comment"]').val());
             },
             ajax: {
                 url: '/admin/appointments/filter/',
@@ -170,7 +172,7 @@ $(document).ready(function(){
                             vaccines.push('<span class="badge badge-info" style="font-size:90%;" title="'+vaccine.name+'">'+vaccine.short_name+'</span>');
                         });
 
-                        return '<div style="max-width:33vw; line-height:normal;">'+data.replace(/([^>])\n/g, '$1<br/>')+'</div><div>'+(row.neurology ? '<span class="badge badge-danger" style="font-size:90%;">Невр</span> ' : '')+(row.earlier ? '<span class="badge badge-primary" style="font-size:90%;">Раніше</span> ' : '')+vaccines.join(' ')+'</div>'+file;
+                        return '<div style="max-width:33vw; line-height:normal;" class="appointment_comment">'+data.replace(/([^>])\n/g, '$1<br/>')+'</div><div>'+(row.neurology ? '<span class="badge badge-danger" style="font-size:90%;">Невр</span> ' : '')+(row.earlier ? '<span class="badge badge-primary" style="font-size:90%;">Раніше</span> ' : '')+vaccines.join(' ')+'</div>'+file;
                     },
                     responsivePriority: 6
                 },
