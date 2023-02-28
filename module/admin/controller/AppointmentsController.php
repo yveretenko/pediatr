@@ -10,8 +10,10 @@ function days_ago($timestamp)
 {
     $days_ago=(strtotime('today')-strtotime(date('Y-m-d', $timestamp)))/86400;
 
-    if ($days_ago<2)
+    if ($days_ago<1)
         return '';
+    elseif ($days_ago<2)
+        return '<div class="text-success font-weight-bold">вчора</div>';
     elseif ($days_ago<7)
         return '<div class="text-success font-weight-bold">&lt;7д</div>';
     elseif ($days_ago<14)
