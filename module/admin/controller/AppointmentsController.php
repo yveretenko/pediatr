@@ -8,12 +8,10 @@ use Doctrine\Common\Collections\Criteria;
 
 function days_ago($timestamp)
 {
-    $days_ago=(time()-$timestamp)/86400;
+    $days_ago=(strtotime('today')-strtotime(date('Y-m-d', $timestamp)))/86400;
 
-    if ($days_ago<1)
-        return '<div class="text-success font-weight-bold">сьогодні</div>';
-    elseif ($days_ago<2)
-        return '<div class="text-success font-weight-bold">&lt;вчора</div>';
+    if ($days_ago<2)
+        return '';
     elseif ($days_ago<7)
         return '<div class="text-success font-weight-bold">&lt;7д</div>';
     elseif ($days_ago<14)
