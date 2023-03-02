@@ -32,19 +32,7 @@ function sendSmsAction()
 
         foreach ($appointments as $appointment)
         {
-            $criteria = new Criteria;
-
-            $criteria
-                ->andWhere($criteria->expr()->eq('tel', $appointment->getTel()))
-                ->andWhere($criteria->expr()->gte('date', strtotime('2023-02-11 00:00:00')))
-                ->andWhere($criteria->expr()->lte('date', time()))
-            ;
-
-            $count_by_new_address=$em->getRepository(Appointments::class)->matching($criteria)->count();
-
-            $address_line_2 = $count_by_new_address ? '' : ' (вхід з вул. Б. Хмельницького)';
-
-            $sms_text=sprintf('Чекаємо Вас%s о%s %s в кабінеті педіатра ДітиКвіти, вул. 28 Червня, 33%s', date('Y-m-d', $appointment->getDate())!==date('Y-m-d') ? ' завтра' : '', date('G', $appointment->getDate())=='11' ? 'б' : '', date('G:i', $appointment->getDate()), $address_line_2);
+            $sms_text=sprintf('Чекаємо Вас%s о%s %s в кабінеті педіатра ДітиКвіти, %s', date('Y-m-d', $appointment->getDate())!==date('Y-m-d') ? ' завтра' : '', date('G', $appointment->getDate())=='11' ? 'б' : '', date('G:i', $appointment->getDate()), $config['address']);
 
             $log[]="<div>Відправляємо смс на номер `".$appointment->getTel()."` з текстом: <i>$sms_text</i>";
 
@@ -89,7 +77,7 @@ function sendReviewRequestAction()
 
     foreach ($appointments as $appointment)
     {
-        $sms_text="Нещодавно ви відвідали кабінет дитячого лікаря ДітиКвіти по вул. 28 Червня, 33\n\nМи стараємося і цінуємо вашу думку. Поділіться своїми враженнями: https://g.page/r/CSGLSyAY-HosEAg/review\n\nДякуємо";
+        $sms_text=sprintf("Нещодавно ви відвідали кабінет дитячого лікаря ДітиКвіти по %s\n\nМи стараємося і цінуємо вашу думку. Поділіться своїми враженнями: https://g.page/r/CSGLSyAY-HosEAg/review\n\nДякуємо", $config['address']);
 
         $log[]="<div>Відправляємо смс на номер `".$appointment->getTel()."` з текстом: <i>$sms_text</i>";
 

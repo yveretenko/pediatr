@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'address' => 'вул. Б. Хмельницького, 57',
     'smtp' => [
         'host'     => 'smtp.gmail.com',
         'port'     => 587,

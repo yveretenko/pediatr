@@ -5,7 +5,7 @@ use App\Entity\DatesDisabled;
 
 function indexAction()
 {
-    global $em;
+    global $em, $config;
 
     $articles=$em->getRepository(Articles::class)->findBy([], ['id' => 'DESC']);
 
@@ -31,5 +31,7 @@ function indexAction()
     foreach ($dates_disabled as $date_disabled)
         $close_dates[]=$date_disabled->getDate()->format('d.m.Y');
 
-    ViewHelper::render(compact('articles', 'reviews', 'close_dates'));
+    $address=$config['address'];
+
+    ViewHelper::render(compact('articles', 'reviews', 'close_dates', 'address'));
 }

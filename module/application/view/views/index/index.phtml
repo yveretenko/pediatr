@@ -3,6 +3,7 @@
 /** @var $articles Articles[] */
 /** @var $reviews array */
 /** @var $close_dates array */
+/** @var $address string */
 
 use App\Entity\Articles;
 
@@ -13,9 +14,7 @@ use App\Entity\Articles;
         <div class="row">
             <div class="col-12 row mx-0 justify-content-sm-center align-items-sm-center mb-4 mb-lg-5 font-weight-light" style="font-size:150%;" id="contact_links">
                 <div class="col-12 text-center mb-4">
-                    <i class="fa fa-map-marker-alt text-muted"></i> м. Чернівці, <span class="text-nowrap">вул. 28 Червня, 33</span>
-
-                    <div class="text-muted" style="font-size:75%;">(вхід з вул. Б. Хмельницького)</div>
+                    <i class="fa fa-map-marker-alt text-muted"></i> м. Чернівці, <span class="text-nowrap"><?=$address ?></span>
                 </div>
 
                 <div class="col-12 col-sm-auto text-center col-lg-auto text-nowrap mb-1 mb-sm-0">
