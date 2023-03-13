@@ -148,6 +148,7 @@ function filterAction()
             'vaccines'           => $vaccines,
             'neurology'          => $appointment->getNeurology(),
             'earlier'            => $appointment->getEarlier(),
+            'call_back'          => $appointment->getCallBack(),
             'created_at'         => format_date($appointment->getCreatedAt()),
             'updated_at'         => format_date($appointment->getUpdatedAt()),
         ];
@@ -218,6 +219,7 @@ function saveAction()
             $appointment->setVaccines($vaccines);
             $appointment->setNeurology($_POST['neurology']==='1');
             $appointment->setEarlier($_POST['earlier']==='1');
+            $appointment->setCallBack($_POST['call_back']==='1');
 
             if (!$_POST['id'])
                 $appointment->setCreatedAt(time());
@@ -312,6 +314,7 @@ function historyAction()
             'vaccines'  => $vaccines,
             'neurology' => $appointment->getNeurology(),
             'earlier'   => $appointment->getEarlier(),
+            'call_back' => $appointment->getCallBack(),
         ];
     }
 

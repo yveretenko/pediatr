@@ -85,6 +85,13 @@ class Appointments
     private $earlier=false;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="call_back", type="boolean", nullable=false)
+     */
+    private $call_back=false;
+
+    /**
      * @var int|null
      *
      * @ORM\Column(name="created_at", type="integer", nullable=true)
@@ -99,6 +106,8 @@ class Appointments
     private $updatedAt=null;
 
     /**
+     * @var ArrayCollection|Vaccines[]
+     *
      * @ORM\ManyToMany(targetEntity="Vaccines")
      * @ORM\JoinTable(name="appointment_vaccines",
      *   joinColumns={@ORM\JoinColumn(name="appointment_id", referencedColumnName="id")},
@@ -250,6 +259,22 @@ class Appointments
     public function setEarlier(bool $earlier): void
     {
         $this->earlier=$earlier;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getCallBack(): bool
+    {
+        return $this->call_back;
+    }
+
+    /**
+     * @param bool $call_back
+     */
+    public function setCallBack(bool $call_back): void
+    {
+        $this->call_back=$call_back;
     }
 
     /**
