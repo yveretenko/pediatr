@@ -182,7 +182,7 @@ function saveAction()
 
     $tel=StringHelper::normalizeTelephone($_POST['tel']);
 
-    if ($tel && strlen($tel)!==10)
+    if ($_POST['tel'] && strlen($tel)!==10)
         $errors[]='Невірний номер телефону';
 
     if ($_POST['date'] && $_POST['time'])
