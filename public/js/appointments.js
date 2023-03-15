@@ -263,6 +263,7 @@ $(document).ready(function(){
                 edit_appointment_modal.find('select[name="vaccines\\[\\]"]').val(vaccines).multiselect("refresh");
                 edit_appointment_modal.find('input[name="neurology"]').prop('checked', row.neurology);
                 edit_appointment_modal.find('input[name="earlier"]').prop('checked', row.earlier);
+                edit_appointment_modal.find('input[name="call_back"]').prop('checked', row.call_back);
 
                 $('#created_at').text(row.created_at).closest('div').toggle(!!row.created_at);
                 $('#updated_at').text(row.updated_at).closest('div').toggle(!!row.updated_at);
