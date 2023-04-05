@@ -2,6 +2,7 @@ var datatable;
 var grid=$('#grid');
 let date_comment_modal=$('#date_comment_modal');
 let edit_appointment_modal=$('#edit_appointment_modal');
+let filter_form=$('#appointments_filter_form');
 let buffer={};
 
 var grid_default_params={
@@ -65,13 +66,11 @@ $(document).ready(function(){
                 else
                     $('#date_comment').empty();
 
-                $('.appointment_comment').mark($('#appointments_filter_form').find('input[name="comment"]').val());
+                $('.appointment_comment').mark(filter_form.find('input[name="comment"]').val());
             },
             ajax: {
                 url: '/admin/appointments/filter/',
                 data: function(d){
-                    var filter_form=$('#appointments_filter_form');
-
                     d.filters={
                         tel:     filter_form.find('input[name="tel"]').val(),
                         name:    filter_form.find('input[name="name"]').val(),
@@ -102,7 +101,7 @@ $(document).ready(function(){
                     }
                 });
 
-                if ($('#appointments_filter_form').find('input[name="tel"]').val() && data.tel && !buffer[data.tel])
+                if (filter_form.find('input[name="tel"]').val() && data.tel && !buffer[data.tel])
                     buffer[data.tel]=data.name;
             },
             language: {
@@ -203,6 +202,8 @@ $(document).ready(function(){
             $(this).blur();
 
         $('#date_comment').closest('.alert').find('button').prop('disabled', !$(this).hasClass('active'));
+
+        filter_form.find('input[type="text"], input[type="tel"], input[type="search"]').val('');
 
         datatable.ajax.reload();
 
@@ -352,7 +353,9 @@ $(document).ready(function(){
         return false;
     });
 
-    $('#appointments_filter_form').submit(function(){
+    filter_form.submit(function(){
+        $('#appointments_calendar').find('A[data-date]').removeClass('active');
+
         datatable.ajax.reload();
 
         return false;
@@ -381,7 +384,7 @@ $(document).ready(function(){
         }
     });
 
-    $('#appointments_filter_form').find('input[name="tel"]').change(function(){
+    filter_form.find('input[name="tel"]').change(function(){
         let tel=$(this).val();
 
         if (!tel)
@@ -477,12 +480,12 @@ $(document).ready(function(){
     });
 
     $('#reset_appointments_form').click(function(){
-        $('#appointments_filter_form').find('input').val(''); // don't use reset here because if $_GET['tel'] is set, tel input will not be emptied
+        filter_form.find('input').val(''); // don't use reset here because if $_GET['tel'] is set, tel input will not be emptied
 
         $('#appointments_calendar').find('.active').removeClass('active').blur();
 
         datatable.ajax.reload();
     });
 
-    $('#appointments_filter_form').find('input[name="tel"]').trigger('change');
+    filter_form.find('input[name="tel"]').trigger('change');
 });
