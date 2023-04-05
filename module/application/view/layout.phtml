@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker3.standalone.min.css" integrity="sha512-p4vIrJ1mDmOVghNMM4YsWxm0ELMJ/T0IkdEvrkNHIcgFsSzDi/fV7YxzTzb3mnMvFPawuIyIrHcpxClauEfpQg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <link href="/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/css/custom.css?calendargreen" rel="stylesheet">
+    <link href="/css/custom.css?nocache=<?=filemtime(APPLICATION_TOP_PATH.'/public/css/custom.css') ?>" rel="stylesheet">
 
     <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon">
     <link rel="icon" href="/img//favicon.ico" type="image/x-icon">
@@ -182,8 +182,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.uk.min.js" integrity="sha512-zj4XeRYWp+L81MSZ3vFuy6onVEgypIi1Ntv1YAA6ThjX4fRhEtW7x+ppVnbugFttWDFe/9qBVdeWRdv9betzqQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-<script src="/js/articles.js?noc"></script>
-<script src="/js/contact_me.js?noc"></script>
+<script src="/js/articles.js?nocache=<?=filemtime(APPLICATION_TOP_PATH.'/public/js/articles.js') ?>"></script>
+<script src="/js/contact_me.js?nocache=<?=filemtime(APPLICATION_TOP_PATH.'/public/js/contact_me.js') ?>"></script>
 <script src="/js/quick_search.js"></script>
 
 </body>
