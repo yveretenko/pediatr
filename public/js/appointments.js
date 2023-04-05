@@ -24,47 +24,17 @@ $(document).ready(function(){
             order: [[0, 'desc']],
             responsive: true,
             drawCallback: function(d){
-                $.ajax({
-                    url: '/admin/appointments/appointments_count_by_date',
-                    dataType: 'json',
-                    method: 'POST'
-                }).done(function(data){
-                    $('#appointments_calendar').find('div.badge-danger').empty();
+                $.each(d.json.dates, function(index, date){
+                    let date_button=$('#appointments_calendar').find('A[data-date="'+index+'"]');
 
-                    $.each(data, function(date, counter){
-                        $('#appointments_calendar').find('A[data-date="'+date+'"]').find('div.badge').text(counter);
-                    });
+                    date_button.find('.badge-danger').text(date.appointments_count ? date.appointments_count : '');
+                    date_button.find('.badge-info').text((date.vaccines_count && date.is_future) ? date.vaccines_count : '');
+                    date_button.find('i.fa-lock').toggle(date.is_future && date.is_disabled);
                 });
 
-                $.ajax({
-                    url: '/admin/appointment_vaccines/vaccines_by_week',
-                    dataType: 'json',
-                    method: 'POST'
-                }).done(function(data){
-                    $.each(data, function(week, vaccines){
-                        let html='';
+                let selected_date=$('#appointments_calendar').find('A.active').data('date');
 
-                        $.each(vaccines, function(name, count){
-                            html+='<div class="badge badge-info mr-1">'+count+' '+name+'</div>';
-                        });
-
-                        $('#appointments_calendar').find('div.week_vaccines[data-week="'+week+'"]').html(html);
-                    });
-                });
-
-                if ($('#appointments_calendar').find('A.active').length)
-                    $.ajax({
-                        url: '/admin/date_comments/get_by_date',
-                        dataType: 'json',
-                        data: {
-                            date: $('#appointments_calendar').find('A.active').data('date')
-                        },
-                        method: 'POST'
-                    }).done(function(data){
-                        $('#date_comment').text(data.comment);
-                    });
-                else
-                    $('#date_comment').empty();
+                $('#date_comment').text(selected_date ? d.json.dates[selected_date].comment : '');
 
                 $('.appointment_comment').mark(filter_form.find('input[name="comment"]').val());
             },

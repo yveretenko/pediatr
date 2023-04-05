@@ -21,18 +21,19 @@ foreach ($dates as $date)
 
 <div class="mb-3 text-nowrap overflow-auto table-responsive" id="appointments_calendar">
     <?php foreach ($weeks as $week => $dates) { ?>
-    <div class="d-inline-block align-top pr-3" style="width:290px;">
+    <div class="d-inline-block align-top pr-3" style="width:310px;">
         <?php foreach ($dates as $date) { ?>
-        <A href="#" data-date="<?=$date->format('Y-m-d') ?>" class="position-relative mr-1 btn btn-<?=[-1 => 'success', 0 => 'warning', 1 => 'success'][$date <=> new DateTime('today')] ?>" style="line-height:normal; width:3rem;">
+        <A href="#" data-date="<?=$date->format('Y-m-d') ?>" class="position-relative mr-1 btn btn-<?=[-1 => 'success', 0 => 'warning', 1 => 'success'][$date <=> new DateTime('today')] ?>" style="line-height:normal; width:3.1rem;">
             <?=['', 'ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ'][$date->format('N')] ?>
             <br>
             <?=$date->format('j') ?>
 
             <div class="badge badge-danger position-absolute" style="right:-0.45rem; top:0;"></div>
+            <div class="badge badge-info position-absolute" style="right:-0.45rem; top:1.25rem;"></div>
+
+            <i class="fa fa-xs fa-lock position-absolute" style="right:0.1rem; bottom:0.1rem; opacity:0.7; display:none;"></i>
         </A>
         <?php } ?>
-
-        <div data-week="<?=$week ?>" class="week_vaccines text-wrap"></div>
     </div>
     <?php } ?>
 </div>

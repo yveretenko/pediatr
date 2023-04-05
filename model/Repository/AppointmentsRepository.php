@@ -9,15 +9,17 @@ use StringHelper;
 
 class AppointmentsRepository extends EntityRepository
 {
-    public function getByFilters(array $filters, $order_field, $order_where, $start=null, $limit=null)
+    public function getByFilters(array $filters, $order_field=null, $order_where=null, $start=null, $limit=null)
     {
         $queryBuilder=$this->getEntityManager()->createQueryBuilder();
 
         $queryBuilder
             ->select('a AS appointment')
             ->from(Appointments::class, 'a')
-            ->orderBy($order_field, $order_where)
         ;
+
+        if (!is_null($order_field) && !is_null($order_where))
+            $queryBuilder->orderBy($order_field, $order_where);
 
         if (!is_null($start) && !is_null($limit))
         {

@@ -2,6 +2,8 @@
 
 use App\Entity\Appointments;
 use App\Entity\Blacklist;
+use App\Entity\DateComments;
+use App\Entity\DatesDisabled;
 use App\Entity\Vaccines;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
@@ -154,10 +156,39 @@ function filterAction()
         ];
     }
 
+    $start_date = new DateTime('Monday'.(date('N')<6 ? ' this week' : ''));
+
+    $dates = new DatePeriod($start_date, new DateInterval('P1D'), new DateTime($start_date->format('Y-m-d').' + 28 days'));
+
+    $data_by_dates=[];
+    foreach ($dates as $date)
+    {
+        $appointments=$em->getRepository(Appointments::class)->getByFilters(['start_timestamp' => $date->getTimestamp(), 'end_timestamp' => $date->getTimestamp()+24*60*60]);
+
+        $vaccines_count=0;
+
+        foreach ($appointments as $appointment_data)
+        {
+            /** @var Appointments $appointment */
+            $appointment=$appointment_data['appointment'];
+
+            $vaccines_count+=$appointment->getVaccines()->count();
+        }
+
+        $data_by_dates[$date->format('Y-m-d')]=[
+            'appointments_count' => count($appointments),
+            'vaccines_count'     => $vaccines_count,
+            'is_disabled'        => !is_null($em->getRepository(DatesDisabled::class)->findOneBy(['date' => $date])),
+            'comment'            => $em->getRepository(DateComments::class)->findOneBy(['date'=> $date])?->getComment(),
+            'is_future'          => $date >= new DateTime('today'),
+        ];
+    }
+
     die(json_encode([
         'data'            => $data,
         'recordsFiltered' => $appointments_filtered_count,
         'recordsTotal'    => count($em->getRepository(Appointments::class)->findAll()),
+        'dates'           => $data_by_dates,
     ]));
 }
 
