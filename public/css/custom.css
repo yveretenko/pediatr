@@ -127,3 +127,9 @@ body
 {
     padding:0.45rem 0.7rem;
 }
+
+mark, .mark
+{
+    padding:unset;
+    background-color:yellow;
+}
