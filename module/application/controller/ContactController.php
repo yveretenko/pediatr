@@ -42,6 +42,6 @@ function indexAction()
         $convert_button,
     ];
 
-    if (!EmailHelper::send('yura11v@gmail.com', sprintf('Запит з pediatr.cv.ua (%s)%s', $name, !is_null($blacklist_record) ? ' телефон в чорному списку' : ''), implode('<br><br>', array_filter($body))))
+    if (!EmailHelper::send('yura11v@gmail.com', sprintf('Запит з pediatr.cv.ua (%s)%s', strip_tags(trim($_POST['name'])), !is_null($blacklist_record) ? ' телефон в чорному списку' : ''), implode('<br><br>', array_filter($body))))
         http_response_code(500);
 }
