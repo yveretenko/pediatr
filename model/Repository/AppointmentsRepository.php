@@ -129,7 +129,7 @@ class AppointmentsRepository extends EntityRepository
     /**
      * @return Appointments[]
      */
-    public function get3rdVisits()
+    public function getThirdVisits(): array
     {
         $queryBuilder=$this->getEntityManager()->createQueryBuilder();
 

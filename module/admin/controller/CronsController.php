@@ -71,7 +71,7 @@ function sendReviewRequestAction()
     $sms_helper = new SMSHelper($config['sms']['login'], $config['sms']['password']);
 
     /** @var Appointments[]|ArrayCollection $appointments */
-    $appointments=$em->getRepository(Appointments::class)->get3rdVisits();
+    $appointments=$em->getRepository(Appointments::class)->getThirdVisits();
 
     $log[]="Знайдено телефонів для відправки смс: ".count($appointments);
 
