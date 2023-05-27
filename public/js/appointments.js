@@ -1,5 +1,5 @@
 var datatable;
-var grid=$('#grid');
+var grid=$('#appoinments_grid');
 let date_comment_modal=$('#date_comment_modal');
 let edit_appointment_modal=$('#edit_appointment_modal');
 let filter_form=$('#appointments_filter_form');
@@ -37,6 +37,12 @@ $(document).ready(function(){
                 $('#date_comment').text(selected_date ? d.json.dates[selected_date].comment : '');
 
                 $('.appointment_comment').mark(filter_form.find('input[name="comment"]').val());
+
+                buffer={};
+                $.each(d.json.data, function(index, row){
+                    if (row.tel && !buffer[row.tel])
+                        buffer[row.tel]=row.name;
+                });
             },
             ajax: {
                 url: '/admin/appointments/filter/',
@@ -70,9 +76,6 @@ $(document).ready(function(){
                         datatable.ajax.reload();
                     }
                 });
-
-                if (filter_form.find('input[name="tel"]').val() && data.tel && !buffer[data.tel])
-                    buffer[data.tel]=data.name;
             },
             language: {
                 emptyTable: 'записів не знайдено',
@@ -199,9 +202,11 @@ $(document).ready(function(){
         edit_appointment_modal.modal('show');
 
         $('#suggestions').empty();
-        $.each(buffer, function(tel, name){
-            $('#suggestions').append('<div class="badge badge-success d-inline-block mr-1" data-tel="'+tel+'">'+tel+(name ? ' '+name : '')+'</div>');
-        });
+
+        if (filter_form.find('input[name="tel"]').val())
+            $.each(buffer, function(tel, name){
+                $('#suggestions').append('<div class="badge badge-success d-inline-block mr-1" data-tel="'+tel+'">'+tel+(name ? ' '+name : '')+'</div>');
+            });
 
         return false;
     });
