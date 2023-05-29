@@ -340,7 +340,7 @@ $(document).ready(function(){
         let tel=$(this).val();
         let form=$(this).closest('form');
 
-        if (tel && !form.find('input[name="id"]').val())
+        if (tel && !form.find('input[name="name"]').val())
         {
             $.ajax({
                 url: '/admin/appointments/get_by_telephone/',
