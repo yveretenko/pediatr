@@ -128,6 +128,7 @@ function filterAction()
                 'id'         => $vaccine->getId(),
                 'name'       => $vaccine->getName(),
                 'short_name' => $vaccine->getShortName(),
+                'available'  => $vaccine->getAvailable(),
             ];
 
         $blacklist = $appointment->getTel() ? $em->find(Blacklist::class, $appointment->getTel()) : null;
