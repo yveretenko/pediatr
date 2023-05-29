@@ -62,7 +62,7 @@ $(document).ready(function(){
                     data: 'link',
                     sortable: false,
                     render: function(data){
-                        return data ? '<a href="'+data+'" target="_blank"><span class="d-none d-md-inline">tabletki.ua</span><span class="d-inline d-md-none"><i class="fa fa-external-link-alt"></i></span></A>' : '';
+                        return data ? '<a href="'+data+'" target="_blank"><span class="d-none d-lg-inline">tabletki.ua</span><span class="d-inline d-lg-none"><i class="fa fa-external-link-alt"></i></span></A>' : '';
                     },
                     responsivePriority: 4,
                     className: 'text-center'
