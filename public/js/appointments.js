@@ -21,9 +21,7 @@ var grid_default_params={
 };
 
 $(document).ready(function(){
-    if (grid.length)
-    {
-        datatable=grid.DataTable(jQuery.extend(grid_default_params, {
+    datatable=grid.DataTable(jQuery.extend(grid_default_params, {
             order: [[0, 'desc']],
             responsive: true,
             drawCallback: function(d){
@@ -181,7 +179,6 @@ $(document).ready(function(){
                 }
             ]
         }));
-    }
 
     $('#appointments_calendar').find('A[data-date]').click(function(){
         $('#appointments_calendar').find('A[data-date]').not($(this)).removeClass('active');
