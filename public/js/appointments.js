@@ -455,7 +455,7 @@ $(document).ready(function(){
     }
 
     $(document).on('keyup', function(e) {
-        if (e.key==='Escape' && edit_appointment_modal.length && !edit_appointment_modal.is(':visible'))
+        if (e.key==='Escape' && !$('.modal:visible').length)
             $('#reset_appointments_form').click();
     });
 
