@@ -3,7 +3,10 @@ var grid=$('#grid');
 let date_comment_modal=$('#date_comment_modal');
 let edit_appointment_modal=$('#edit_appointment_modal');
 let filter_form=$('#appointments_filter_form');
-let buffer={};
+let suggestion={
+    tel: null,
+    name: null
+};
 
 var grid_default_params={
     pageLength: 50,
@@ -38,11 +41,25 @@ $(document).ready(function(){
 
                 $('.appointment_comment').mark(filter_form.find('input[name="comment"]').val());
 
-                buffer={};
-                $.each(d.json.data, function(index, row){
-                    if (row.tel && !buffer[row.tel])
-                        buffer[row.tel]=row.name;
-                });
+                if (filter_form.find('input[name="tel"]').val())
+                {
+                    let tels={};
+                    $.each(d.json.data, function(index, row){
+                        if (!tels[row.tel] || tels[row.tel].length<row.name.length)
+                            tels[row.tel]=row.name;
+                    });
+
+                    if (Object.keys(tels).length===1)
+                    {
+                        suggestion.tel=Object.keys(tels)[0];
+                        suggestion.name=tels[suggestion.tel];
+                    }
+                    else
+                    {
+                        suggestion.tel=null;
+                        suggestion.name=null;
+                    }
+                }
             },
             ajax: {
                 url: '/admin/appointments/filter/',
@@ -203,16 +220,17 @@ $(document).ready(function(){
 
         $('#suggestions').empty();
 
-        if (filter_form.find('input[name="tel"]').val())
-            $.each(buffer, function(tel, name){
-                $('#suggestions').append('<div class="badge badge-success d-inline-block mr-1" data-tel="'+tel+'">'+tel+(name ? ' '+name : '')+'</div>');
-            });
+        if (suggestion.tel)
+            $('#suggestion').show().find('.badge').text(suggestion.tel+' '+suggestion.name);
+        else
+            $('#suggestion').hide();
 
         return false;
     });
 
-    $('#suggestions').on('click', 'div.badge', function(){
-        edit_appointment_modal.find('input[name="tel"]').val($(this).data('tel')).trigger('change');
+    $('#suggestion').on('click', 'div.badge', function(){
+        edit_appointment_modal.find('input[name="tel"]').val(suggestion.tel);
+        edit_appointment_modal.find('input[name="name"]').val(suggestion.name);
     });
 
     grid
