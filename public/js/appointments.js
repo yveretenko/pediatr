@@ -1,5 +1,5 @@
 var datatable;
-var grid=$('#grid');
+var grid=$('#appoinments_grid');
 let date_comment_modal=$('#date_comment_modal');
 let edit_appointment_modal=$('#edit_appointment_modal');
 let filter_form=$('#appointments_filter_form');
@@ -412,17 +412,6 @@ $(document).ready(function(){
         nSelectedText: 'вакцин',
         numberDisplayed: 4,
         buttonWidth: '100%'
-    });
-
-    $('input[id="file_search"]').on('input', function(){
-        let search=$(this).val().toLowerCase();
-
-        $('.file_container').each(function(){
-            let link=$(this).find('a');
-            let patient_name=$(this).find('span.patient_name');
-
-            $(this).toggle(link.text().toLowerCase().indexOf(search)>=0 || patient_name.text().toLowerCase().indexOf(search)>=0);
-        });
     });
 
     $('#edit_date_comment').click(function(){
