@@ -218,8 +218,6 @@ $(document).ready(function(){
 
         edit_appointment_modal.modal('show');
 
-        $('#suggestions').empty();
-
         if (suggestion.tel)
             $('#suggestion').show().find('.badge').text(suggestion.tel+' '+suggestion.name);
         else
@@ -262,7 +260,7 @@ $(document).ready(function(){
                 $('#created_at').text(row.created_at).closest('div').toggle(!!row.created_at);
                 $('#updated_at').text(row.updated_at).closest('div').toggle(!!row.updated_at);
 
-                $('#suggestions').empty();
+                $('#suggestion').hide();
             }
         }, ".edit_appointment")
         .on({
