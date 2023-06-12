@@ -1,20 +1,32 @@
+let article_modal=$('#article_modal');
+
+function open_article(article_id)
+{
+    article_modal.modal('show');
+
+    $.ajax({
+        url: '/articles/get',
+        data: {id: article_id},
+        dataType: 'json',
+        method: 'POST'
+    }).done(function(data){
+        article_modal.find('h2').text(data.title);
+        article_modal.find('.article_text').html(data.text);
+        article_modal.find('#article_main_image').attr('src', '/img/articles/'+data.id+'.jpg');
+    });
+}
+
 $(document).ready(function(){
     $('.article_container').click(function(){
-        let id=$(this).find('.article').data('article-id');
+        let article_id=$(this).find('.article').data('article-id');
 
-        let modal=$('#article_modal');
-
-        modal.modal('show');
-
-        $.ajax({
-            url: '/articles/get',
-            data: {id: id},
-            dataType: 'json',
-            method: 'POST'
-        }).done(function(data){
-            modal.find('h2').text(data.title);
-            modal.find('.article_text').html(data.text);
-            modal.find('#article_main_image').attr('src', '/img/articles/'+data.id+'.jpg');
-        });
+        open_article(article_id);
     });
+
+    if (window.location.hash.startsWith('#article'))
+    {
+        let article_id=window.location.hash.substr(8);
+
+        open_article(article_id);
+    }
 });
