@@ -59,6 +59,16 @@ $(document).ready(function(){
                     suggestion.name=null;
                 }
             }
+
+            if (Object.keys(d.json.blacklist).length>0)
+            {
+                let alert_rows=[];
+                $.each(d.json.blacklist, function(tel, reason){
+                    alert_rows.push(tel+(reason ? ' '+reason : ''));
+                });
+
+                alert('Знайдено номери у чорному списку:\n\n'+alert_rows.join('\n'));
+            }
         },
         ajax: {
             url: '/admin/appointments/filter/',
@@ -392,38 +402,6 @@ $(document).ready(function(){
                     alert('УВАГА! Цей телефон у чорному списку!'+(data.blacklisted_reason ? "\n\nПричина: "+data.blacklisted_reason : ''));
             });
         }
-    });
-
-    filter_form.find('input[name="tel"]').change(function(){
-        let tel=$(this).val();
-
-        if (!tel)
-            return;
-
-        $.ajax({
-            url: '/admin/blacklist/get_by_telephone/',
-            data: {
-                tel: tel
-            },
-            dataType: 'json',
-            method: 'POST'
-        }).done(function(data){
-            if (Object.keys(data).length)
-            {
-                let text="Знайдено номери в чорному списку:\n\n";
-
-                $.each(data, function(tel, reason){
-                    text+=tel;
-
-                    if (reason)
-                        text+='   '+reason;
-
-                    text+="\n";
-                });
-
-                alert(text);
-            }
-        });
     });
 
     $('select[name="vaccines\\[\\]"]').multiselect({

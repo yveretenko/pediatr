@@ -209,11 +209,38 @@ function filterAction()
         ];
     }
 
+    $criteria = new Criteria;
+
+    $tel=trim($filters['tel']);
+
+    $blacklist=[];
+    if ($tel)
+    {
+        if (str_starts_with($tel, '*') || str_ends_with($tel, '*'))
+        {
+            if (str_starts_with($tel, '*'))
+                $criteria->andWhere(Criteria::expr()->endsWith('tel', substr($tel, 1)));
+
+            if (str_ends_with($tel, '*'))
+                $criteria->andWhere(Criteria::expr()->startsWith('tel', substr($tel, 0, -1)));
+        }
+        else
+            $criteria->andWhere(Criteria::expr()->contains('tel', StringHelper::normalizeTelephone($tel)));
+
+        /** @var Blacklist[] $blacklisted */
+        $blacklisted=$em->getRepository(Blacklist::class)->matching($criteria);
+
+        $blacklist=[];
+        foreach ($blacklisted as $blacklisted_item)
+            $blacklist[$blacklisted_item->getTel()]=$blacklisted_item->getReason();
+    }
+
     die(json_encode([
         'data'            => $data,
         'recordsFiltered' => $appointments_filtered_count,
         'recordsTotal'    => count($em->getRepository(Appointments::class)->findAll()),
         'dates'           => $data_by_dates,
+        'blacklist'       => $blacklist,
     ]));
 }
 
