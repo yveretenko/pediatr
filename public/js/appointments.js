@@ -7,6 +7,7 @@ let suggestion={
     tel: null,
     name: null
 };
+let popup_message_timeout;
 
 var grid_default_params={
     pageLength: 50,
@@ -22,163 +23,165 @@ var grid_default_params={
 
 $(document).ready(function(){
     datatable=grid.DataTable(jQuery.extend(grid_default_params, {
-            order: [[0, 'desc']],
-            responsive: true,
-            drawCallback: function(d){
-                $.each(d.json.dates, function(index, date){
-                    let date_button=$('#appointments_calendar').find('A[data-date="'+index+'"]');
+        order: [[0, 'desc']],
+        responsive: true,
+        drawCallback: function(d){
+            $.each(d.json.dates, function(index, date){
+                let date_button=$('#appointments_calendar').find('A[data-date="'+index+'"]');
 
-                    date_button.find('.badge-danger').text(date.appointments_count ? date.appointments_count : '');
-                    date_button.find('.badge-info').text((date.vaccines_count && date.is_future) ? date.vaccines_count : '');
-                    date_button.find('i.fa-lock').toggle(date.is_future && date.is_disabled);
+                date_button.find('.badge-danger').text(date.appointments_count ? date.appointments_count : '');
+                date_button.find('.badge-info').text((date.vaccines_count && date.is_future) ? date.vaccines_count : '');
+                date_button.find('i.fa-lock').toggle(date.is_future && date.is_disabled);
+            });
+
+            let selected_date=$('#appointments_calendar').find('A.active').data('date');
+
+            $('#date_comment').text(selected_date ? d.json.dates[selected_date].comment : '');
+
+            $('.appointment_comment').mark(filter_form.find('input[name="comment"]').val());
+
+            if (filter_form.find('input[name="tel"]').val())
+            {
+                let tels={};
+                $.each(d.json.data, function(index, row){
+                    if (!tels[row.tel] || tels[row.tel].length<row.name.length)
+                        tels[row.tel]=row.name;
                 });
 
-                let selected_date=$('#appointments_calendar').find('A.active').data('date');
-
-                $('#date_comment').text(selected_date ? d.json.dates[selected_date].comment : '');
-
-                $('.appointment_comment').mark(filter_form.find('input[name="comment"]').val());
-
-                if (filter_form.find('input[name="tel"]').val())
+                if (Object.keys(tels).length===1)
                 {
-                    let tels={};
-                    $.each(d.json.data, function(index, row){
-                        if (!tels[row.tel] || tels[row.tel].length<row.name.length)
-                            tels[row.tel]=row.name;
+                    suggestion.tel=Object.keys(tels)[0];
+                    suggestion.name=tels[suggestion.tel];
+                }
+                else
+                {
+                    suggestion.tel=null;
+                    suggestion.name=null;
+                }
+            }
+        },
+        ajax: {
+            url: '/admin/appointments/filter/',
+            data: function(d){
+                d.filters={
+                    tel:     filter_form.find('input[name="tel"]').val(),
+                    name:    filter_form.find('input[name="name"]').val(),
+                    comment: filter_form.find('input[name="comment"]').val(),
+                    date:    $('#appointments_calendar').find('A.active').data('date')
+                };
+            }
+        },
+        createdRow: function(row, data, dataIndex){
+            if (data.is_future)
+            {
+                if (data.is_today)
+                    $(row).addClass('table-warning');
+                else if (data.is_tomorrow)
+                    $(row).addClass('table-info');
+                else
+                    $(row).addClass('table-success');
+            }
+
+            $(row).find('.hidden_file_upload').find('input[type="file"]').fileupload({
+                url: '/admin/index/upload/?id='+data.id,
+                dataType: 'json',
+                done: function(e, data){
+                    if (data.result.error)
+                        alert('Виникла помилка, файл не було завантажено');
+
+                    datatable.ajax.reload();
+                }
+            });
+        },
+        language: {
+            emptyTable: 'записів не знайдено',
+            zeroRecords: 'записів не знайдено',
+            info: 'Записів: _TOTAL_',
+            infoEmpty: 'Записів не знайдено',
+            infoFiltered: '(всього _MAX_)',
+            processing: "<div class='alert alert-warning border-warning col-10 col-sm-8 col-md-4 mx-auto' role='alert'>оновлюю записи <i class='fas fa-spinner fa-spin ml-2'></i></div>"
+        },
+        columnDefs: [
+            {
+                "targets": [0],
+                "className": 'pr-1 pr-md-2'
+            },
+            {
+                "targets": [3],
+                "className": 'small'
+            },
+            {
+                "targets": [4],
+                "className": 'text-nowrap text-white text-right pl-0 pr-1 pl-md-2 pr-md-2'
+            }
+        ],
+        columns: [
+            {
+                data: 'readable_date',
+                orderable: false,
+                render: function (data, type, row){
+                    return '<span class="text-nowrap">'+data+'</span>'+'<br>'+row.time;
+                },
+                responsivePriority: 1
+            },
+            {
+                data: 'name',
+                orderable: false,
+                responsivePriority: 4,
+                render: function (data, type, row){
+                    return data+(row.visits_to_date>=5 ? '&nbsp;<i class="fas fa-star text-warning client_icon"></i>' : '')+(row.blacklisted ? '&nbsp;<i class="fas fa-ban text-danger client_icon" title="'+row.blacklisted_reason+'"></i>' : '');
+                },
+            },
+            {
+                data: 'tel',
+                orderable: false,
+                render: function (data, type, row){
+                    let tel = data>0 ? "<A class='text-reset' href='tel:"+data+"'>"+data.substr(0, 3)+'<span class="d-none d-md-inline"> </span>'+data.substr(3, 3)+'<span class="d-none d-md-inline"> </span>'+data.substr(6, 2)+'<span class="d-none d-md-inline"> </span>'+data.substr(8, 2)+"</A>" : '';
+
+                    let visits_history = row.visits_to_date ? " <A class='ml-1 ml-sm-2 appointment_history' href='#'><i class='fa fa-history'></i></A> <sub class='text-danger'>"+row.visits_to_date+"</sub>" : '';
+
+                    let vaccines=[];
+                    $.each(row.vaccines, function(index, vaccine){
+                        vaccines.push('<span class="badge badge-info" title="'+vaccine.name+'">'+vaccine.short_name+((row.is_future && !vaccine.available) ? ' <i class="fa fa-sm fa-circle text-warning"></i>' : '')+'</span>');
                     });
 
-                    if (Object.keys(tels).length===1)
-                    {
-                        suggestion.tel=Object.keys(tels)[0];
-                        suggestion.name=tels[suggestion.tel];
-                    }
-                    else
-                    {
-                        suggestion.tel=null;
-                        suggestion.name=null;
-                    }
-                }
+                    return '<div class="text-nowrap">'+tel+visits_history+'</div>'+'<div class="d-block d-sm-none">'+row.name+(row.visits_to_date>=5 ? '&nbsp;<i class="fas fa-star text-warning client_icon"></i>' : '')+(row.blacklisted ? '&nbsp;<i class="fas fa-ban text-danger client_icon" title="'+row.blacklisted_reason+'"></i>' : '')+'</div><div class="d-sm-none">'+(row.call_back ? '<span class="badge badge-warning"><i class="fa fa-phone"></i></span> ' : '')+(row.neurology ? '<span class="badge badge-danger">Невр</span> ' : '')+(row.earlier ? '<span class="badge badge-primary">Раніше</span> ' : '')+vaccines.join(' ')+'</div>';
+                },
+                responsivePriority: 2,
             },
-            ajax: {
-                url: '/admin/appointments/filter/',
-                data: function(d){
-                    d.filters={
-                        tel:     filter_form.find('input[name="tel"]').val(),
-                        name:    filter_form.find('input[name="name"]').val(),
-                        comment: filter_form.find('input[name="comment"]').val(),
-                        date:    $('#appointments_calendar').find('A.active').data('date')
-                    };
-                }
+            {
+                data: 'comment',
+                orderable: false,
+                render: function (data, type, row){
+                    let file = row.file ? '<span class="text-nowrap"><A title="'+(row.file.length>20 ? row.file : '')+'" href="/admin/appointments/file/?id='+row.id+'"><i class="fa fa-paperclip mr-1"></i>'+(row.file.length>20 ? row.file.substr(0, 20)+'&hellip;' : row.file)+'</A></span>' : '';
+
+                    let vaccines=[];
+                    $.each(row.vaccines, function(index, vaccine){
+                        vaccines.push('<span class="badge badge-info" style="font-size:90%;" title="'+vaccine.name+'">'+vaccine.short_name+((row.is_future && !vaccine.available) ? ' <i class="fa fa-sm fa-circle text-warning"></i>' : '')+'</span>');
+                    });
+
+                    return '<div style="max-width:33vw; line-height:normal;" class="appointment_comment">'+data.replace(/([^>])\n/g, '$1<br/>')+'</div><div>'+(row.call_back ? '<span class="badge badge-warning" style="font-size:90%;">Передзвонити</span> ' : '')+(row.neurology ? '<span class="badge badge-danger" style="font-size:90%;">Невр</span> ' : '')+(row.earlier ? '<span class="badge badge-primary" style="font-size:90%;">Раніше</span> ' : '')+vaccines.join(' ')+'</div>'+file;
+                },
+                responsivePriority: 6
             },
-            createdRow: function(row, data, dataIndex){
-                if (data.is_future)
-                {
-                    if (data.is_today)
-                        $(row).addClass('table-warning');
-                    else if (data.is_tomorrow)
-                        $(row).addClass('table-info');
-                    else
-                        $(row).addClass('table-success');
-                }
+            {
+                data: 'id',
+                render: function(){
+                    let edit_button='<button class="btn btn-sm btn-success edit_appointment"><i class="fa fa-pencil-alt mr-0 mr-md-1"></i><span class="d-none d-md-inline"> Редагувати</span></button>';
 
-                $(row).find('.hidden_file_upload').find('input[type="file"]').fileupload({
-                    url: '/admin/index/upload/?id='+data.id,
-                    dataType: 'json',
-                    done: function(e, data){
-                        if (data.result.error)
-                            alert('Виникла помилка, файл не було завантажено');
+                    let attach_file_button='<span class="hidden_file_upload"><label><A class="btn btn-sm btn-info ml-1 ml-md-2 d-none d-sm-inline-block"><i class="fa fa-paperclip mr-0 mr-md-1"></i><span class="d-none d-md-inline"> Файл</span></A><input type="file" name="file_uploader"></label></span>';
 
-                        datatable.ajax.reload();
-                    }
-                });
-            },
-            language: {
-                emptyTable: 'записів не знайдено',
-                zeroRecords: 'записів не знайдено',
-                info: 'Записів: _TOTAL_',
-                infoEmpty: 'Записів не знайдено',
-                infoFiltered: '(всього _MAX_)',
-                processing: "<div class='alert alert-warning border-warning col-10 col-sm-8 col-md-4 mx-auto' role='alert'>оновлюю записи <i class='fas fa-spinner fa-spin ml-2'></i></div>"
-            },
-            columnDefs: [
-                {
-                    "targets": [0],
-                    "className": 'pr-1 pr-md-2'
+                    let delete_button='<button class="btn btn-sm btn-danger ml-1 ml-md-2 delete_appointment"><i class="fa fa-trash mr-0 mr-md-1"></i><span class="d-none d-md-inline"> Видалити</span></button>';
+
+                    let copy_appointment_text_button='<button class="btn btn-sm btn-info ml-1 ml-md-2 d-none d-sm-inline-block copy_appointment_text"><i class="fa fa-copy"></i><span class="d-none d-md-inline"></span></button>';
+
+                    return edit_button+attach_file_button+copy_appointment_text_button+delete_button;
                 },
-                {
-                    "targets": [3],
-                    "className": 'small'
-                },
-                {
-                    "targets": [4],
-                    "className": 'text-nowrap text-white text-right pl-0 pr-1 pl-md-2 pr-md-2'
-                }
-            ],
-            columns: [
-                {
-                    data: 'readable_date',
-                    orderable: false,
-                    render: function (data, type, row){
-                        return '<span class="text-nowrap">'+data+'</span>'+'<br>'+row.time;
-                    },
-                    responsivePriority: 1
-                },
-                {
-                    data: 'name',
-                    orderable: false,
-                    responsivePriority: 4,
-                    render: function (data, type, row){
-                        return data+(row.visits_to_date>=5 ? '&nbsp;<i class="fas fa-star text-warning client_icon"></i>' : '')+(row.blacklisted ? '&nbsp;<i class="fas fa-ban text-danger client_icon" title="'+row.blacklisted_reason+'"></i>' : '');
-                    },
-                },
-                {
-                    data: 'tel',
-                    orderable: false,
-                    render: function (data, type, row){
-                        let tel = data>0 ? "<A class='text-reset' href='tel:"+data+"'>"+data.substr(0, 3)+'<span class="d-none d-md-inline"> </span>'+data.substr(3, 3)+'<span class="d-none d-md-inline"> </span>'+data.substr(6, 2)+'<span class="d-none d-md-inline"> </span>'+data.substr(8, 2)+"</A>" : '';
-
-                        let visits_history = row.visits_to_date ? " <A class='ml-1 ml-sm-2 appointment_history' href='#'><i class='fa fa-history'></i></A> <sub class='text-danger'>"+row.visits_to_date+"</sub>" : '';
-
-                        let vaccines=[];
-                        $.each(row.vaccines, function(index, vaccine){
-                            vaccines.push('<span class="badge badge-info" title="'+vaccine.name+'">'+vaccine.short_name+((row.is_future && !vaccine.available) ? ' <i class="fa fa-sm fa-circle text-warning"></i>' : '')+'</span>');
-                        });
-
-                        return '<div class="text-nowrap">'+tel+visits_history+'</div>'+'<div class="d-block d-sm-none">'+row.name+(row.visits_to_date>=5 ? '&nbsp;<i class="fas fa-star text-warning client_icon"></i>' : '')+(row.blacklisted ? '&nbsp;<i class="fas fa-ban text-danger client_icon" title="'+row.blacklisted_reason+'"></i>' : '')+'</div><div class="d-sm-none">'+(row.call_back ? '<span class="badge badge-warning"><i class="fa fa-phone"></i></span> ' : '')+(row.neurology ? '<span class="badge badge-danger">Невр</span> ' : '')+(row.earlier ? '<span class="badge badge-primary">Раніше</span> ' : '')+vaccines.join(' ')+'</div>';
-                    },
-                    responsivePriority: 2,
-                },
-                {
-                    data: 'comment',
-                    orderable: false,
-                    render: function (data, type, row){
-                        let file = row.file ? '<span class="text-nowrap"><A title="'+(row.file.length>20 ? row.file : '')+'" href="/admin/appointments/file/?id='+row.id+'"><i class="fa fa-paperclip mr-1"></i>'+(row.file.length>20 ? row.file.substr(0, 20)+'&hellip;' : row.file)+'</A></span>' : '';
-
-                        let vaccines=[];
-                        $.each(row.vaccines, function(index, vaccine){
-                            vaccines.push('<span class="badge badge-info" style="font-size:90%;" title="'+vaccine.name+'">'+vaccine.short_name+((row.is_future && !vaccine.available) ? ' <i class="fa fa-sm fa-circle text-warning"></i>' : '')+'</span>');
-                        });
-
-                        return '<div style="max-width:33vw; line-height:normal;" class="appointment_comment">'+data.replace(/([^>])\n/g, '$1<br/>')+'</div><div>'+(row.call_back ? '<span class="badge badge-warning" style="font-size:90%;">Передзвонити</span> ' : '')+(row.neurology ? '<span class="badge badge-danger" style="font-size:90%;">Невр</span> ' : '')+(row.earlier ? '<span class="badge badge-primary" style="font-size:90%;">Раніше</span> ' : '')+vaccines.join(' ')+'</div>'+file;
-                    },
-                    responsivePriority: 6
-                },
-                {
-                    data: 'id',
-                    render: function(){
-                        let edit_button='<A class="btn btn-sm btn-success edit_appointment"><i class="fa fa-pencil-alt mr-0 mr-md-1"></i><span class="d-none d-md-inline"> Редагувати</span></A>';
-
-                        let attach_file_button='<span class="hidden_file_upload"><label><A class="btn btn-sm btn-info ml-1 ml-md-2 d-none d-sm-inline-block"><i class="fa fa-paperclip mr-0 mr-md-1"></i><span class="d-none d-md-inline"> Файл</span></A><input type="file" name="file_uploader"></label></span>';
-
-                        let delete_button='<A class="btn btn-sm btn-danger ml-1 ml-md-2 delete_appointment"><i class="fa fa-trash mr-0 mr-md-1"></i><span class="d-none d-md-inline"> Видалити</span></A>';
-
-                        return edit_button+attach_file_button+delete_button;
-                    },
-                    orderable: false,
-                    responsivePriority: 3
-                }
-            ]
-        }));
+                orderable: false,
+                responsivePriority: 3
+            }
+        ]
+    }));
 
     $('#appointments_calendar').find('A[data-date]').click(function(){
         $('#appointments_calendar').find('A[data-date]').not($(this)).removeClass('active');
@@ -278,6 +281,25 @@ $(document).ready(function(){
                 }
             }
         }, ".delete_appointment")
+        .on({
+            click: function(){
+                let row=datatable.row($(this).closest('tr')).data();
+
+                let textarea=$('<textarea style="width:0; height:0;">'+row.appointment_text+'</textarea>');
+                textarea.appendTo('body');
+                textarea[0].select();
+                document.execCommand('copy');
+                textarea.remove();
+
+                clearTimeout(popup_message_timeout);
+
+                $('#popup_message').html('<b>Текст скопійовано:</b><br><br>'+row.appointment_text.replace(/\n\n/g, "<br />")).show();
+
+                popup_message_timeout=setTimeout(function(){
+                    $('#popup_message').fadeOut(750);
+                }, 2000);
+            }
+        }, ".copy_appointment_text")
         .on({
             click: function(e){
                 var modal=$('#appointment_history_modal');

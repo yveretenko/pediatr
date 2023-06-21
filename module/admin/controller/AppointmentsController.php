@@ -64,7 +64,7 @@ function indexAction()
 
 function filterAction()
 {
-    global $em;
+    global $em, $config;
 
     $weekdays=[
         '',
@@ -75,6 +75,21 @@ function filterAction()
         'ПТ',
         'СБ',
         'НД',
+    ];
+
+    $months=[
+        'січня',
+        'лютого',
+        'березня',
+        'квітня',
+        'травня',
+        'червня',
+        'липня',
+        'серпня',
+        'вересня',
+        'жовтня',
+        'листопада',
+        'грудня',
     ];
 
     $start_timestamp=$end_timestamp=null;
@@ -133,6 +148,14 @@ function filterAction()
 
         $blacklist = $appointment->getTel() ? $em->find(Blacklist::class, $appointment->getTel()) : null;
 
+        $appointment_text=sprintf(
+            "Лікар чекатиме Вас %s %s\n\nНаша адреса %s\n\n%s вiзиту Вам надiйде смс-нагадування\n\nДякуємо, що довіряєте нам! ❤️",
+            date('j', $appointment->getDate()).' '.$months[date('n', $appointment->getDate())-1],
+            (date('H', $appointment->getDate())==='11' ? 'об' : 'о').' '.date('H:i', $appointment->getDate()),
+            $config['address'],
+            (date('H', $appointment->getDate())<=12 || (date('H:i', $appointment->getDate())==='12:00')) ? 'За день' : 'В день'
+        );
+
         $data[]=[
             'id'                 => $appointment->getId(),
             'name'               => trim($appointment->getName()),
@@ -154,6 +177,7 @@ function filterAction()
             'call_back'          => $appointment->getCallBack(),
             'created_at'         => format_date($appointment->getCreatedAt()),
             'updated_at'         => format_date($appointment->getUpdatedAt()),
+            'appointment_text'   => $appointment_text,
         ];
     }
 
