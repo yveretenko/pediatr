@@ -31,6 +31,7 @@ function filterAction()
     foreach ($vaccines as $vaccine)
     {
         $data[]=[
+            'id'               => $vaccine->getId(),
             'name'             => $vaccine->getName(),
             'type'             => $vaccine->getType(),
             'available'        => $vaccine->getAvailable(),
@@ -48,5 +49,35 @@ function filterAction()
         'data'            => $data,
         'recordsFiltered' => count($em->getRepository(Vaccines::class)->findAll()),
         'recordsTotal'    => count($em->getRepository(Vaccines::class)->findAll()),
+    ]));
+}
+
+function saveAction()
+{
+    global $em;
+
+    $errors=[];
+
+    try
+    {
+        /** @var Vaccines $vaccine */
+        $vaccine=$em->getRepository(Vaccines::class)->find($_POST['id']);
+
+        $vaccine
+            ->setPurchasePrice($_POST['purchase_price'] ?: null)
+            ->setAvailable($_POST['available']>0)
+        ;
+
+        $em->persist($vaccine);
+
+        $em->flush();
+    }
+    catch (Exception)
+    {
+        $errors[]='Помилка збереження даних';
+    }
+
+    die(json_encode([
+        'errors' => $errors,
     ]));
 }
