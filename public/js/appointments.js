@@ -139,7 +139,7 @@ $(document).ready(function(){
                 orderable: false,
                 responsivePriority: 4,
                 render: function (data, type, row){
-                    return data+(row.visits_to_date>=5 ? '&nbsp;<i class="fas fa-star text-warning client_icon"></i>' : '')+(row.blacklisted ? '&nbsp;<i class="fas fa-ban text-danger client_icon" title="'+row.blacklisted_reason+'"></i>' : '');
+                    return data+(row.visits_to_date>=5 ? '&nbsp;<i class="fas fa-star text-warning client_icon"></i>' : '')+(row.blacklisted ? '&nbsp;<i class="fas fa-ban text-danger client_icon" data-toggle="tooltip" title="'+row.blacklisted_reason+'"></i>' : '');
                 },
             },
             {
@@ -155,7 +155,7 @@ $(document).ready(function(){
                         vaccines.push('<span class="badge badge-info" title="'+vaccine.name+'">'+vaccine.short_name+((row.is_future && !vaccine.available) ? ' <i class="fa fa-sm fa-circle text-warning"></i>' : '')+'</span>');
                     });
 
-                    return '<div class="text-nowrap">'+tel+visits_history+'</div>'+'<div class="d-block d-sm-none">'+row.name+(row.visits_to_date>=5 ? '&nbsp;<i class="fas fa-star text-warning client_icon"></i>' : '')+(row.blacklisted ? '&nbsp;<i class="fas fa-ban text-danger client_icon" title="'+row.blacklisted_reason+'"></i>' : '')+'</div><div class="d-sm-none">'+(row.call_back ? '<span class="badge badge-warning"><i class="fa fa-phone"></i></span> ' : '')+(row.neurology ? '<span class="badge badge-danger">Невр</span> ' : '')+(row.earlier ? '<span class="badge badge-primary">Раніше</span> ' : '')+vaccines.join(' ')+'</div>';
+                    return '<div class="text-nowrap">'+tel+visits_history+'</div>'+'<div class="d-block d-sm-none">'+row.name+(row.visits_to_date>=5 ? '&nbsp;<i class="fas fa-star text-warning client_icon"></i>' : '')+(row.blacklisted ? '&nbsp;<i class="fas fa-ban text-danger client_icon" data-toggle="tooltip" title="'+row.blacklisted_reason+'"></i>' : '')+'</div><div class="d-sm-none">'+(row.call_back ? '<span class="badge badge-warning"><i class="fa fa-phone"></i></span> ' : '')+(row.neurology ? '<span class="badge badge-danger">Невр</span> ' : '')+(row.earlier ? '<span class="badge badge-primary">Раніше</span> ' : '')+vaccines.join(' ')+'</div>';
                 },
                 responsivePriority: 2,
             },
@@ -465,4 +465,8 @@ $(document).ready(function(){
     });
 
     filter_form.find('input[name="tel"]').trigger('change');
+
+    $(document).tooltip({
+        selector: '[data-toggle="tooltip"]'
+    });
 });

@@ -25,8 +25,8 @@ body
 
 .client_icon
 {
-    font-size:0.7rem;
-    vertical-align:5%;
+    font-size:0.8rem;
+    vertical-align:7%;
     display:inline;
 }
 
@@ -132,4 +132,19 @@ mark, .mark
 {
     padding:unset;
     background-color:yellow;
+}
+
+.tooltip .arrow:before
+{
+    border-top-color:#008EC3 !important;
+}
+
+.tooltip .arrow:before
+{
+    border-bottom-color:#008EC3 !important;
+}
+
+.tooltip .tooltip-inner
+{
+    background-color:#008EC3;
 }
