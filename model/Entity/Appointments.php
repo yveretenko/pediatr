@@ -182,11 +182,21 @@ class Appointments
     }
 
     /**
+     * @param bool $formatted
+     *
      * @return string
      */
-    public function getComment(): string
+    public function getComment(bool $formatted=false): string
     {
-        return $this->comment;
+        if (!$formatted)
+            return $this->comment;
+
+        return implode("<br>", array_map(function($line){
+            if (str_starts_with($line, '!'))
+                return '<span class="text-danger font-weight-bold">'.substr($line, 1).'</span>';
+
+            return $line;
+        }, explode("\n", $this->comment)));
     }
 
     /**

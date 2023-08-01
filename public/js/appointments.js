@@ -160,7 +160,7 @@ $(document).ready(function(){
                 responsivePriority: 2,
             },
             {
-                data: 'comment',
+                data: 'comment_formatted',
                 orderable: false,
                 render: function (data, type, row){
                     let file = row.file ? '<span class="text-nowrap"><A title="'+(row.file.length>20 ? row.file : '')+'" href="/admin/appointments/file/?id='+row.id+'"><i class="fa fa-paperclip mr-1"></i>'+(row.file.length>20 ? row.file.substr(0, 20)+'&hellip;' : row.file)+'</A></span>' : '';
@@ -170,7 +170,7 @@ $(document).ready(function(){
                         vaccines.push('<span class="badge badge-info" style="font-size:90%;" title="'+vaccine.name+'">'+vaccine.short_name+((row.is_future && !vaccine.available) ? ' <i class="fa fa-sm fa-circle text-warning"></i>' : '')+'</span>');
                     });
 
-                    return '<div style="max-width:33vw; line-height:normal;" class="appointment_comment">'+data.replace(/([^>])\n/g, '$1<br/>')+'</div><div>'+(row.call_back ? '<span class="badge badge-warning" style="font-size:90%;">Передзвонити</span> ' : '')+(row.neurology ? '<span class="badge badge-danger" style="font-size:90%;">Невр</span> ' : '')+(row.earlier ? '<span class="badge badge-primary" style="font-size:90%;">Раніше</span> ' : '')+vaccines.join(' ')+'</div>'+file;
+                    return '<div style="max-width:33vw; line-height:normal;" class="appointment_comment">'+data+'</div><div>'+(row.call_back ? '<span class="badge badge-warning" style="font-size:90%;">Передзвонити</span> ' : '')+(row.neurology ? '<span class="badge badge-danger" style="font-size:90%;">Невр</span> ' : '')+(row.earlier ? '<span class="badge badge-primary" style="font-size:90%;">Раніше</span> ' : '')+vaccines.join(' ')+'</div>'+file;
                 },
                 responsivePriority: 6
             },
