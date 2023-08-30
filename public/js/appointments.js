@@ -443,14 +443,6 @@ $(document).ready(function(){
         });
     });
 
-    if (edit_appointment_modal.find('input[name="tel"]').val())
-    {
-        edit_appointment_modal.find('.modal-header').find('h5').text('Новий запис');
-        edit_appointment_modal.modal('show');
-
-        edit_appointment_modal.find('input[name="tel"]').trigger('change');
-    }
-
     $(document).on('keyup', function(e) {
         if (e.key==='Escape' && !$('.modal:visible').length)
             $('#reset_appointments_form').click();
