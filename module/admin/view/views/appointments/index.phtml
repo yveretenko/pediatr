@@ -101,7 +101,7 @@ foreach ($dates as $date)
                     <div class="form-row">
                         <div class="col-6 form-group">
                             <label class="mb-0">Дата</label>
-                            <input type="date" name="date" class="form-control" value="<?=date('Y-m-d', strtotime($_GET['date'])) ?>">
+                            <input type="date" name="date" class="form-control" value="<?=$_GET['date'] ? date('Y-m-d', strtotime($_GET['date'])) : '' ?>">
                         </div>
 
                         <div class="col-6 form-group">
