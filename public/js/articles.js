@@ -25,7 +25,7 @@ $(document).ready(function(){
 
     if (window.location.hash.startsWith('#article'))
     {
-        let article_id=window.location.hash.substr(8);
+        let article_id=window.location.hash.replace('#article', '').replace(/\D/g, '');
 
         open_article(article_id);
     }
