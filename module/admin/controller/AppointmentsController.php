@@ -263,6 +263,13 @@ function saveAction()
 
     if (!$_POST['time'])
         $errors[]='Введіть час';
+    else
+    {
+        list($hour, $minute)=explode(':', $_POST['time']);
+
+        if ($hour<8 || ($hour>21 || ($hour==='21' && $minute>0)))
+            $errors[]='Введіть час між 8:00 та 21:00';
+    }
 
     $tel=StringHelper::normalizeTelephone($_POST['tel']);
 
