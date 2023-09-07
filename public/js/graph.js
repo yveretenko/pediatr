@@ -16,6 +16,15 @@ $(document).ready(function(){
     $('input[name="group_by"]').change(function(){
         let unit_type=$(this).val();
 
+        let label;
+
+        if (unit_type==='week')
+            label='{value:%e %b}';
+        else if (unit_type==='month')
+            label='{value:%b}';
+        else if (unit_type==='year')
+            label='{value:%Y}';
+
         let options = {
             title: false,
             credits: {
@@ -29,7 +38,7 @@ $(document).ready(function(){
                 ordinal: true,
                 type: 'datetime',
                 labels: {
-                    format: unit_type==='week' ? '{value:%e %b}' : '{value:%b}',
+                    format: label,
                     align: 'right',
                     rotation: -90
                 }
