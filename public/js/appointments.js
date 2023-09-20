@@ -1,5 +1,5 @@
 var datatable;
-var grid=$('#appoinments_grid');
+var grid=$('#appointments_grid');
 let date_comment_modal=$('#date_comment_modal');
 let edit_appointment_modal=$('#edit_appointment_modal');
 let filter_form=$('#appointments_filter_form');
