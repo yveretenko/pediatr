@@ -72,17 +72,21 @@ foreach ($dates as $date)
     </div>
 </form>
 
-<table class="table table-striped" id="appointments_grid">
-    <thead>
-        <tr>
-            <th>Дата</th>
-            <th>Ім'я</th>
-            <th>Телефон</th>
-            <th>Коментар</th>
-            <th></th>
-        </tr>
-    </thead>
-</table>
+<div class="position-relative">
+    <table class="table table-striped" id="appointments_grid">
+        <thead>
+            <tr>
+                <th>Дата</th>
+                <th>Ім'я</th>
+                <th>Телефон</th>
+                <th>Коментар</th>
+                <th></th>
+            </tr>
+        </thead>
+    </table>
+
+    <i class="fa fa-sync text-muted position-absolute m-3" id="appointment_grid_reload" style="top:0; right:0; cursor:pointer;"></i>
+</div>
 
 <div class="modal fade" id="edit_appointment_modal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">

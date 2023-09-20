@@ -470,4 +470,14 @@ $(document).ready(function(){
     $(document).tooltip({
         selector: '[data-toggle="tooltip"]'
     });
+
+    $('#appointment_grid_reload').click(function(){
+    	let reload_button=$(this);
+
+        reload_button.addClass('fa-spin');
+
+    	datatable.ajax.reload(function(){
+            reload_button.removeClass('fa-spin');
+        });
+    });
 });
