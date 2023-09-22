@@ -3,7 +3,7 @@ RewriteEngine On
 Redirect 302 "/review" "https://g.page/r/CSGLSyAY-HosEAg/review"
 
 # all to index.php
-RewriteCond %{REQUEST_FILENAME} !\.(jpg|jpeg|gif|png|svg|css|js|swf|mp3|flv|mp4|cur|ico|txt|html|woff|ttf)$
+RewriteCond %{REQUEST_FILENAME} !\.(jpg|jpeg|gif|png|svg|css|js|swf|mp3|flv|mp4|cur|ico|txt|html|woff|ttf|pdf)$
 RewriteRule .* index.php [L]
 
 # this line must be present
