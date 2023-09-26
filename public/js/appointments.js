@@ -472,12 +472,12 @@ $(document).ready(function(){
     });
 
     $('#appointment_grid_reload').click(function(){
-    	let reload_button=$(this);
+    	let reload_icon=$(this).find('i.fa');
 
-        reload_button.addClass('fa-spin');
+        reload_icon.addClass('fa-spin');
 
     	datatable.ajax.reload(function(){
-            reload_button.removeClass('fa-spin');
+            reload_icon.removeClass('fa-spin');
         });
     });
 });
