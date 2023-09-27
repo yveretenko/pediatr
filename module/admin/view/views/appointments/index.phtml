@@ -61,6 +61,16 @@ foreach ($dates as $date)
             <input type="search" name="comment" class="form-control" placeholder="коментар">
         </div>
 
+        <div class="col col-xl-2 form-group d-none d-md-block">
+            <select name="vaccine" class="form-control">
+                <option value="">-- вакцина --</option>
+
+                <?php foreach ($vaccines as $vaccine) { ?>
+                <option value="<?=$vaccine->getId() ?>"><?=$vaccine->getName() ?></option>
+                <?php } ?>
+            </select>
+        </div>
+
         <div class="col-auto form-group">
             <button class="btn btn-info"><i class="fa fa-fw fa-search"></i><span class="d-none d-lg-inline ml-1"> Пошук</span></button>
             <button class="btn btn-danger d-lg-none" id="reset_appointments_form"><i class="fa fa-fw fa-times"></i></button>

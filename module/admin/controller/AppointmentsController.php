@@ -106,6 +106,7 @@ function filterAction()
         'tel'             => $_GET['filters']['tel'],
         'name'            => $_GET['filters']['name'],
         'comment'         => $_GET['filters']['comment'],
+        'vaccine'         => $_GET['filters']['vaccine'],
     ];
 
     $appointments_filtered_count=count($em->getRepository(Appointments::class)->getByFilters($filters, 'a.date', 'DESC'));

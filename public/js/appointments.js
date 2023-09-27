@@ -77,7 +77,8 @@ $(document).ready(function(){
                     tel:     filter_form.find('input[name="tel"]').val(),
                     name:    filter_form.find('input[name="name"]').val(),
                     comment: filter_form.find('input[name="comment"]').val(),
-                    date:    $('#appointments_calendar').find('A.active').data('date')
+                    date:    $('#appointments_calendar').find('A.active').data('date'),
+                    vaccine: filter_form.find('select[name="vaccine"]').val(),
                 };
             }
         },

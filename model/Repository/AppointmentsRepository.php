@@ -3,6 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\Appointments;
+use App\Entity\AppointmentVaccines;
+use App\Entity\Vaccines;
 use Doctrine\ORM\EntityRepository;
 use Exception;
 use StringHelper;
@@ -89,6 +91,16 @@ class AppointmentsRepository extends EntityRepository
                 ->having('COUNT(a)>=:min_visits')
                 ->andWhere($queryBuilder->expr()->isNotNull('a.tel'))
                 ->setParameter('min_visits', $filters['min_visits'])
+            ;
+        }
+
+        if (!empty($filters['vaccine']))
+        {
+            $queryBuilder
+                ->join(AppointmentVaccines::class, 'av', 'WITH', 'av.appointment=a.id AND av.vaccine=:vaccine')
+                ->groupBy('a.id')
+                ->having('COUNT(av)>0')
+                ->setParameter('vaccine', $filters['vaccine'])
             ;
         }
 
