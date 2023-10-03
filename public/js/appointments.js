@@ -204,7 +204,7 @@ $(document).ready(function(){
 
         $('#date_comment').closest('.alert').find('button').prop('disabled', !$(this).hasClass('active'));
 
-        filter_form.find('input[type="text"], input[type="tel"], input[type="search"]').val('');
+        filter_form.find('input[type="text"], input[type="tel"], input[type="search"], select').val('');
 
         datatable.ajax.reload();
 
