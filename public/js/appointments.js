@@ -459,7 +459,7 @@ $(document).ready(function(){
     });
 
     $('#reset_appointments_form').click(function(){
-        filter_form.find('input').val(''); // don't use reset here because if $_GET['tel'] is set, tel input will not be emptied
+        filter_form.find('select, input').val(''); // don't use reset here because if $_GET['tel'] is set, tel input will not be emptied
 
         $('#appointments_calendar').find('.active').removeClass('active').blur();
 
