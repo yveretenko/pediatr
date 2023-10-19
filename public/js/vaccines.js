@@ -32,8 +32,10 @@ $(document).ready(function(){
         columns: [
             {
                 data: 'name',
-                className: 'text-nowrap',
-                responsivePriority: 1
+                responsivePriority: 1,
+                render: function(data, type, row){
+                    return '<div class="text-nowrap">'+data+'</div>'+(row.type ? '<div class="text-muted small d-sm-none">'+row.type+'</span>' : '');
+                },
             },
             {
                 data: 'type',
@@ -90,10 +92,10 @@ $(document).ready(function(){
                 data: 'id',
                 sortable: false,
                 render: function(){
-                    return '<button class="btn btn-success btn-sm vaccine_edit"><i class="fa fa-pencil-alt"></i> Редагувати</button>';
+                    return '<button class="btn btn-success btn-sm vaccine_edit"><i class="fa fa-pencil-alt"></i><span class="d-none d-md-inline"> Редагувати</span></button>';
                 },
                 className: 'text-nowrap',
-                responsivePriority: 10
+                responsivePriority: 2
             }
         ]
     }));
