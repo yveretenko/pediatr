@@ -242,6 +242,17 @@ $(document).ready(function(){
         edit_appointment_modal.find('input[name="name"]').val(suggestion.name);
     });
 
+    $('#appointments_filter_form_show_more').click(function(){
+        filter_form.find('input[name="name"]').closest('div').toggleClass('col-6 col-md');
+        filter_form.find('input[name="tel"]').closest('div').toggleClass('col-6 col-md');
+        filter_form.find('select[name="vaccine"]').closest('div').toggleClass('d-none col-6 col-md');
+        filter_form.find('input[name="comment"]').closest('div').toggleClass('d-none col-6 col-md');
+
+        $(this).hide();
+
+        return false;
+    });
+
     grid
         .on({
             click: function(){
