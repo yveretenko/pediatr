@@ -80,6 +80,12 @@ $(document).ready(function(){
                     date:    $('#appointments_calendar').find('A.active').data('date'),
                     vaccine: filter_form.find('select[name="vaccine"]').val(),
                 };
+            },
+            error: function(data){
+                if (data.status===401)
+                    window.location.href='/admin?redirect_to='+encodeURI(window.location.pathname);
+                else
+                    alert('Виникла помилка при завантаженні даних');
             }
         },
         createdRow: function(row, data, dataIndex){

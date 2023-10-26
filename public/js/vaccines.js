@@ -19,7 +19,13 @@ $(document).ready(function(){
         order: [[0, 'asc']],
         responsive: true,
         ajax: {
-            url: '/admin/vaccines/filter/'
+            url: '/admin/vaccines/filter/',
+            error: function(data){
+                if (data.status===401)
+                    window.location.href='/admin?redirect_to='+encodeURI(window.location.pathname);
+                else
+                    alert('Виникла помилка при завантаженні даних');
+            }
         },
         language: {
             processing: "<div class='alert alert-warning border-warning col-10 col-sm-8 col-md-4 mx-auto' role='alert'>оновлюю <i class='fas fa-spinner fa-spin ml-2'></i></div>"
