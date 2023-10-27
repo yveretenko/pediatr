@@ -359,7 +359,13 @@ $(document).ready(function(){
                                 vaccines.push('<span class="badge badge-info" title="'+vaccine.name+'">'+vaccine.short_name+'</span>');
                             });
 
-                            html+='<tr><td>'+row.date+'<div class="small text-muted">'+row.days_ago+'</div>'+'</td><td>'+row.name+'</td><td>'+row.comment+'<div>'+(row.neurology ? '<span class="badge badge-danger">Невр</span> ' : '')+vaccines.join(' ')+'</div>'+(row.file ? '<div><A href="/admin/appointments/file/?id='+row.id+'"><i class="fa fa-paperclip mt-3 mr-1"></i>'+row.file+'</A></div>' : '')+'</td></tr>';
+                            let labels_html=(row.neurology ? '<span class="badge badge-danger">Невр</span> ' : '')+vaccines.join(' ');
+
+                            let file_html = row.file ? '<A href="/admin/appointments/file/?id='+row.id+'"><i class="fa fa-paperclip mr-1"></i>'+row.file+'</A>' : '';
+
+                            let comment_html='<div>'+[row.comment, labels_html, file_html].filter(function(e){return e}).join('</div><div class="mt-1">')+'</div>';
+
+                            html+='<tr><td>'+row.date+'<div class="small text-muted">'+row.days_ago+'</div></td><td>'+row.name+'</td><td>'+comment_html+'</td></tr>';
                         });
 
                         modal.find('table').find('tbody').html(html);
