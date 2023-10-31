@@ -13,6 +13,8 @@ function open_article(article_id)
         article_modal.find('h2').text(data.title);
         article_modal.find('.article_text').html(data.text);
         article_modal.find('#article_main_image').attr('src', '/img/articles/'+data.id+'.jpg');
+
+        window.location.hash='article'+data.id;
     });
 }
 
@@ -29,4 +31,8 @@ $(document).ready(function(){
 
         open_article(article_id);
     }
+
+    article_modal.on('hidden.bs.modal', function(){
+        history.pushState("", document.title, window.location.pathname+window.location.search);
+    });
 });
