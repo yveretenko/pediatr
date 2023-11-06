@@ -155,6 +155,8 @@ $(document).ready(function(){
                 render: function (data, type, row){
                     let tel = data>0 ? "<A class='text-reset' href='tel:"+data+"'>"+data.substr(0, 3)+'<span class="d-none d-md-inline"> </span>'+data.substr(3, 3)+'<span class="d-none d-md-inline"> </span>'+data.substr(6, 2)+'<span class="d-none d-md-inline"> </span>'+data.substr(8, 2)+"</A>" : '';
 
+                    let telegram = data>0 ? "<A class='ml-1 ml-sm-2' href='https://t.me/+38"+data+"' target='_blank'><i class='fab fa-telegram-plane'></i></A>" : '';
+
                     let visits_history = row.visits_to_date ? " <A class='ml-1 ml-sm-2 appointment_history' href='#'><i class='fa fa-history'></i></A> <sub class='text-danger'>"+row.visits_to_date+"</sub>" : '';
 
                     let vaccines=[];
@@ -162,7 +164,7 @@ $(document).ready(function(){
                         vaccines.push('<span class="badge badge-info" title="'+vaccine.name+'">'+vaccine.short_name+((row.is_future && !vaccine.available) ? ' <i class="fa fa-sm fa-circle text-warning"></i>' : '')+'</span>');
                     });
 
-                    return '<div class="text-nowrap">'+tel+visits_history+'</div>'+'<div class="d-block d-sm-none">'+row.name+(row.visits_to_date>=5 ? '&nbsp;<i class="fas fa-star text-warning client_icon"></i>' : '')+(row.blacklisted ? '&nbsp;<i class="fas fa-ban text-danger client_icon" data-toggle="tooltip" title="'+row.blacklisted_reason+'"></i>' : '')+'</div><div class="d-sm-none">'+(row.call_back ? '<span class="badge badge-warning"><i class="fa fa-phone"></i></span> ' : '')+(row.neurology ? '<span class="badge badge-danger">Невр</span> ' : '')+(row.earlier ? '<span class="badge badge-primary">Раніше</span> ' : '')+vaccines.join(' ')+'</div>';
+                    return '<div class="text-nowrap">'+tel+telegram+visits_history+'</div>'+'<div class="d-block d-sm-none">'+row.name+(row.visits_to_date>=5 ? '&nbsp;<i class="fas fa-star text-warning client_icon"></i>' : '')+(row.blacklisted ? '&nbsp;<i class="fas fa-ban text-danger client_icon" data-toggle="tooltip" title="'+row.blacklisted_reason+'"></i>' : '')+'</div><div class="d-sm-none">'+(row.call_back ? '<span class="badge badge-warning"><i class="fa fa-phone"></i></span> ' : '')+(row.neurology ? '<span class="badge badge-danger">Невр</span> ' : '')+(row.earlier ? '<span class="badge badge-primary">Раніше</span> ' : '')+vaccines.join(' ')+'</div>';
                 },
                 responsivePriority: 2,
             },
