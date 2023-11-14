@@ -154,7 +154,7 @@ function filterAction()
             date('j', $appointment->getDate()).' '.$months[date('n', $appointment->getDate())-1],
             (date('H', $appointment->getDate())==='11' ? 'об' : 'о').' '.date('H:i', $appointment->getDate()),
             $config['address'],
-            (date('H', $appointment->getDate())<=12 || (date('H:i', $appointment->getDate())==='12:00')) ? 'За день до' : 'В день'
+            (date('H', $appointment->getDate())<12 || (date('H:i', $appointment->getDate())==='12:00')) ? 'За день до' : 'В день'
         );
 
         $data[]=[
