@@ -353,8 +353,8 @@ function deleteAction()
 
     try
     {
-        if ($appointment->getFile())
-            @unlink(APPLICATION_TOP_PATH.'/public/files/'.$appointment->getFile());
+        if ($appointment->getFile() && is_file(APPLICATION_TOP_PATH.'/public/files/'.$appointment->getFile()))
+            unlink(APPLICATION_TOP_PATH.'/public/files/'.$appointment->getFile());
 
         $em->remove($appointment);
 
