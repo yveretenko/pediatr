@@ -172,7 +172,7 @@ function filterAction()
             'is_tomorrow'        => date('Y-m-d', $appointment->getDate())===date('Y-m-d', strtotime('tomorrow')),
             'visits_to_date'     => $visits_to_date,
             'blacklisted'        => !is_null($blacklist),
-            'blacklisted_reason' => $blacklist?->getReason() ? htmlentities($blacklist->getReason()) : '',
+            'blacklisted_reason' => htmlentities($blacklist?->getReasonAndName() ?? ''),
             'vaccines'           => $vaccines,
             'neurology'          => $appointment->getNeurology(),
             'earlier'            => $appointment->getEarlier(),
@@ -232,9 +232,8 @@ function filterAction()
         /** @var Blacklist[] $blacklisted */
         $blacklisted=$em->getRepository(Blacklist::class)->matching($criteria);
 
-        $blacklist=[];
         foreach ($blacklisted as $blacklisted_item)
-            $blacklist[$blacklisted_item->getTel()]=$blacklisted_item->getReason();
+            $blacklist[$blacklisted_item->getTel()]=$blacklisted_item->getReasonAndName();
     }
 
     die(json_encode([
@@ -456,7 +455,7 @@ function getByTelephoneAction()
     die(json_encode([
         'name'               => $name,
         'blacklisted'        => !is_null($blacklist),
-        'blacklisted_reason' => $blacklist?->getReason(),
+        'blacklisted_reason' => $blacklist?->getReasonAndName(),
     ]));
 }
 

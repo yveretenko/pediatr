@@ -19,14 +19,21 @@ class Blacklist
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $tel;
+    protected string $tel;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="reason", type="string", nullable=true)
      */
-    private $reason;
+    private ?string $reason;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="name", type="string", length=50, nullable=true)
+     */
+    private ?string $name;
 
     /**
      * @return string
@@ -49,10 +56,41 @@ class Blacklist
      *
      * @return $this
      */
-    public function setReason(?string $reason)
+    public function setReason(?string $reason): self
     {
         $this->reason=$reason;
 
         return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string|null $name
+     *
+     * @return $this
+     */
+    public function setName(?string $name): self
+    {
+        $this->name=$name;
+
+        return $this;
+    }
+
+    public function getReasonAndName(): ?string
+    {
+        if ($this->getReason() && $this->getName())
+            return sprintf('%s (%s)', $this->getReason(), $this->getName());
+
+        if ($this->getReason())
+            return $this->getReason();
+
+        return $this->getName();
     }
 }
