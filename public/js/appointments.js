@@ -118,24 +118,11 @@ $(document).ready(function(){
             infoFiltered: '(всього _MAX_)',
             processing: "<div class='alert alert-warning border-warning col-10 col-sm-8 col-md-4 mx-auto' role='alert'>оновлюю записи <i class='fas fa-spinner fa-spin ml-2'></i></div>"
         },
-        columnDefs: [
-            {
-                "targets": [0],
-                "className": 'pr-1 pr-md-2'
-            },
-            {
-                "targets": [3],
-                "className": 'small'
-            },
-            {
-                "targets": [4],
-                "className": 'text-nowrap text-white text-right pl-0 pr-1 pl-md-2 pr-md-2'
-            }
-        ],
         columns: [
             {
                 data: 'readable_date',
                 orderable: false,
+                className: 'pr-1 pr-md-2',
                 render: function (data, type, row){
                     return '<span class="text-nowrap">'+data+'</span>'+'<br>'+row.time;
                 },
@@ -151,6 +138,7 @@ $(document).ready(function(){
             },
             {
                 data: 'tel',
+                className: 'px-1 px-md-2',
                 orderable: false,
                 render: function (data, type, row){
                     let tel = data>0 ? "<A class='text-reset' href='tel:"+data+"'>"+data.substr(0, 3)+'<span class="d-none d-md-inline"> </span>'+data.substr(3, 3)+'<span class="d-none d-md-inline"> </span>'+data.substr(6, 2)+'<span class="d-none d-md-inline"> </span>'+data.substr(8, 2)+"</A>" : '';
@@ -171,6 +159,7 @@ $(document).ready(function(){
             {
                 data: 'comment_formatted',
                 orderable: false,
+                className: 'small',
                 render: function (data, type, row){
                     let file = row.file ? '<span class="text-nowrap"><A title="'+(row.file.length>20 ? row.file : '')+'" href="/admin/appointments/file/?id='+row.id+'"><i class="fa fa-paperclip mr-1 mt-2"></i>'+(row.file.length>20 ? row.file.substr(0, 20)+'&hellip;' : row.file)+'</A></span>' : '';
 
@@ -185,14 +174,15 @@ $(document).ready(function(){
             },
             {
                 data: 'id',
+                className: 'text-nowrap text-right pl-0 pr-1 pl-md-2 pr-md-2',
                 render: function(){
                     let edit_button='<button class="btn btn-sm btn-success edit_appointment"><i class="fa fa-pencil-alt mr-0 mr-md-1"></i><span class="d-none d-md-inline"> Редагувати</span></button>';
 
-                    let attach_file_button='<span class="hidden_file_upload"><label><A class="btn btn-sm btn-info ml-1 ml-md-2 d-none d-sm-inline-block"><i class="fa fa-paperclip mr-0 mr-md-1"></i><span class="d-none d-md-inline"> Файл</span></A><input type="file" name="file_uploader"></label></span>';
+                    let attach_file_button='<span class="hidden_file_upload"><label><A class="btn btn-sm text-white btn-info ml-1 ml-md-2 d-none d-sm-inline-block"><i class="fa fa-paperclip mr-0 mr-md-1"></i><span class="d-none d-md-inline"> Файл</span></A><input type="file" name="file_uploader"></label></span>';
 
                     let delete_button='<button class="btn btn-sm btn-danger ml-1 ml-md-2 delete_appointment"><i class="fa fa-trash mr-0 mr-md-1"></i><span class="d-none d-md-inline"> Видалити</span></button>';
 
-                    let copy_appointment_text_button='<button class="btn btn-sm btn-info ml-1 ml-md-2 d-none d-sm-inline-block copy_appointment_text"><i class="fa fa-copy"></i><span class="d-none d-md-inline"></span></button>';
+                    let copy_appointment_text_button='<button class="btn btn-sm btn-info ml-1 ml-md-2 copy_appointment_text"><i class="fa fa-copy"></i><span class="d-none d-md-inline"></span></button>';
 
                     return edit_button+attach_file_button+copy_appointment_text_button+delete_button;
                 },
