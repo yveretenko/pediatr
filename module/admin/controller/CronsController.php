@@ -14,7 +14,7 @@ function sendSmsAction()
         $log[]='Ранувато будити людей';
     else
     {
-        $sms_helper = new SMSHelper($config['sms']['login'], $config['sms']['password']);
+        $sms_helper = new SMSHelper('', '', $config['sms']['key']);
 
         $criteria = new Criteria;
 
@@ -65,7 +65,7 @@ function sendReviewRequestAction()
 
     $log=[];
 
-    $sms_helper = new SMSHelper($config['sms']['login'], $config['sms']['password']);
+    $sms_helper = new SMSHelper('', '', $config['sms']['key']);
 
     /** @var Appointments[]|ArrayCollection $appointments */
     $appointments=$em->getRepository(Appointments::class)->getThirdVisits();
@@ -100,7 +100,7 @@ function sendNewYearGreetingsAction()
 
     $log=[];
 
-    $sms_helper = new SMSHelper($config['sms']['login'], $config['sms']['password']);
+    $sms_helper = new SMSHelper('', '', $config['sms']['key']);
 
     $appointment_data=$em->getRepository(Appointments::class)->getByFilters(['min_visits' => 5, 'start_timestamp' => strtotime('January 1')], 'a.id', 'DESC');
 

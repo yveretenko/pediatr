@@ -9,8 +9,7 @@ return [
         'password' => 'ftqlnyreigqpgtvw',
     ],
     'sms' => [
-        'login'    => '0509860335',
-        'password' => 'yuryparol',
+        'key' => '8601955b666cd9a413d696cabacedf64dba289de',
     ],
     // step-by-step guide how to get refresh token: https://www.dropboxforum.com/t5/Dropbox-API-Support-Feedback/Get-refresh-token-from-access-token/td-p/596739
     'dropbox' => [
