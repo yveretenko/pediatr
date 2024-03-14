@@ -56,10 +56,7 @@ function sendSmsAction()
         $em->flush();
     }
 
-    foreach ($log as $log_entry)
-        echo "<div>$log_entry</div><br>";
-
-    die;
+    die(implode(PHP_EOL, $log));
 }
 
 function sendReviewRequestAction()
@@ -94,10 +91,7 @@ function sendReviewRequestAction()
         }
     }
 
-    foreach ($log as $log_entry)
-        echo "<div>$log_entry</div><br>";
-
-    die;
+    die(implode(PHP_EOL, $log));
 }
 
 function sendNewYearGreetingsAction()
@@ -137,10 +131,7 @@ function sendNewYearGreetingsAction()
 
     $log[]="Відправлено $sent смс";
 
-    foreach ($log as $log_entry)
-        echo "<div>$log_entry</div><br>";
-
-    die;
+    die(implode(PHP_EOL, $log));
 }
 
 function backupDbAction()
