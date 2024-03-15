@@ -15,6 +15,20 @@ $(document).ready(function(){
 
     $('input[name="group_by"]').change(function(){
         let unit_type=$(this).val();
+        let limit=$(this).data('limit');
+
+        let sliced_data=chart_data;
+        if (limit==='last_year')
+        {
+            sliced_data=[];
+
+            let last_year = new Date();
+            last_year.setFullYear(last_year.getFullYear()-1);
+
+            for (let i=0; i<chart_data.length; i++)
+                if (chart_data[i][0]>=last_year.getTime())
+                    sliced_data.push(chart_data[i]);
+        }
 
         let options = {
             title: false,
@@ -58,7 +72,7 @@ $(document).ready(function(){
             series: [{
                 gapSize: 0,
                 name: 'Записи',
-                data: chart_data,
+                data: sliced_data,
                 color: '#17A2B8'
             }]
         };
