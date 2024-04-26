@@ -35,8 +35,6 @@ function filterAction()
             'name'             => $vaccine->getName(),
             'type'             => $vaccine->getType(),
             'available'        => $vaccine->getAvailable(),
-            'age'              => $vaccine->getAge(),
-            'required'         => $vaccine->getRequired(),
             'comment'          => $vaccine->getComment(),
             'analogue_vaccine' => $vaccine->getAnalogueVaccine()?->getName(),
             'country'          => $vaccine->getCountry(),

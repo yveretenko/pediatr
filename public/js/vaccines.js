@@ -54,12 +54,6 @@ $(document).ready(function(){
                 responsivePriority: 10
             },
             {
-                data: 'age',
-                className: 'text-center text-nowrap',
-                sortable: false,
-                responsivePriority: 5
-            },
-            {
                 data: 'purchase_price',
                 render: function(data, type, row){
                     return row.purchase_price ? Math.ceil(((row.purchase_price+500)*1.05)/100)*100 : '';
@@ -80,14 +74,6 @@ $(document).ready(function(){
                 data: 'analogue_vaccine',
                 sortable: false,
                 responsivePriority: 8
-            },
-            {
-                data: 'required',
-                render: function(data){
-                    return data ? '<i class="fa fa-check text-success"></i>' : '<i class="fa fa-times text-danger"></i>';
-                },
-                className: 'text-center',
-                responsivePriority: 9
             },
             {
                 data: 'comment',

@@ -50,13 +50,6 @@ class Vaccines
     private ?string $country;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="age", type="string", nullable=false)
-     */
-    private string $age;
-
-    /**
      * @var bool
      *
      * @ORM\Column(name="available", type="boolean", nullable=false)
@@ -84,13 +77,6 @@ class Vaccines
      * @ORM\JoinColumn(name="analogue_vaccine_id", referencedColumnName="id")
      */
     private ?Vaccines $analogueVaccine;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="required", type="boolean", nullable=false)
-     */
-    private bool $required;
 
     /**
      * @var string|null
@@ -188,26 +174,6 @@ class Vaccines
     }
 
     /**
-     * @return string
-     */
-    public function getAge(): string
-    {
-        return $this->age;
-    }
-
-    /**
-     * @param string $age
-     *
-     * @return $this
-     */
-    public function setAge(string $age): self
-    {
-        $this->age=$age;
-
-        return $this;
-    }
-
-    /**
      * @return bool
      */
     public function getAvailable(): bool
@@ -283,26 +249,6 @@ class Vaccines
     public function setAnalogueVaccine(?Vaccines $analogueVaccine): self
     {
         $this->analogueVaccine=$analogueVaccine;
-
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function getRequired(): bool
-    {
-        return $this->required;
-    }
-
-    /**
-     * @param bool $required
-     *
-     * @return $this
-     */
-    public function setRequired(bool $required): self
-    {
-        $this->required=$required;
 
         return $this;
     }
