@@ -6,3 +6,4 @@ Thumbs.db
 /config/local.server.php
 /public/img/articles/
 /public/files/
+/public/.osp/
