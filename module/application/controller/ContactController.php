@@ -21,9 +21,6 @@ function indexAction()
 
     $visits_count=count($em->getRepository(Appointments::class)->findBy(['tel' => StringHelper::normalizeTelephone($tel)]));
 
-    error_reporting(E_ALL);
-    ini_set('display_errors', 1);
-
     $convert_link='http://pediatr.cv.ua/admin/appointments/?'.http_build_query($_POST);
 
     $convert_button='<A href="'.$convert_link.'">Конвертувати в запис</A>';
