@@ -157,6 +157,17 @@ function filterAction()
             (date('H', $appointment->getDate())<12 || (date('H:i', $appointment->getDate())==='12:00')) ? 'За день до' : 'В день'
         );
 
+        $next_appointment_criteria = new Criteria;
+
+        $next_appointment_criteria
+            ->andWhere($next_appointment_criteria->expr()->gt('date', $appointment->getDate()))
+            ->andWhere($next_appointment_criteria->expr()->lt('date', strtotime('tomorrow', $appointment->getDate())))
+            ->orderBy(['date' => 'ASC'])
+        ;
+
+        /** @var Appointments $next_appointment */
+        $next_appointment=$em->getRepository(Appointments::class)->matching($next_appointment_criteria)->first();
+
         $data[]=[
             'id'                 => $appointment->getId(),
             'name'               => trim($appointment->getName()),
@@ -167,6 +178,7 @@ function filterAction()
             'readable_date'      => $date,
             'date'               => date('Y-m-d', $appointment->getDate()),
             'time'               => date('H:i', $appointment->getDate()),
+            'length'             => $next_appointment ? round(($next_appointment->getDate()-$appointment->getDate())/60) : null,
             'is_future'          => $appointment->getDate()>time(),
             'is_today'           => date('Y-m-d', $appointment->getDate())===date('Y-m-d'),
             'is_tomorrow'        => date('Y-m-d', $appointment->getDate())===date('Y-m-d', strtotime('tomorrow')),

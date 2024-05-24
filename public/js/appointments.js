@@ -122,9 +122,11 @@ $(document).ready(function(){
             {
                 data: 'readable_date',
                 orderable: false,
-                className: 'pr-1 pr-md-2',
+                className: 'pr-1 pr-md-2 text-nowrap',
                 render: function (data, type, row){
-                    return '<span class="text-nowrap">'+data+'</span>'+'<br>'+row.time;
+                    let is_too_long_class = (row.length && row.length>60) ? 'text-success' : 'text-muted';
+
+                    return '<span class="text-nowrap">'+data+'</span>'+'<br>'+row.time+(row.length ? ' <span class="'+is_too_long_class+' small">'+row.length+'хв</span>' : '')
                 },
                 responsivePriority: 1
             },
