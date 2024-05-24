@@ -124,9 +124,9 @@ $(document).ready(function(){
                 orderable: false,
                 className: 'pr-1 pr-md-2 text-nowrap',
                 render: function (data, type, row){
-                    let is_too_long_class = (row.length && row.length>60) ? 'text-success' : 'text-muted';
+                    let is_too_long_class = (row.duration && row.duration>60) ? 'text-success' : 'text-muted';
 
-                    return '<span class="text-nowrap">'+data+'</span>'+'<br>'+row.time+(row.length ? ' <span class="'+is_too_long_class+' small">'+row.length+'хв</span>' : '')
+                    return '<span class="text-nowrap">'+data+'</span>'+'<br>'+row.time+(row.duration ? ' <span class="'+is_too_long_class+' small">'+row.duration+'хв</span>' : '')
                 },
                 responsivePriority: 1
             },

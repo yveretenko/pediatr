@@ -178,7 +178,7 @@ function filterAction()
             'readable_date'      => $date,
             'date'               => date('Y-m-d', $appointment->getDate()),
             'time'               => date('H:i', $appointment->getDate()),
-            'length'             => $next_appointment ? round(($next_appointment->getDate()-$appointment->getDate())/60) : null,
+            'duration'           => $next_appointment ? round(($next_appointment->getDate()-$appointment->getDate())/60) : null,
             'is_future'          => $appointment->getDate()>time(),
             'is_today'           => date('Y-m-d', $appointment->getDate())===date('Y-m-d'),
             'is_tomorrow'        => date('Y-m-d', $appointment->getDate())===date('Y-m-d', strtotime('tomorrow')),
