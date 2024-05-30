@@ -125,11 +125,16 @@ use App\Entity\Articles;
 
                     <div class="article_header position-absolute w-100 text-white text-center text-truncate px-2 py-1 lead" style="bottom:0; left:0; background:rgba(0, 0, 0, 0.45);">
                         <?=$article->getTitle() ?>
-
-                        <?php if ($article->isVideo()) { ?>
-                        <i class="fa fa-play-circle"></i>
-                        <?php } ?>
                     </div>
+
+                    <?php if ($article->isVideo()) { ?>
+                    <div class="position-absolute mr-2 mt-1" style="top:0; right:0;">
+                        <div class="badge badge-info badge-pill shadow">
+                            відео
+                            <i class="fa fa-play-circle"></i>
+                        </div>
+                    </div>
+                    <?php } ?>
                 </div>
             </div>
             <?php } ?>
