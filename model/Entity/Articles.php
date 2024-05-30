@@ -82,4 +82,9 @@ class Articles
     {
         $this->text=$text;
     }
+
+    public function isVideo(): bool
+    {
+        return str_contains($this->text, 'youtube.com');
+    }
 }

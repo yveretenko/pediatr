@@ -125,6 +125,10 @@ use App\Entity\Articles;
 
                     <div class="article_header position-absolute w-100 text-white text-center text-truncate px-2 py-1 lead" style="bottom:0; left:0; background:rgba(0, 0, 0, 0.45);">
                         <?=$article->getTitle() ?>
+
+                        <?php if ($article->isVideo()) { ?>
+                        <i class="fa fa-play-circle"></i>
+                        <?php } ?>
                     </div>
                 </div>
             </div>
@@ -138,7 +142,7 @@ use App\Entity\Articles;
 </section>
 
 <div class="modal fade" id="article_modal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header border-bottom-0 pb-0">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -161,7 +165,7 @@ use App\Entity\Articles;
                             <div class="text-center mt-5 d-md-block d-lg-none">
                                 <button class="btn btn-secondary" href="#" data-dismiss="modal">
                                     <i class="fas fa-times fa-fw"></i>
-                                    закрити статтю
+                                    закрити
                                 </button>
                             </div>
                         </div>

@@ -14,6 +14,8 @@ function open_article(article_id)
         article_modal.find('.article_text').html(data.text);
         article_modal.find('#article_main_image').attr('src', '/img/articles/'+data.id+'.jpg');
 
+        article_modal.find('#article_main_image').closest('div').toggle(!data.is_video);
+
         $(document).prop('title', $(document).prop('title').split('-')[0]+' - '+data.title);
 
         window.location.hash='article'+data.id;
@@ -45,5 +47,11 @@ $(document).ready(function(){
         history.pushState("", document.title, window.location.pathname+window.location.search);
 
         $(document).prop('title', $(document).prop('title').split('-')[0]);
+    });
+
+    // on closing modal stop video playback
+    $('.modal').on('hide.bs.modal', function(){
+         var memory = $(this).html();
+         $(this).html(memory);
     });
 });

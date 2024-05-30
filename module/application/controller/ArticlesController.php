@@ -16,8 +16,9 @@ function getAction()
     }
 
     die(json_encode([
-        'id'    => $article->getId(),
-        'title' => $article->getTitle(),
-        'text'  => $article->getText(),
+        'id'       => $article->getId(),
+        'title'    => $article->getTitle(),
+        'text'     => $article->getText(),
+        'is_video' => $article->isVideo(),
     ]));
 }

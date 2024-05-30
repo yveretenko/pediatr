@@ -148,3 +148,10 @@ mark, .mark
 {
     background-color:#008EC3;
 }
+
+.modal iframe
+{
+    height:600px;
+    aspect-ratio:9/16;
+    max-width:100%;
+}
