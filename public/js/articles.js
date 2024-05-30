@@ -15,6 +15,7 @@ function open_article(article_id)
         article_modal.find('#article_main_image').attr('src', '/img/articles/'+data.id+'.jpg');
 
         article_modal.find('#article_main_image').closest('div').toggle(!data.is_video);
+        article_modal.find('.modal-dialog').toggleClass('modal-lg', !data.is_video);
 
         $(document).prop('title', $(document).prop('title').split('-')[0]+' - '+data.title);
 
