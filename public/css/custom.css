@@ -155,3 +155,9 @@ mark, .mark
     aspect-ratio:9/16;
     max-width:100%;
 }
+
+.multiselect-option.dropdown-item
+{
+    padding-top:0.15rem;
+    padding-bottom:0.15rem;
+}
