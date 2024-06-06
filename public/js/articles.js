@@ -48,11 +48,7 @@ $(document).ready(function(){
         history.pushState("", document.title, window.location.pathname+window.location.search);
 
         $(document).prop('title', $(document).prop('title').split('-')[0]);
-    });
 
-    // on closing modal stop video playback
-    $('.modal').on('hide.bs.modal', function(){
-         var memory = $(this).html();
-         $(this).html(memory);
+        article_modal.find('.article_text').empty();
     });
 });
