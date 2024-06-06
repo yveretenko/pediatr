@@ -120,8 +120,8 @@ use App\Entity\Articles;
         <div class="row articles">
             <?php foreach ($articles as $article) { ?>
             <div class="col-sm-6 col-lg-4 mb-4 px-2 article_container">
-                <div class="article overflow-hidden mx-auto mb-2 border position-relative" data-article-id="<?=$article->getId() ?>" style="border-color:#AAA !important; cursor:pointer;">
-                    <IMG class="img-fluid" src="img/articles/<?=$article->getId() ?>.jpg" alt="" loading="lazy">
+                <div class="article overflow-hidden mx-auto mb-2 border position-relative" data-article-id="<?=$article->getId() ?>">
+                    <div class="article_image" style="background-image:url('img/articles/<?=$article->getId() ?>.jpg');"></div>
 
                     <div class="article_header position-absolute w-100 text-white text-center text-truncate px-2 py-1 lead" style="bottom:0; left:0; background:rgba(0, 0, 0, 0.45);">
                         <?=$article->getTitle() ?>

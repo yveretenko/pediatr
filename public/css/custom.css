@@ -11,9 +11,18 @@ body
     padding-bottom:6rem;
 }
 
-.article
+.article_image
 {
     height:12rem;
+    transition:all 0.3s ease-in-out;
+    border-color:#AAAAAA !important;
+    cursor:pointer;
+    background-size:cover;
+}
+
+.article_image:hover
+{
+    transform: scale(1.1);
 }
 
 .dataTables_wrapper .dataTables_processing
@@ -67,16 +76,6 @@ body
 {
     cursor:pointer;
     font-size:inherit;
-}
-
-.article >IMG
-{
-    transition:all .5s;
-}
-
-.article:hover >IMG
-{
-    transform:scale(1.1);
 }
 
 #contact_links A
