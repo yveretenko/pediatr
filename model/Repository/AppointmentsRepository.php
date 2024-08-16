@@ -97,11 +97,12 @@ class AppointmentsRepository extends EntityRepository
         if (!empty($filters['vaccine']))
         {
             $queryBuilder
-                ->join(AppointmentVaccines::class, 'av', 'WITH', 'av.appointment=a.id AND av.vaccine=:vaccine')
+                ->join(AppointmentVaccines::class, 'av', 'WITH', 'av.appointment=a.id'.($filters['vaccine']!=='any' ? ' AND av.vaccine=:vaccine' : ''))
                 ->groupBy('a.id')
-                ->having('COUNT(av)>0')
-                ->setParameter('vaccine', $filters['vaccine'])
             ;
+
+            if ($filters['vaccine']!=='any')
+                $queryBuilder->setParameter('vaccine', $filters['vaccine']);
         }
 
         return $queryBuilder->getQuery()->getResult();

@@ -68,6 +68,7 @@ foreach ($dates as $date)
         <div class="col col-xl-2 form-group d-none d-md-block">
             <select name="vaccine" class="form-control">
                 <option value="">-- вакцина --</option>
+                <option value="any" class="font-italic">будь-яка</option>
 
                 <?php foreach ($vaccines as $vaccine) { ?>
                 <option value="<?=$vaccine->getId() ?>"><?=$vaccine->getName() ?></option>
