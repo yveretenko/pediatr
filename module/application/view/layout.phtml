@@ -88,7 +88,15 @@
 
 <section class="py-3 text-center alert alert-secondary mb-0 mt-4 rounded-0 small" style="text-wrap:balance;">
     <div class="container px-0">
-        Ліцензія видана наказом Міністерства охорони здоров'я України&nbsp;<u><A target="_blank" title="Витяг відомостей з Ліцензійного реєстру МОЗ з медичної практики" class="text-dark" href="/Витяг відомостей з Ліцензійного реєстру МОЗ з медичної практики.pdf">№1949&nbsp;(від 21.08.2020)</A></u>. ЄДРПОУ&nbsp;3371807241
+        <div>
+            Ліцензія видана наказом Міністерства охорони здоров'я України&nbsp;<u><A target="_blank" title="Витяг відомостей з Ліцензійного реєстру МОЗ з медичної практики" class="text-dark" href="/Витяг відомостей з Ліцензійного реєстру МОЗ з медичної практики.pdf">№1949&nbsp;(від 21.08.2020)</A></u>. ЄДРПОУ&nbsp;3371807241
+        </div>
+
+        <div>
+            <u><A href="#" data-toggle="modal" data-target="#terms" class="text-dark">Контактна інформація</A></u>
+            <u><A href="#" data-toggle="modal" data-target="#terms" class="text-dark mx-2">Правила та умови</A></u>
+            <u><A href="#" data-toggle="modal" data-target="#terms" class="text-dark">Правила повернення грошових коштів</A></u>
+        </div>
     </div>
 </section>
 
@@ -166,6 +174,59 @@
                     <br>
                     Ми зв'яжемося з вами <?=(date('N')<6 && date('G')>=11 && date('G')<18) ? 'найближчим часом' : 'в робочий час (ПН-ПТ з 11 до 18)' ?>
                 </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрити</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="terms" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title font-weight-light text-muted">Правила та умови</h3>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h5>Варіанти оплати</h5>
+
+                <p>
+                    Оплата платіжними картами Visa та MasterCard за допомогою сервісу WayForPay.
+                </p>
+
+                <h5>Правила повернення грошових коштів</h5>
+
+                <h6 class="font-weight-bold">Медіа-матеріали (відео, посилання на вебінари, прямі трансляції тощо)</h6>
+
+                <p>
+                    Медіа-матеріали доставляються на електронну пошту покупця.
+                    <br>
+                    Повернення коштів можливе лише у випадку, якщо матеріал неможливо доставити.
+                </p>
+
+                <h6 class="font-weight-bold">Онлайн-консультації</h6>
+
+                <p>
+                    У разі, якщо консультація не відбулася з будь-яких причин, клієнт має право на повернення коштів.
+                    <br>
+                    Клієнт також має право на повернення коштів до початку консультації за умови подання відповідного запиту.
+                </p>
+
+                <h5>Контактна інформація</h5>
+
+                Фізична особа-підприємець Веретенко Світлана Степанівна
+                <br>
+                ЄДРПОУ 3371807241
+                <br>
+                Юр. адреса: 58005, м. Чернівці, вул. Небесної Сотні, 4
+                <br>
+                <u><A href="mailto:veretenkosvitlana@gmail.com" class="text-dark">veretenkosvitlana@gmail.com</A></u>
+                <br>
+                тел: <u><A href="tel:0508197985" class="text-dark">050 819 79 85</A></u>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрити</button>
