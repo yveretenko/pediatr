@@ -181,6 +181,40 @@ use App\Entity\Articles;
     </div>
 </div>
 
+<div class="modal fade" id="pay_nutrition_webinar_modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="my-0">Вебінар по прикорму</h4>
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <p>
+                    <i class="fa fa-fw fa-calendar-alt text-muted mr-1"></i> 31.01.2025 о 19:00
+                </p>
+
+                <p>
+                    <i class="fa fa-fw fa-envelope text-muted mr-1"></i> Лінк на вебінар буде відправлений на вашу пошту
+                </p>
+
+                <p>
+                    <i class="fa fa-fw fa-laptop text-muted mr-1"></i> Запис буде збережено та відправлено всім учаcникам на електронну пошту. Запис буде доступний три місяці
+                </p>
+
+                <p>
+                    <i class="fa fa-fw fa-credit-card text-muted mr-1"></i> Вартість участі у вебінарі - 550грн
+                </p>
+
+                <A href="https://secure.wayforpay.com/button/bcdd0830a34fc" class="btn btn-block btn-success">Придбати доступ до вебінару</A>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     let close_dates=<?=json_encode($close_dates) ?>;
 </script>
