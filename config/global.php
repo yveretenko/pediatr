@@ -2,6 +2,7 @@
 
 return [
     'address' => 'вул. Б. Хмельницького, 57',
+    'tel'     => '0508197985',
     'smtp' => [
         'host'     => 'smtp.gmail.com',
         'port'     => 587,

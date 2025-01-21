@@ -228,7 +228,7 @@
                 <br>
                 <u><A href="mailto:veretenkosvitlana@gmail.com" class="text-dark">veretenkosvitlana@gmail.com</A></u>
                 <br>
-                тел: <u><A href="tel:0508197985" class="text-dark">050 819 79 85</A></u>
+                тел: <u><A href="tel:<?=$config['tel'] ?>" class="text-dark"><?=preg_replace('/(\d{3})(\d{3})(\d{2})(\d{2})/', '$1 $2 $3 $4', $config['tel']) ?></A></u>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрити</button>

@@ -32,6 +32,7 @@ function indexAction()
         $close_dates[]=$date_disabled->getDate()->format('d.m.Y');
 
     $address=$config['address'];
+    $tel=$config['tel'];
 
-    ViewHelper::render(compact('articles', 'reviews', 'close_dates', 'address'));
+    ViewHelper::render(compact('articles', 'reviews', 'close_dates', 'address', 'tel'));
 }
