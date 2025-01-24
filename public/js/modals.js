@@ -1,8 +1,12 @@
 $(function(){
     let hash=window.location.hash;
 
-    if($(hash+'_modal').length>0)
-        $(hash+'_modal').modal('show');
+    modal_name = modal_name ? modal_name : hash.substring(1);
+
+    let modal_id='#'+modal_name+'_modal';
+
+    if($(modal_id).length>0)
+        $(modal_id).modal('show');
 
     $('#try_again').click(function(){
         $('#pay_fail_modal').modal('hide');

@@ -5,7 +5,7 @@ use App\Entity\DatesDisabled;
 
 function indexAction()
 {
-    global $em, $config;
+    global $em, $config, $modal_name;
 
     $articles=$em->getRepository(Articles::class)->findBy([], ['id' => 'DESC']);
 
@@ -28,5 +28,5 @@ function indexAction()
     $address=$config['address'];
     $tel=$config['tel'];
 
-    ViewHelper::render(compact('articles', 'reviews', 'close_dates', 'address', 'tel'));
+    ViewHelper::render(compact('articles', 'reviews', 'close_dates', 'address', 'tel', 'modal_name'));
 }

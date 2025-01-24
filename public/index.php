@@ -42,6 +42,12 @@ $module     = $module==='admin' ? 'admin' : 'application';
 $controller = $controller ? StringHelper::camelize($controller) : 'index';
 $action     = $action ? StringHelper::camelize($action) : 'index';
 
+if ($module==='application' && $controller==='pay')
+{
+    $controller='index';
+    $modal_name='pay';
+}
+
 if ($module==='admin' && ($controller!=='index' || $action==='upload') && !$_SESSION['id'])
 {
     if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && ($_SERVER['HTTP_X_REQUESTED_WITH']=='XMLHttpRequest'))
