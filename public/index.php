@@ -44,7 +44,7 @@ $action     = $action ? StringHelper::camelize($action) : 'index';
 
 if ($module==='application')
 {
-    if ($controller==='pay')
+    if ($controller==='online')
     {
         $controller='index';
         $modal_name='pay';
