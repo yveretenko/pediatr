@@ -42,10 +42,18 @@ $module     = $module==='admin' ? 'admin' : 'application';
 $controller = $controller ? StringHelper::camelize($controller) : 'index';
 $action     = $action ? StringHelper::camelize($action) : 'index';
 
-if ($module==='application' && $controller==='pay')
+if ($module==='application')
 {
-    $controller='index';
-    $modal_name='pay';
+    if ($controller==='pay')
+    {
+        $controller='index';
+        $modal_name='pay';
+    }
+    elseif ($controller==='payNutritionWebinar')
+    {
+        $controller='index';
+        $modal_name='pay_nutrition_webinar';
+    }
 }
 
 if ($module==='admin' && ($controller!=='index' || $action==='upload') && !$_SESSION['id'])
