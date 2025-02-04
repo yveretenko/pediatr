@@ -49,10 +49,10 @@ if ($module==='application')
         $controller='index';
         $modal_name='pay';
     }
-    elseif ($controller==='payNutritionWebinar')
+    elseif ($controller==='nutritionWebinar')
     {
         $controller='index';
-        $modal_name='pay_nutrition_webinar';
+        $modal_name='nutrition_webinar';
     }
 }
 
