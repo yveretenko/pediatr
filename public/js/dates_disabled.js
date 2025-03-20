@@ -7,7 +7,7 @@ $(function(){
     select.datepicker({
         weekStart: 1,
         language: "uk",
-        daysOfWeekDisabled: "0,6",
+        daysOfWeekDisabled: "0",
         todayHighlight: true,
         maxViewMode: 0,
         multidate: true,

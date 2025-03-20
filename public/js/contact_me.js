@@ -66,8 +66,8 @@ $(function(){
     $('#contactForm #date').datepicker({
         weekStart: 1,
         language: "uk",
-        daysOfWeekDisabled: "0,6",
-        daysOfWeekHighlighted: "1,2,3,4,5",
+        daysOfWeekDisabled: "0",
+        daysOfWeekHighlighted: "1,2,3,4,5,6",
         autoclose: true,
         datesDisabled: dates_disabled,
         maxViewMode: 0,
