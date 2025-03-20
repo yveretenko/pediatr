@@ -4,14 +4,16 @@
 
 use App\Entity\Vaccines;
 
-$start_date = new DateTime('Monday'.(date('N')<6 ? ' this week' : ''));
+$working_days = [1, 2, 3, 4, 5, 6];
 
-$dates = new DatePeriod($start_date, new DateInterval('P1D'), new DateTime($start_date->format('Y-m-d').' + 28 days'));
+$start_date = new DateTime('Monday'.(date('N')<=max($working_days) ? ' this week' : ''));
+
+$dates = new DatePeriod($start_date, new DateInterval('P1D'), new DateTime($start_date->format('Y-m-d').' + '.(count($working_days)*4).' days'));
 
 $weeks=[];
 foreach ($dates as $date)
 {
-    if (in_array($date->format('N'), [6, 7]))
+    if (!in_array($date->format('N'), $working_days))
         continue;
 
     $weeks[$date->format('W')][]=$date;
@@ -21,10 +23,10 @@ foreach ($dates as $date)
 
 <div class="mb-3 text-nowrap overflow-auto table-responsive" id="appointments_calendar">
     <?php foreach ($weeks as $week => $dates) { ?>
-    <div class="d-inline-block align-top pr-3" style="width:310px;">
+    <div class="d-inline-block align-top pr-3" style="width:<?=count($working_days)*60 ?>px;">
         <?php foreach ($dates as $date) { ?>
         <A href="#" data-date="<?=$date->format('Y-m-d') ?>" class="position-relative mr-1 btn btn-<?=[-1 => 'success', 0 => 'warning', 1 => 'success'][$date <=> new DateTime('today')] ?>" style="line-height:normal; width:3.1rem;">
-            <?=['', 'ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ'][$date->format('N')] ?>
+            <?=['', 'ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ', 'ВС'][$date->format('N')] ?>
             <br>
             <?=$date->format('j') ?>
 
