@@ -13,9 +13,10 @@ function days_ago($timestamp)
     $days_ago=(strtotime('today')-strtotime(date('Y-m-d', $timestamp)))/86400;
 
     $class='text=muted';
-    $text='';
 
-    if ($days_ago<2)
+    if ($days_ago<1)
+        $text='';
+    elseif ($days_ago<2)
     {
         $text='вчора';
         $class='text-success font-weight-bold';
