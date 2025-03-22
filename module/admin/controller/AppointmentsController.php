@@ -195,7 +195,7 @@ function filterAction()
         ];
     }
 
-    $start_date = new DateTime('Monday'.(date('N')<6 ? ' this week' : ''));
+    $start_date = new DateTime('Monday'.(date('N')<=6 ? ' this week' : ''));
 
     $dates = new DatePeriod($start_date, new DateInterval('P1D'), new DateTime($start_date->format('Y-m-d').' + 28 days'));
 
