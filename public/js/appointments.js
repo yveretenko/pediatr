@@ -359,7 +359,7 @@ $(document).ready(function(){
 
                             let comment_html='<div>'+[row.comment, labels_html, file_html].filter(function(e){return e}).join('</div><div class="mt-1">')+'</div>';
 
-                            html+='<tr><td>'+row.date+'<div class="small text-muted">'+row.days_ago+'</div></td><td>'+row.name+'</td><td>'+comment_html+'</td></tr>';
+                            html+='<tr><td>'+row.date+'<div class="text-nowrap">'+row.days_ago+(row.address_label ? '<span class="badge badge-success ml-1">'+row.address_label+'</span>' : '')+'</div></td><td>'+row.name+'</td><td>'+comment_html+'</td></tr>';
                         });
 
                         modal.find('table').find('tbody').html(html);

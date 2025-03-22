@@ -12,28 +12,43 @@ function days_ago($timestamp)
 {
     $days_ago=(strtotime('today')-strtotime(date('Y-m-d', $timestamp)))/86400;
 
-    if ($days_ago<1)
-        return '';
-    elseif ($days_ago<2)
-        return '<div class="text-success font-weight-bold">вчора</div>';
+    $class='text=muted';
+    $text='';
+
+    if ($days_ago<2)
+    {
+        $text='вчора';
+        $class='text-success font-weight-bold';
+    }
     elseif ($days_ago<7)
-        return '<div class="text-success font-weight-bold">&lt;7д</div>';
+    {
+        $text='&lt;7д';
+        $class='text-success font-weight-bold';
+    }
     elseif ($days_ago<14)
-        return '<14д';
+        $text='&lt;14д';
     elseif ($days_ago<30)
-        return '<1м';
+        $text='&lt;1м';
     elseif ($days_ago<60)
-        return '<2м';
+        $text='&lt;2м';
     elseif ($days_ago<90)
-        return '<3м';
+        $text='&lt;3м';
     elseif ($days_ago<180)
-        return '<6м';
+        $text='&lt;6м';
     elseif ($days_ago<365)
-        return '<1р';
+        $text='&lt;1р';
     elseif ($days_ago<365*2)
-        return '<div class="text-danger font-weight-bold">&gt;1р</div>';
+    {
+        $text='&gt;1р';
+        $class='text-danger font-weight-bold';
+    }
     else
-        return '<div class="text-danger font-weight-bold">&gt;2р</div>';
+    {
+        $text='&gt;2р';
+        $class='text-danger font-weight-bold';
+    }
+    
+    return sprintf('<span class="small %s">%s</span>', $class, $text);
 }
 
 function format_date($timestamp)
@@ -408,16 +423,17 @@ function historyAction()
             ];
 
         $data[]=[
-            'id'        => $appointment->getId(),
-            'date'      => date('Y-m-d', $appointment->getDate())===date('Y-m-d') ? 'Сьогодні' : date('d/m/y', $appointment->getDate()),
-            'days_ago'  => days_ago($appointment->getDate()),
-            'name'      => $appointment->getName(),
-            'comment'   => $appointment->getComment(true),
-            'file'      => $appointment->getFile(),
-            'vaccines'  => $vaccines,
-            'neurology' => $appointment->getNeurology(),
-            'earlier'   => $appointment->getEarlier(),
-            'call_back' => $appointment->getCallBack(),
+            'id'            => $appointment->getId(),
+            'date'          => date('Y-m-d', $appointment->getDate())===date('Y-m-d') ? 'Сьогодні' : date('d/m/y', $appointment->getDate()),
+            'days_ago'      => days_ago($appointment->getDate()),
+            'address_label' => $appointment->getDate()<(new DateTime('2023-02-14'))->getTimestamp() ? 'Кобилиці' : '',
+            'name'          => $appointment->getName(),
+            'comment'       => $appointment->getComment(true),
+            'file'          => $appointment->getFile(),
+            'vaccines'      => $vaccines,
+            'neurology'     => $appointment->getNeurology(),
+            'earlier'       => $appointment->getEarlier(),
+            'call_back'     => $appointment->getCallBack(),
         ];
     }
 
