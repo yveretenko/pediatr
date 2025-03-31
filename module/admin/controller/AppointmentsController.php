@@ -166,7 +166,7 @@ function filterAction()
         $blacklist = $appointment->getTel() ? $em->find(Blacklist::class, $appointment->getTel()) : null;
 
         $appointment_text=sprintf(
-            "Лікар чекатиме Вас %s %s\n\nНаша адреса %s\n\n%s вiзиту Вам надiйде смс-нагадування\n\nДякуємо, що довіряєте нам! ❤️",
+            "✅ Лікар чекатиме Вас %s %s\n\nНаша адреса %s\n\n%s вiзиту Вам надiйде смс-нагадування\n\nДякуємо, що довіряєте нам! ❤️",
             date('j', $appointment->getDate()).' '.$months[date('n', $appointment->getDate())-1],
             (date('H', $appointment->getDate())==='11' ? 'об' : 'о').' '.date('H:i', $appointment->getDate()),
             $config['address'],
