@@ -33,7 +33,7 @@ function indexAction()
         "Вік дитини: $age",
         "Телефон: <A href='tel:".StringHelper::normalizeTelephone($tel)."'>$tel</A> (".($visits_count ? "за цим номером знайдено <A href='http://pediatr.cv.ua/admin/appointments?tel=".StringHelper::normalizeTelephone($tel)."'>$visits_count запис".($visits_count> 1 ? ($visits_count<5 ? 'и' : 'ів') : '')."</A>" : 'за цим номером не знайдено записів').")",
         $blacklist_record ? 'Телефон в чорному списку, причина: '.($blacklist_record->getReasonAndName() ?: '-') : null,
-        $date ? "Бажана дата: $date (".['', 'понеділок', 'вівторок', 'середа', 'четвер', 'п\'ятниця'][date('N', strtotime($date))].')' : null,
+        $date ? "Бажана дата: $date (".['', 'понеділок', 'вівторок', 'середа', 'четвер', 'п\'ятниця', 'субота', 'неділя'][date('N', strtotime($date))].')' : null,
         "Причина звернення:",
         nl2br($message),
         $convert_button,
