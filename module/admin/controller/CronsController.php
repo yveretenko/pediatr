@@ -20,6 +20,7 @@ function sendSmsAction()
 
         $criteria
             ->andWhere($criteria->expr()->neq('tel', null))
+            ->andWhere($criteria->expr()->eq('online', 0))
             ->andWhere($criteria->expr()->eq('smsNotified', 0))
             ->andWhere($criteria->expr()->gte('date', time()))
             ->andWhere($criteria->expr()->lte('date', time()+((int)date('G')===20 ? 16 : 6)*60*60))

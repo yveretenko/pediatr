@@ -170,7 +170,7 @@ $(document).ready(function(){
                         vaccines.push('<span class="badge badge-info" style="font-size:90%;" title="'+vaccine.name+'">'+vaccine.short_name+((row.is_future && !vaccine.available) ? ' <i class="fa fa-sm fa-circle text-warning"></i>' : '')+'</span>');
                     });
 
-                    return '<div style="max-width:33vw; line-height:normal;" class="appointment_comment">'+data+'</div><div>'+(row.call_back ? '<span class="badge badge-warning" style="font-size:90%;">Передзвонити</span> ' : '')+(row.neurology ? '<span class="badge badge-danger" style="font-size:90%;">Невр</span> ' : '')+(row.earlier ? '<span class="badge badge-primary" style="font-size:90%;">Раніше</span> ' : '')+vaccines.join(' ')+'</div>'+file;
+                    return '<div style="max-width:33vw; line-height:normal;" class="appointment_comment">'+data+'</div><div>'+(row.online ? '<span class="badge badge-info" style="font-size:90%;">Онлайн</span> ' : '')+(row.call_back ? '<span class="badge badge-warning" style="font-size:90%;">Передзвонити</span> ' : '')+(row.neurology ? '<span class="badge badge-danger" style="font-size:90%;">Невр</span> ' : '')+(row.earlier ? '<span class="badge badge-primary" style="font-size:90%;">Раніше</span> ' : '')+vaccines.join(' ')+'</div>'+file;
                 },
                 responsivePriority: 6
             },

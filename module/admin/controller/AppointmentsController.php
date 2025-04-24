@@ -165,13 +165,11 @@ function filterAction()
 
         $blacklist = $appointment->getTel() ? $em->find(Blacklist::class, $appointment->getTel()) : null;
 
-        $appointment_text=sprintf(
-            "✅ Лікар чекатиме Вас %s %s\n\nНаша адреса %s\n\n%s вiзиту Вам надiйде смс-нагадування\n\nДякуємо, що довіряєте нам! ❤️",
-            date('j', $appointment->getDate()).' '.$months[date('n', $appointment->getDate())-1],
-            (date('H', $appointment->getDate())==='11' ? 'об' : 'о').' '.date('H:i', $appointment->getDate()),
-            $config['address'],
-            (date('H', $appointment->getDate())<12 || (date('H:i', $appointment->getDate())==='12:00')) ? 'За день до' : 'В день'
-        );
+        $text_date=date('j', $appointment->getDate()).' '.$months[date('n', $appointment->getDate())-1];
+        $text_time=(date('H', $appointment->getDate())==='11' ? 'об' : 'о').' '.date('H:i', $appointment->getDate());
+        $appointment_text = $appointment->getOnline() ? "✅ Лікар зв'яжеться з Вами в Телеграмі %s о %s\n\nДякуємо, що довіряєте нам! ❤️" : "✅ Лікар чекатиме Вас %s %s\n\nНаша адреса %s\n\n%s вiзиту Вам надiйде смс-нагадування\n\nДякуємо, що довіряєте нам! ❤️";
+
+        $appointment_text=sprintf($appointment_text, $text_date, $text_time, $config['address'], (date('H', $appointment->getDate())<12 || (date('H:i', $appointment->getDate())==='12:00')) ? 'За день до' : 'В день');
 
         $next_appointment_criteria = new Criteria;
 
@@ -205,6 +203,7 @@ function filterAction()
             'neurology'          => $appointment->getNeurology(),
             'earlier'            => $appointment->getEarlier(),
             'call_back'          => $appointment->getCallBack(),
+            'online'             => $appointment->getOnline(),
             'created_at'         => format_date($appointment->getCreatedAt()),
             'updated_at'         => format_date($appointment->getUpdatedAt()),
             'appointment_text'   => $appointment_text,
@@ -338,6 +337,7 @@ function saveAction()
             $appointment->setVaccines($vaccines);
             $appointment->setNeurology($_POST['neurology']==='1');
             $appointment->setEarlier($_POST['earlier']==='1');
+            $appointment->setOnline($_POST['online']==='1');
             $appointment->setCallBack($_POST['call_back']==='1');
 
             if (!$_POST['id'])
@@ -434,6 +434,7 @@ function historyAction()
             'vaccines'      => $vaccines,
             'neurology'     => $appointment->getNeurology(),
             'earlier'       => $appointment->getEarlier(),
+            'online'        => $appointment->getOnline(),
             'call_back'     => $appointment->getCallBack(),
         ];
     }

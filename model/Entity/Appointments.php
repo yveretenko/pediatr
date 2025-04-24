@@ -87,6 +87,13 @@ class Appointments
     /**
      * @var int
      *
+     * @ORM\Column(name="online", type="boolean", nullable=false)
+     */
+    private $online=false;
+
+    /**
+     * @var int
+     *
      * @ORM\Column(name="call_back", type="boolean", nullable=false)
      */
     private $call_back=false;
@@ -269,6 +276,22 @@ class Appointments
     public function setEarlier(bool $earlier): void
     {
         $this->earlier=$earlier;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getOnline(): bool
+    {
+        return $this->online;
+    }
+
+    /**
+     * @param bool $online
+     */
+    public function setOnline(bool $online): void
+    {
+        $this->online=$online;
     }
 
     /**

@@ -149,6 +149,8 @@ class AppointmentsRepository extends EntityRepository
         $queryBuilder
             ->select('a')
             ->from(Appointments::class, 'a')
+            ->andWhere($queryBuilder->expr()->isNotNull('a.tel'))
+            ->andWhere($queryBuilder->expr()->eq('a.online', 0))
             ->groupBy('a.tel')
             ->having('COUNT(a)=3')
             ->andHaving($queryBuilder->expr()->between('MAX(a.date)', strtotime('yesterday'), strtotime('today')))
