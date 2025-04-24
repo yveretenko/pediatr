@@ -154,7 +154,7 @@ $(document).ready(function(){
                         vaccines.push('<span class="badge badge-info" title="'+vaccine.name+'">'+vaccine.short_name+((row.is_future && !vaccine.available) ? ' <i class="fa fa-sm fa-circle text-warning"></i>' : '')+'</span>');
                     });
 
-                    return '<div class="text-nowrap">'+tel+telegram+visits_history+'</div>'+'<div class="d-block d-sm-none">'+row.name+(row.visits_to_date>=5 ? '&nbsp;<i class="fas fa-star text-warning client_icon"></i>' : '')+(row.blacklisted ? '&nbsp;<i class="fas fa-ban text-danger client_icon" data-toggle="tooltip" data-html="true" title="'+row.blacklisted_reason+'"></i>' : '')+'</div><div class="d-sm-none">'+(row.call_back ? '<span class="badge badge-warning"><i class="fa fa-phone"></i></span> ' : '')+(row.neurology ? '<span class="badge badge-danger">Невр</span> ' : '')+(row.earlier ? '<span class="badge badge-primary">Раніше</span> ' : '')+vaccines.join(' ')+'</div>';
+                    return '<div class="text-nowrap">'+tel+telegram+visits_history+'</div>'+'<div class="d-block d-sm-none">'+row.name+(row.visits_to_date>=5 ? '&nbsp;<i class="fas fa-star text-warning client_icon"></i>' : '')+(row.blacklisted ? '&nbsp;<i class="fas fa-ban text-danger client_icon" data-toggle="tooltip" data-html="true" title="'+row.blacklisted_reason+'"></i>' : '')+'</div><div class="d-sm-none">'+(row.online ? '<span class="badge badge-info"><i class="fa fa-laptop"></i></span> ' : '')+(row.call_back ? '<span class="badge badge-warning"><i class="fa fa-phone"></i></span> ' : '')+(row.neurology ? '<span class="badge badge-danger">Невр</span> ' : '')+(row.earlier ? '<span class="badge badge-primary">Раніше</span> ' : '')+vaccines.join(' ')+'</div>';
                 },
                 responsivePriority: 2,
             },
@@ -354,7 +354,7 @@ $(document).ready(function(){
                                 vaccines.push('<span class="badge badge-info" title="'+vaccine.name+'">'+vaccine.short_name+'</span>');
                             });
 
-                            let labels_html=(row.neurology ? '<span class="badge badge-danger">Невр</span> ' : '')+vaccines.join(' ');
+                            let labels_html=(row.online ? '<span class="badge badge-info">Онлайн</span> ' : '')+(row.neurology ? '<span class="badge badge-danger">Невр</span> ' : '')+vaccines.join(' ');
 
                             let file_html = row.file ? '<A href="/admin/appointments/file/?id='+row.id+'"><i class="fa fa-paperclip mr-1"></i>'+row.file+'</A>' : '';
 
