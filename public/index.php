@@ -54,6 +54,11 @@ if ($module==='application')
         $controller='index';
         $modal_name='nutrition_webinar';
     }
+    elseif ($controller==='newbornWebinar')
+    {
+        header('location: https://secure.wayforpay.com/button/b6fa52ce3c223');
+        exit;
+    }
 }
 
 if ($module==='admin' && ($controller!=='index' || $action==='upload') && !$_SESSION['id'])
