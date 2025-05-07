@@ -12,4 +12,9 @@ $(function(){
         $('#pay_fail_modal').modal('hide');
         $('#pay_modal').modal('show');
     });
+
+    // fix for scrolling in case of scenario when one modal is closed and another is opened after
+    $(document).on('hidden.bs.modal', '.modal', function () {
+        $('.modal:visible').length && $(document.body).addClass('modal-open');
+    });
 });
