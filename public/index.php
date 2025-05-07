@@ -56,8 +56,8 @@ if ($module==='application')
     }
     elseif ($controller==='newbornWebinar')
     {
-        header('location: https://secure.wayforpay.com/button/b6fa52ce3c223');
-        exit;
+        $controller='index';
+        $modal_name='newborn_webinar';
     }
 }
 
