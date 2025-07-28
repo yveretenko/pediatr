@@ -8,7 +8,7 @@ define('FROM_CRON', php_sapi_name()=='cli');
 
 $config=array_merge(require_once(APPLICATION_TOP_PATH.'/config/global.php'), require_once(APPLICATION_TOP_PATH.'/config/local.php'));
 
-error_reporting($config['env']==='SERVER' ? E_ERROR : E_ALL ^ E_NOTICE ^ E_WARNING);
+error_reporting($config['env']==='SERVER' ? E_ERROR : E_ALL ^ E_NOTICE ^ E_WARNING ^ E_DEPRECATED);
 
 session_start();
 
