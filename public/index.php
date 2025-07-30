@@ -1,5 +1,6 @@
 <?php
 
+use Doctrine\ORM\Proxy\ProxyFactory;
 use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
 
@@ -16,13 +17,17 @@ require_once(APPLICATION_TOP_PATH.'/vendor/autoload.php');
 
 try
 {
+    $doctrine_config=Setup::createAnnotationMetadataConfiguration(array(APPLICATION_TOP_PATH."/model/Entity"), $config['env']==='LOCAL', sys_get_temp_dir().'/pediatr_doctrine_proxy', null, false);
+
+    $doctrine_config->setAutoGenerateProxyClasses($config['env']==='LOCAL' ? ProxyFactory::AUTOGENERATE_ALWAYS : ProxyFactory::AUTOGENERATE_FILE_NOT_EXISTS);
+
     $regular_em=EntityManager::create(array(
         'driver'   => 'pdo_mysql',
         'host'     => $config['db']['host'],
         'user'     => $config['db']['user'],
         'password' => $config['db']['password'],
         'dbname'   => $config['db']['database'],
-    ), Setup::createAnnotationMetadataConfiguration(array(APPLICATION_TOP_PATH."/model/Entity"), $config['env']==='LOCAL', sys_get_temp_dir().'/pediatr_doctrine_proxy', null, false));
+    ), $doctrine_config);
 
     /** @var EntityManager|ExtendedEntityManager $em */
     $em = new ExtendedEntityManager($regular_em);
@@ -36,7 +41,7 @@ catch (Exception $e)
 
 date_default_timezone_set('Europe/Kiev');
 
-list(, $module, $controller, $action)=explode('/', (str_contains($_SERVER['REQUEST_URI'] ?? '', 'admin') ? '' : '/application').strtok($_SERVER["REQUEST_URI"] ?? '', '?'));
+[, $module, $controller, $action]=explode('/', (str_contains($_SERVER['REQUEST_URI'] ?? '', 'admin') ? '' : '/application').strtok($_SERVER["REQUEST_URI"] ?? '', '?'));
 
 $module     = $module==='admin' ? 'admin' : 'application';
 $controller = $controller ? StringHelper::camelize($controller) : 'index';
