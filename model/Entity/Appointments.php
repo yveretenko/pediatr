@@ -357,4 +357,14 @@ class Appointments
     {
         $this->updatedAt=$updatedAt;
     }
+
+    public function isToday(): bool
+    {
+        return $this->getDate()>=strtotime('today') && $this->getDate()<strtotime('tomorrow');
+    }
+
+    public function isTomorrow(): bool
+    {
+        return $this->getDate()>=strtotime('tomorrow') && $this->getDate()<strtotime('tomorrow +1 day');
+    }
 }
