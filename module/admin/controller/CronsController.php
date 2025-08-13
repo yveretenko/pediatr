@@ -33,7 +33,7 @@ function sendSmsAction()
 
         foreach ($appointments as $appointment)
         {
-            $sms_text=sprintf('Чекаємо Вас%s о%s %s в кабінеті педіатра ДітиКвіти, %s', date('Y-m-d', $appointment->getDate())!==date('Y-m-d') ? ' завтра' : '', date('G', $appointment->getDate())=='11' ? 'б' : '', date('G:i', $appointment->getDate()), $config['address']);
+            $sms_text=sprintf('Чекаємо Вас%s о%s %s в кабінеті педіатра ДітиКвіти, %s', $appointment->isTomorrow() ? ' завтра' : '', date('G', $appointment->getDate())=='11' ? 'б' : '', date('G:i', $appointment->getDate()), $config['address']);
 
             $log[]="<div>Відправляємо смс на номер `".$appointment->getTel()."` з текстом: <i>$sms_text</i>";
 
