@@ -54,10 +54,7 @@ $(document).ready(function(){
                 responsivePriority: 10
             },
             {
-                data: 'purchase_price',
-                render: function(data, type, row){
-                    return row.purchase_price ? Math.ceil(((row.purchase_price+700)*1.06)/100)*100 : '';
-                },
+                data: 'price',
                 responsivePriority: 1,
                 className: 'font-weight-bold text-center'
             },

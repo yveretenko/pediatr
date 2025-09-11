@@ -54,6 +54,11 @@ if ($module==='application')
         $controller='index';
         $modal_name='pay';
     }
+    elseif ($controller==='price')
+    {
+        $controller='index';
+        $modal_name='price';
+    }
     elseif ($controller==='nutritionWebinar')
     {
         $controller='index';

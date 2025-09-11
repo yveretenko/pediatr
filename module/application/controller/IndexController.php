@@ -2,6 +2,7 @@
 
 use App\Entity\Articles;
 use App\Entity\DatesDisabled;
+use App\Entity\Vaccines;
 
 function indexAction()
 {
@@ -28,5 +29,7 @@ function indexAction()
     $address=$config['address'];
     $tel=$config['tel'];
 
-    ViewHelper::render(compact('articles', 'reviews', 'close_dates', 'address', 'tel', 'modal_name'));
+    $vaccines=$em->getRepository(Vaccines::class)->findBy([], ['name' => 'ASC']);
+
+    ViewHelper::render(compact('articles', 'reviews', 'close_dates', 'address', 'tel', 'modal_name', 'vaccines'));
 }

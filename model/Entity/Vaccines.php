@@ -272,4 +272,9 @@ class Vaccines
 
         return $this;
     }
+
+    public function getPrice(): int|null
+    {
+        return $this->getPurchasePrice() ? ceil((($this->purchasePrice+700)*1.06)/100)*100 : null;
+    }
 }

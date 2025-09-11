@@ -32,7 +32,7 @@
 
 <body id="page-top" style="padding-top:100px;">
 
-<nav class="bg-white text-uppercase border-bottom fixed-top pt-2" style="height:100px;">
+<nav class="bg-white border-bottom fixed-top pt-2" style="height:100px;">
     <div class="container px-1">
         <div class="form-row">
             <div class="col-auto">
@@ -42,7 +42,7 @@
             <div class="col">
                 <div class="form-row">
                     <div class="col-12 col-lg-auto pt-0 pt-lg-3">
-                        <A class="navbar-brand mr-0 js-scroll-trigger text-decoration-none py-0 py-lg-1" href="#page-top">
+                        <A class="navbar-brand mr-0 js-scroll-trigger text-decoration-none text-uppercase py-0 py-lg-1" href="#page-top">
                             <span class="text-success">Кабінет</span>
                             <span class="text-warning">дитячого</span>
                             <span class="text-info">лікаря</span>
@@ -54,27 +54,22 @@
                     </div>
 
                     <div class="col-12 col-lg-auto ml-auto pt-1 pt-lg-4" id="top_menu">
-                        <A class="py-1 py-lg-2 px-2 px-lg-3 js-scroll-trigger btn btn-outline-secondary mr-1" href="#reviews">
-                            <i class="fa fa-comments"></i>
-                            Відгуки
-                        </A>
-
-                        <A class="py-1 py-lg-2 px-2 px-lg-3 js-scroll-trigger btn btn-outline-secondary mr-1" href="#articles">
+                        <A class="py-1 py-lg-2 px-2 px-lg-3 btn btn-success text-white mr-1" data-toggle="modal" data-target="#price_modal">
                             <i class="fa fa-list"></i>
-                            Статті
+                            Послуги
                         </A>
 
-                        <A class="py-1 py-lg-2 px-2 px-lg-3 btn btn-success text-white mr-1 d-none d-md-inline-block" data-toggle="modal" data-target="#appointment_modal">
+                        <A class="py-1 py-lg-2 px-2 px-lg-3 btn btn-success text-white mr-1" data-toggle="modal" data-target="#appointment_modal">
                             <i class="fa fa-pen"></i>
-                            Запис <span class="d-none d-xl-inline">на прийом</span>
+                            Запис <span class="d-none d-md-inline">на прийом</span>
                         </A>
 
-                        <A class="py-1 py-lg-2 px-2 px-lg-3 btn btn-info text-white d-none d-md-inline-block" data-toggle="modal" data-target="#pay_modal">
+                        <A class="py-1 py-lg-2 px-2 px-lg-3 btn btn-info text-white mr-1" data-toggle="modal" data-target="#pay_modal">
                             <i class="fa fa-laptop"></i>
-                            Онлайн-консультація
+                            Онлайн<span class="d-none d-sm-inline">-консультація</span>
                         </A>
 
-                        <A class="btn btn-outline-secondary rounded-circle d-inline-flex d-lg-none d-xl-inline-flex justify-content-center align-items-center ml-1 ml-xl-3" title="Instagram" href="https://www.instagram.com/dr_svitlana/" style="width:2.5em; aspect-ratio:1/1;">
+                        <A class="btn btn-outline-secondary rounded-circle d-inline-flex justify-content-center align-items-center ml-1 ml-xl-3" title="Instagram" href="https://www.instagram.com/dr_svitlana/" style="width:2.5em; aspect-ratio:1/1;">
                             <i class="fab fa-fw fa-instagram" style="font-size:150%;"></i>
                         </A>
                     </div>
@@ -192,15 +187,15 @@
                 </button>
             </div>
             <div class="modal-body">
-                <h5>Варіанти оплати</h5>
+                <h4>Варіанти оплати</h4>
 
                 <p>
                     Оплата платіжними картами Visa та MasterCard за допомогою сервісу WayForPay.
                 </p>
 
-                <h5>Правила повернення грошових коштів</h5>
+                <h4>Правила повернення грошових коштів</h4>
 
-                <h6 class="font-weight-bold mt-3">Медіаматеріали (відео, вебінари, прямі трансляції тощо)</h6>
+                <h5 class="mt-3">Медіаматеріали (відео, вебінари, прямі трансляції тощо)</h5>
 
                 <p>
                     Посилання на медіаматеріали доставляються на електронну пошту покупця.
@@ -208,7 +203,7 @@
                     Повернення коштів можливе у випадках, коли посилання на медіа неможливо доставити або подія (вебінар, пряма трансляція тощо) не відбулася.
                 </p>
 
-                <h6 class="font-weight-bold">Онлайн-консультації</h6>
+                <h5>Онлайн-консультації</h5>
 
                 <p>
                     У разі, якщо консультація не відбулася з будь-яких причин, клієнт має право на повернення коштів.
@@ -216,7 +211,7 @@
                     Клієнт також має право на повернення коштів до початку консультації за умови подання відповідного запиту.
                 </p>
 
-                <h5>Контактна інформація</h5>
+                <h4>Контактна інформація</h4>
 
                 Фізична особа-підприємець Веретенко Світлана Степанівна
                 <br>
@@ -235,12 +230,6 @@
             </div>
         </div>
     </div>
-</div>
-
-<div class="d-md-none position-fixed" style="z-index:99; right:0; top:50%; transform:rotate(-90deg) translateX(50%) translateY(-50%); transform-origin:right;">
-    <button data-toggle="modal" data-target="#pay_modal" class="btn btn-info p-2 mr-1" style="border-bottom-left-radius:0; border-bottom-right-radius:0;">Онлайн-консультація</button>
-
-    <button data-toggle="modal" data-target="#appointment_modal" class="btn btn-success p-2" style="border-bottom-left-radius:0; border-bottom-right-radius:0;">Запис на прийом</button>
 </div>
 
 <script src="/vendor/jquery/jquery.min.js"></script>

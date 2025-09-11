@@ -23,9 +23,11 @@ function filterAction()
         'purchase_price' => 'purchasePrice',
         'required'       => 'required',
     ];
+    
+    $order_by = $columns[$order['column']]['data']==='price' ? 'purchasePrice' : $order_mapping[$columns[$order['column']]['data']];
 
     /** @var Vaccines[] $vaccines */
-    $vaccines=$em->getRepository(Vaccines::class)->findBy([], [$order_mapping[$columns[$order['column']]['data']] => $order['dir']]);
+    $vaccines=$em->getRepository(Vaccines::class)->findBy([], [$order_by => $order['dir']]);
 
     $data=[];
     foreach ($vaccines as $vaccine)
@@ -39,6 +41,7 @@ function filterAction()
             'analogue_vaccine' => $vaccine->getAnalogueVaccine()?->getName(),
             'country'          => $vaccine->getCountry(),
             'purchase_price'   => $vaccine->getPurchasePrice(),
+            'price'            => $vaccine->getPrice(),
             'link'             => $vaccine->getLink(),
         ];
     }

@@ -6,8 +6,22 @@
 /** @var string $address */
 /** @var string $tel */
 /** @var string|null $modal_name */
+/** @var Vaccines[] $vaccines */
 
 use App\Entity\Articles;
+use App\Entity\Vaccines;
+
+$services=[
+    'Консультація педіатрична'                                                              => 700,
+    'Консультація неврологічна'                                                             => 900,
+    'Комбінована консультація (огляд педіатра та консультація з питань дитячої неврології)' => 1500,
+    'Повторна консультація (в межах одного тижня, з приводу первинного звернення)'          => 500,
+    'Первинний огляд новонародженого'                                                       => 1000,
+    'Консультація з питань грудного вигодовування'                                          => 800,
+    'Консультація з дитячого сну'                                                           => 1000,
+    'Допологова консультація та підготовка до перших місяців життя дитини'                  => 1200,
+    'Виклик лікаря додому (в межах міста)'                                                  => 2000,
+];
 
 ?>
 
@@ -191,7 +205,7 @@ use App\Entity\Articles;
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="my-0">Послуги онлайн</h4>
+                <h3 class="modal-title font-weight-light text-muted"><i class="fa fa-laptop"></i> Послуги онлайн</h3>
 
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -199,34 +213,104 @@ use App\Entity\Articles;
             </div>
 
             <div class="modal-body">
-                <A href="https://secure.wayforpay.com/button/b8ce6fcfb45c8" class="btn btn-block btn-success mb-3" style="text-wrap:balance;">Онлайн-рекомендації педіатра - 700 грн</A>
+                <h5>Онлайн-рекомендації</h5>
 
-                <A href="https://secure.wayforpay.com/button/b102c10ac6830" class="btn btn-block btn-success mb-3" style="text-wrap:balance;">Онлайн-рекомендації дитячого невролога - 900 грн</A>
+                <ul class="list-group my-3">
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>Онлайн-рекомендації педіатра</span>
+                        <span class="text-nowrap pl-3">
+                            700 грн
+                            <A href="https://secure.wayforpay.com/button/b8ce6fcfb45c8" class="btn btn-sm btn-success ml-1">придбати</A>
+                        </span>
+                    </li>
 
-                <hr>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>Онлайн-рекомендації дитячого невролога</span>
+                        <span class="text-nowrap pl-3">
+                            900 грн
+                            <A href="https://secure.wayforpay.com/button/b102c10ac6830" class="btn btn-sm btn-success ml-1">придбати</A>
+                        </span>
+                    </li>
 
-                <A href="https://secure.wayforpay.com/button/bb0d4bf755171" class="btn btn-block btn-success mb-3" style="text-wrap:balance;">Онлайн-рекомендації з грудного вигодовування - 800 грн</A>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>Онлайн-рекомендації з грудного вигодовування</span>
+                        <span class="text-nowrap pl-3">
+                            800 грн
+                            <A href="https://secure.wayforpay.com/button/bb0d4bf755171" class="btn btn-sm btn-success ml-1">придбати</A>
+                        </span>
+                    </li>
 
-                <A href="https://secure.wayforpay.com/button/ba56a7de2dc91" class="btn btn-block btn-success mb-3" style="text-wrap:balance;">Онлайн-рекомендації з дитячого сну - 980 грн</A>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>Онлайн-рекомендації з дитячого сну</span>
+                        <span class="text-nowrap pl-3">
+                            980 грн
+                            <A href="https://secure.wayforpay.com/button/ba56a7de2dc91" class="btn btn-sm btn-success ml-1">придбати</A>
+                        </span>
+                    </li>
+                </ul>
 
-                <hr>
+                <h5>Супровід</h5>
 
-                <A href="#" data-toggle="modal" data-dismiss="modal" data-target="#newborn_webinar_modal" class="btn btn-block btn-info mb-3" style="text-wrap:balance;">
-                    Вебінар "Дитина народилася" - 600 грн
-                    <div class="small">
-                        маніпуляції в пологовому, післяпологовий стан, жовтяниця, догляд за немовлям, сон, гігієна, грудне вигодовування, аптечка, огляди (1 год 45 хв)
-                    </div>
-                </A>
+                <ul class="list-group my-3">
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>
+                            Онлайн-супровід протягом місяця
 
-                <A href="#" data-toggle="modal" data-dismiss="modal" data-target="#nutrition_webinar_modal" class="btn btn-block btn-info mb-3" style="text-wrap:balance;">
-                    Вебінар про прикорм - 490 грн
-                    <div class="small">
-                        коли і з чого починати, пюре чи шматочки, безпека та алергія, розмір порцій, напої, спеції, солодощі, апетит, харчові звички (1 год 15 хв)
-                    </div>
-                </A>
+                            <br>
+
+                            <span class="small">
+                                передбачає формат "питання-відповідь" в листуванні в Телеграмі (текстом або голосовими повідомленнями)
+                            </span>
+                        </span>
+                        <span class="text-nowrap pl-3">
+                            3000 грн
+                            <A href="https://secure.wayforpay.com/button/bfbf89432f01e" class="btn btn-sm btn-success ml-1">придбати</A>
+                        </span>
+                    </li>
+                </ul>
+
+                <h5>Вебінари</h5>
+
+                <ul class="list-group my-3">
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>
+                            Дитина народилася
+
+                            <br>
+
+                            <span class="small">
+                                маніпуляції в пологовому, післяпологовий стан, жовтяниця, догляд за немовлям, сон, гігієна, грудне вигодовування, аптечка, огляди
+                                <br>
+                                <i class="far fa-clock"></i> 1 год 45 хв
+                            </span>
+                        </span>
+                        <span class="text-nowrap pl-3">
+                            600 грн
+                            <A href="#" data-toggle="modal" data-dismiss="modal" data-target="#newborn_webinar_modal" class="btn btn-sm btn-success ml-1">придбати</A>
+                        </span>
+                    </li>
+
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>
+                            Вебінар про прикорм
+
+                            <br>
+
+                            <span class="small" style="line-height:15px !important;">
+                                коли і з чого починати, пюре чи шматочки, безпека та алергія, розмір порцій, напої, спеції, солодощі, апетит, харчові звички
+                                <br>
+                                <i class="far fa-clock"></i> 1 год 15 хв
+                            </span>
+                        </span>
+                        <span class="text-nowrap pl-3">
+                            490 грн
+                            <A href="#" data-toggle="modal" data-dismiss="modal" data-target="#nutrition_webinar_modal" class="btn btn-sm btn-success ml-1">придбати</A>
+                        </span>
+                    </li>
+                </ul>
 
                 <p class="text-muted small">
-                    Оплата на рахунок ФОП платіжними картами Visa та MasterCard за допомогою сервісу WayForPay
+                    Оплата здійснюється на рахунок ФОП платіжними картами Visa та MasterCard за допомогою сервісу WayForPay
                 </p>
             </div>
         </div>
@@ -237,7 +321,7 @@ use App\Entity\Articles;
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="my-0">Дякуємо!</h4>
+                <h3 class="modal-title font-weight-light text-muted">Дякуємо!</h3>
 
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -265,7 +349,7 @@ use App\Entity\Articles;
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="my-0">Нам шкода</h4>
+                <h3 class="modal-title font-weight-light text-muted">Нам шкода</h3>
 
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -380,6 +464,50 @@ use App\Entity\Articles;
                 </p>
 
                 <A href="https://secure.wayforpay.com/button/b6fa52ce3c223" class="btn btn-block btn-success">Придбати запис вебінару</A>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="price_modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title font-weight-light text-muted"><i class="fa fa-notes-medical"></i> Послуги</h3>
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <h5>Консультація</h5>
+
+                <ul class="list-group my-3">
+                    <?php foreach ($services as $service => $price) { ?>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span><?=$service ?></span>
+                        <span class="text-nowrap pl-3"><?=$price ?> грн</span>
+                    </li>
+                    <?php } ?>
+                </ul>
+
+                <h5>Вакцинація</h5>
+
+                <p class="small text-muted">
+                    У вартість послуги входить огляд лікаря, послуга вакцинації.
+                    <br>
+                    Уточнюйте наявність вакцин перед записом.
+                </p>
+
+                <ul class="list-group mt-3">
+                    <?php foreach ($vaccines as $vaccine) { ?>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span><?=$vaccine->getName() ?></span>
+                        <span class="text-nowrap"><?=$vaccine->getPrice() ?> грн</span>
+                    </li>
+                    <?php } ?>
+                </ul>
             </div>
         </div>
     </div>
