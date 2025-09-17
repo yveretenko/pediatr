@@ -456,7 +456,7 @@ class AppointmentController extends Controller
                 $errors[]='Введіть час між 8:00 та 21:00';
         }
 
-        $tel=preg_replace('/\D/', '', $request->tel);
+        $tel=StringHelper::normalizeTelephone($request->tel);
         if ($request->tel && strlen($tel)!==10)
             $errors[]='Невірний номер телефону';
 
