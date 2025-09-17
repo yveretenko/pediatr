@@ -22,7 +22,7 @@ Route::post('/appointments/request', [AppointmentRequestController::class, 'subm
 Route::get('/admin', [Admin_IndexController::class, 'index'])->name('admin.index');
 Route::post('/admin/index/login', [Admin_IndexController::class, 'login'])->name('admin.login');
 
-Route::prefix('admin')->name('admin.')->middleware('auth')->group(function(){
+Route::prefix('admin')->name('admin.')->middleware(['web', 'auth'])->group(function(){
     Route::fallback(function(){
         return response()->view('errors.404', [], 404);
     });
