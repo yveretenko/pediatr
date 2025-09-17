@@ -29,8 +29,8 @@ class SendAppointmentSms extends Command
 
             $appointments=Appointment
                 ::whereNotNull('tel')
-                ->where('online', 0)
-                ->where('sms_notified', 0)
+                ->where('online', false)
+                ->where('sms_notified', false)
                 ->whereBetween('date', [$from_time, $to_time])
                 ->get()
             ;
