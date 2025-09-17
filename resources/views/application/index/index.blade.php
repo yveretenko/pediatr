@@ -1,0 +1,233 @@
+@extends('layouts.app')
+
+@section('content')
+
+<section class="pt-3 pt-lg-5" id="how_to_find">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 row mx-0 justify-content-sm-center align-items-sm-center mb-4 mb-lg-5 font-weight-light" style="font-size:150%;" id="contact_links">
+                <div class="col-12 text-center mb-4">
+                    <i class="fa fa-map-marker-alt text-muted"></i> м. Чернівці, <span class="text-nowrap">{{ $address }}</span>
+                </div>
+
+                <div class="col-12 col-sm-auto text-center col-lg-auto text-nowrap mb-1 mb-sm-0">
+                    <A href="tel:{{ $tel }}" class="text-dark"><i class="fa fa-phone-alt text-muted"></i> {{ $tel_formatted }}</A>
+                </div>
+
+                <div class="col-12 col-sm-auto text-center col-lg-auto text-nowrap mb-1 mb-sm-0">
+                    <A href="http://t.me/DitiKviti" class="text-dark"><i class="fab fa-telegram text-muted"></i> DitiKviti</A>
+                </div>
+
+                <div class="col-12 col-sm-auto text-center col-lg-auto text-nowrap">
+                    <A href="https://www.instagram.com/dr_svitlana/" class="text-dark"><i class="fab fa-instagram text-muted"></i> dr_svitlana</A>
+                </div>
+            </div>
+
+            <div class="col-md-6 p-0 p-md-2">
+                <div class="embed-responsive embed-responsive-4by3 border">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d454.2206066851957!2d25.929672882296952!3d48.2955727837393!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x473409506f2a79df%3A0x2c7af818204b8b21!2z0JrQsNCx0ZbQvdC10YIg0LTQuNGC0Y_Rh9C-0LPQviDQu9GW0LrQsNGA0Y8g0JTRltGC0LjQmtCy0ZbRgtC4!5e0!3m2!1suk!2sua!4v1675977279655!5m2!1suk!2sua" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            </div>
+
+            <div class="col-md-6 mt-5 mt-md-0 p-0 p-md-2">
+                <div id="photos_carousel" class="carousel slide" data-ride="carousel">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img class="d-block w-100" src="img/cabinet/1.jpg?date=22-02-2023" alt="">
+                        </div>
+                        <div class="carousel-item">
+                            <img class="d-block w-100" src="img/cabinet/2.jpg?date=22-02-2023" alt="">
+                        </div>
+                        <div class="carousel-item">
+                            <img class="d-block w-100" src="img/cabinet/3.jpg?date=22-02-2023" alt="">
+                        </div>
+                        <div class="carousel-item">
+                            <img class="d-block w-100" src="img/cabinet/4.jpg?date=22-02-2023" alt="">
+                        </div>
+                        <div class="carousel-item">
+                            <img class="d-block w-100" src="img/cabinet/5.jpg?date=22-02-2023" alt="">
+                        </div>
+                        <div class="carousel-item">
+                            <img class="d-block w-100" src="img/cabinet/6.jpg?date=22-02-2023" alt="">
+                        </div>
+                    </div>
+
+                    <a class="carousel-control-prev" href="#photos_carousel" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">&longrightarrow;</span>
+                    </a>
+                    <a class="carousel-control-next" href="#photos_carousel" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">&longleftarrow;</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="pt-5" id="reviews">
+    <div class="container">
+        <h2 class="text-center text-uppercase mb-3 w-100 text-muted font-weight-light"><i class="fas fa-comments"></i> Відгуки</h2>
+
+        <div class="row">
+            @foreach($reviews as $name => $review)
+            <div class="col-lg-6 pt-2 pb-3">
+                <blockquote class="alert alert-secondary position-relative px-0 pt-2 pb-0 h-100">
+                    <i class="fa fa-quote-right fa-lg text-secondary position-absolute" style="left:0.7rem; top:0.7rem;"></i>
+
+                    <p class="mb-0 pl-5 pr-3 pr-sm-2">
+                        {{ $review }}
+                    </p>
+
+                    <footer class="blockquote-footer mt-2 text-center">
+                        {{ $name }} у <cite>відгуках Google</cite>
+
+                        <div class="text-warning small">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                        </div>
+                    </footer>
+                </blockquote>
+            </div>
+            @endforeach
+
+            <div class="col-12 text-center mt-2">
+                <A href="/review" class="btn btn-success"><i class="fa fa-pencil-alt mr-1"></i> Залиште свій відгук</A>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="pt-5" id="articles">
+    <div class="container">
+        <h2 class="text-center text-uppercase mb-0 w-100 font-weight-light text-muted"><i class="fas fa-notes-medical"></i> Статті</h2>
+
+        <div class="col-md-6 mx-auto px-0 mt-4">
+            <input type="search" class="form-control form-control-lg w-100 mx-auto mb-4" placeholder="Швидкий пошук статей" name="quick_search">
+        </div>
+
+        <div class="row articles">
+            @foreach($articles as $article)
+            <div class="col-sm-6 col-lg-4 mb-4 px-2 article_container">
+                <div class="article overflow-hidden mx-auto mb-2 border position-relative" data-article-id="{{ $article->id }}">
+                    <div class="article_image" style="background-image:url('img/articles/{{ $article->id }}.jpg');"></div>
+
+                    <div class="article_header position-absolute w-100 text-white text-center text-truncate px-2 py-1 lead" style="bottom:0; left:0; background:rgba(0, 0, 0, 0.45);">
+                        {{ $article->title }}
+                    </div>
+
+                    @if($article->isVideo())
+                    <div class="position-absolute mr-2 mt-1" style="top:0; right:0;">
+                        <div class="badge badge-info badge-pill shadow">
+                            відео
+                            <i class="fa fa-play-circle"></i>
+                        </div>
+                    </div>
+                    @endif
+                </div>
+            </div>
+            @endforeach
+        </div>
+
+        <div class="alert alert-danger text-center col-md-9 mx-auto" style="display:none;" id="articles_not_found">
+            За вашим запитом нічого не знайдено
+        </div>
+    </div>
+</section>
+
+<div class="modal fade" id="article_modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header border-bottom-0 pb-0">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body pt-1">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col">
+                            <h2 class="text-secondary text-uppercase mb-4 text-center font-weight-light" style="text-wrap:balance;"></h2>
+
+                            <div class="text-center">
+                                <IMG class="img-fluid rounded mb-4" src="" alt="" id="article_main_image">
+                            </div>
+
+                            <div class="article_text"></div>
+
+                            <div class="text-center mt-5 d-md-block d-lg-none">
+                                <button class="btn btn-secondary" href="#" data-dismiss="modal">
+                                    <i class="fas fa-times fa-fw"></i>
+                                    закрити
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="pay_success_modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title font-weight-light text-muted">Дякуємо!</h3>
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="alert alert-success">
+                    <p>
+                        <i class="far fa-laugh-beam fa-lg mr-1"></i> <b>Оплата успішна!</b>
+                    </p>
+                    <p>
+                        Ми зв'яжемося з Вами найближчим часом.
+                    </p>
+                    <p>
+                        Якщо Ви придбали медіаматеріали (вебінари, відео тощо), вони будуть надіслані на вказану електронну адресу. Посилання на вебінар надсилається в день проведення заходу.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="pay_fail_modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title font-weight-light text-muted">Нам шкода</h3>
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="alert alert-danger">
+                    <i class="far fa-frown-open fa-lg mr-1"></i> Оплата неуспішна
+                </div>
+
+                <div class="text-center">
+                    <button class="btn btn-success" id="try_again">Спробуйте ще раз</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let close_dates=@json($close_dates_json);
+</script>
+
+@endsection

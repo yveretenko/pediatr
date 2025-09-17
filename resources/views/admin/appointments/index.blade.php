@@ -1,0 +1,257 @@
+@extends('layouts.admin')
+
+@section('content')
+
+<div class="mb-3 text-nowrap overflow-auto table-responsive" id="appointments_calendar">
+    @foreach($weeks as $week => $dates)
+    <div class="d-inline-block align-top pr-3" style="width:{{ count($working_days) * 60 }}px;">
+        @foreach ($dates as $date)
+        <A href="#" data-date="<?=$date->format('Y-m-d') ?>" class="position-relative mr-1 btn btn-<?=[-1 => 'success', 0 => 'warning', 1 => 'success'][$date <=> new DateTime('today')] ?>" style="line-height:normal; width:3.1rem;">
+            <?=['', 'ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ', 'ВС'][$date->format('N')] ?>
+            <br>
+            <?=$date->format('j') ?>
+
+            <div class="badge badge-danger position-absolute" style="right:-0.45rem; top:0;"></div>
+            <div class="badge badge-info position-absolute" style="right:-0.45rem; top:1.25rem;"></div>
+
+            <i class="fa fa-xs fa-lock position-absolute" style="right:0.1rem; bottom:0.1rem; opacity:0.7; display:none;"></i>
+        </A>
+        @endforeach
+    </div>
+    @endforeach
+</div>
+
+<div class="alert alert-warning col-sm-9 col-md-6 mx-auto form-row py-2 px-1">
+    <div class="col">
+        <span id="date_comment"></span>
+    </div>
+    <div class="col-auto">
+        <A href="#" id="edit_date_comment" class="btn btn-sm btn-success disabled" style="font-size:70%;"><i class="fa fa-pencil-alt"></i> <span class="d-none d-sm-inline">редагувати</span></A>
+    </div>
+</div>
+
+<form id="appointments_filter_form" autocomplete="off">
+    <div class="form-row mx-0">
+        <div class="col col-xl-2 form-group">
+            <input type="search" name="name" class="form-control" placeholder="ім'я">
+
+            <div class="d-block d-md-none position-absolute p-1" style="left:0; top:100%; z-index:1;">
+                <A href="#" class="text-info" id="appointments_filter_form_show_more"><i class="fa fa-lg fa-caret-square-down"></i></A>
+            </div>
+        </div>
+
+        <div class="col col-xl-2 form-group">
+            <input type="tel" name="tel" class="form-control" placeholder="телефон" value="{{ $query['tel'] ?? '' }}">
+        </div>
+
+        <div class="col col-xl-2 form-group d-none d-md-block">
+            <input type="search" name="comment" class="form-control" placeholder="коментар">
+        </div>
+
+        <div class="col col-xl-2 form-group d-none d-md-block">
+            <select name="vaccine" class="form-control">
+                <option value="">-- вакцина --</option>
+                <option value="any" class="font-italic">будь-яка</option>
+
+                @foreach($vaccines as $vaccine)
+                <option value="{{ $vaccine->id }}">{{ $vaccine->name }}</option>
+                @endforeach
+            </select>
+        </div>
+
+        <div class="col-auto form-group">
+            <button class="btn btn-info"><i class="fa fa-fw fa-search"></i><span class="d-none d-lg-inline ml-1"> Пошук</span></button>
+            <button class="btn btn-danger d-lg-none" id="reset_appointments_form"><i class="fa fa-fw fa-times"></i></button>
+        </div>
+
+        <div class="col-12 col-md-auto ml-md-auto text-right form-group">
+            <button class="btn btn-success" id="appointment_add"><i class="fa fa-plus-circle mr-1"></i> Новий запис</button>
+        </div>
+    </div>
+</form>
+
+<div class="position-relative">
+    <table class="table table-striped" id="appointments_grid">
+        <thead>
+        <tr>
+            <th>Дата</th>
+            <th>Ім'я</th>
+            <th>Телефон</th>
+            <th>Коментар</th>
+            <th></th>
+        </tr>
+        </thead>
+    </table>
+
+    <button class="btn btn-sm btn-outline-secondary position-absolute m-2" id="appointment_grid_reload" style="top:0; right:0;">
+        <i class="fa fa-sync"></i>
+    </button>
+</div>
+
+<div class="modal fade" id="edit_appointment_modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body pb-0">
+                <form>
+                    <input type="hidden" name="id">
+
+                    <div class="form-row">
+                        <div class="col-6 form-group">
+                            <label class="mb-0">Дата</label>
+                            <input type="date" name="date" class="form-control" value="{{ $query['date'] }}">
+                        </div>
+
+                        <div class="col-6 form-group">
+                            <label class="mb-0">Час</label>
+                            <input type="time" name="time" class="form-control">
+                        </div>
+
+                        <div class="col-12 form-group">
+                            <label class="mb-0">Телефон</label>
+                            <input type="tel" name="tel" class="form-control" autocomplete="off" value="{{ $query['phone'] ?? '' }}">
+
+                            <div id="suggestion">
+                                <div class="badge badge-success" style="cursor:pointer;"></div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 form-group">
+                            <label class="mb-0">Ім'я</label>
+                            <input type="text" name="name" class="form-control" autocomplete="off" value="{{ $query['name'] ?? '' }}">
+                        </div>
+
+                        <div class="col-12 form-group">
+                            <label class="mb-0">Коментар</label>
+                            <textarea name="comment" class="form-control" rows="5">{{ $query['comment'] ?? '' }}</textarea>
+                        </div>
+
+                        <div class="col-12 form-group">
+                            <label class="mb-0">Вакцини</label>
+                            <div>
+                                <select id="vaccines" name="vaccines[]" multiple>
+                                    @foreach($vaccines as $vaccine)
+                                    <option value="{{ $vaccine->id }}">{{ $vaccine->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-12 form-group">
+                            <div class="form-check-inline mr-2">
+                                <input class="form-check-input" type="checkbox" value="1" name="online" id="online">
+                                <label class="form-check-label" for="online">
+                                    Онлайн
+                                </label>
+                            </div>
+                            <div class="form-check-inline mr-2">
+                                <input class="form-check-input" type="checkbox" value="1" name="neurology" id="neurology">
+                                <label class="form-check-label" for="neurology">
+                                    Невр<span class="d-none d-sm-inline">ологія</span>
+                                </label>
+                            </div>
+
+                            <div class="form-check-inline mr-2">
+                                <input class="form-check-input" type="checkbox" value="1" name="earlier" id="earlier">
+                                <label class="form-check-label" for="earlier">
+                                    Раніше
+                                </label>
+                            </div>
+
+                            <div class="form-check-inline">
+                                <input class="form-check-input" type="checkbox" value="1" name="call_back" id="call_back">
+                                <label class="form-check-label" for="call_back">
+                                    Передз<span class="d-none d-sm-inline">вонити</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="col-auto form-group text-muted small">
+                            <div style="display:none;">
+                                <i class="fa fa-fw fa-clock"></i> <span id="created_at"></span>
+                            </div>
+
+                            <div style="display:none;">
+                                <i class="fa fa-fw fa-pencil-alt"></i> <span id="updated_at"></span>
+                            </div>
+                        </div>
+
+                        <div class="col form-group text-right">
+                            <div class="text-danger small" id="appointment_save_errors" style="line-height:normal;"></div>
+                        </div>
+
+                        <div class="col-auto form-group">
+                            <button class="btn btn-success" id="appointment_save">Зберегти</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="appointment_history_modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Історія записів</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="text-center" id="history_loading">
+                <i class="fa fa-2x fa-spin fa-spinner text-muted my-2"></i>
+            </div>
+
+            <div class="modal-body pb-4">
+                <table class="table table-sm table-striped" style="display:none;">
+                    <thead>
+                    <tr>
+                        <th>Дата</th>
+                        <th>Ім'я</th>
+                        <th>Коментар</th>
+                    </tr>
+                    </thead>
+
+                    <tbody></tbody>
+                </table>
+
+                <div class="alert alert-warning" style="display:none;">записів не знайдено</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="date_comment_modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <textarea class="form-control" name="comment" rows="2"></textarea>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-success" id="date_comment_save">Зберегти</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="alert alert-success position-fixed small m-2 m-lg-4" id="popup_message" style="max-width:80vw; display:none; bottom:0; right:0; box-shadow:5px 5px 10px rgba(0, 0, 0, 0.25)"></div>
+
+<script src="/js/appointments.js?nocache=<?=filemtime(public_path().'/js/appointments.js') ?>" defer></script>
+
+@endsection
