@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "81aed48db7e1999f54b6d055fe1f2ed1",
+    "content-hash": "b88e2a0e5f260076495d46b7de0b3e89",
     "packages": [
         {
             "name": "brick/math",
@@ -3294,6 +3294,74 @@
                 }
             ],
             "time": "2025-01-06T09:31:59+00:00"
+        },
+        {
+            "name": "spatie/flysystem-dropbox",
+            "version": "3.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/flysystem-dropbox.git",
+                "reference": "e6bf18e4dcfe5b21945bdc8b633f7e4c3ae4b9eb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/flysystem-dropbox/zipball/e6bf18e4dcfe5b21945bdc8b633f7e4c3ae4b9eb",
+                "reference": "e6bf18e4dcfe5b21945bdc8b633f7e4c3ae4b9eb",
+                "shasum": ""
+            },
+            "require": {
+                "league/flysystem": "^3.7.0",
+                "php": "^8.0",
+                "spatie/dropbox-api": "^1.17.1"
+            },
+            "require-dev": {
+                "pestphp/pest": "^1.22",
+                "phpspec/prophecy-phpunit": "^2.0.1",
+                "phpunit/phpunit": "^9.5.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Spatie\\FlysystemDropbox\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alex Vanderbist",
+                    "email": "alex.vanderbist@gmail.com",
+                    "homepage": "https://spatie.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Flysystem Adapter for the Dropbox v2 API",
+            "homepage": "https://github.com/spatie/flysystem-dropbox",
+            "keywords": [
+                "Flysystem",
+                "api",
+                "dropbox",
+                "flysystem-dropbox",
+                "spatie",
+                "v2"
+            ],
+            "support": {
+                "issues": "https://github.com/spatie/flysystem-dropbox/issues",
+                "source": "https://github.com/spatie/flysystem-dropbox/tree/3.0.2"
+            },
+            "funding": [
+                {
+                    "url": "https://spatie.be/open-source/support-us",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/spatie",
+                    "type": "github"
+                }
+            ],
+            "time": "2025-01-06T14:05:49+00:00"
         },
         {
             "name": "symfony/console",

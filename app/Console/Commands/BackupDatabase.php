@@ -2,10 +2,10 @@
 
 namespace App\Console\Commands;
 
-use App\Services\DropboxService;
 use Illuminate\Console\Command;
-use Exception;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
+use Exception;
 
 class BackupDatabase extends Command
 {
@@ -37,41 +37,27 @@ class BackupDatabase extends Command
                 );
 
                 exec($command, $output, $res);
-            }
-            else
-                throw new Exception('Not Unix system');
 
-            if ($res<=0)
-            {
-                $log[]='Command executed, backup file created';
+                if ($res!==0)
+                    throw new Exception('Backup command failed: '.implode(PHP_EOL, $output));
+
+                $log[]="Backup created: $backup_name";
 
                 if (env('UPLOAD_BACKUP_TO_DROPBOX', false))
                 {
-                    $log[]='Trying to upload backup to Dropbox';
-
-                    $service = new DropboxService;
-
                     try
                     {
-                        if ($service->uploadFile("$backup_dest/$backup_name", '/db'))
-                            $log[]='File uploaded to Dropbox';
-                        else
-                            throw new Exception('Failed to upload file to Dropbox');
+                        Storage::disk('dropbox')->put('db/'.$backup_name, file_get_contents("$backup_dest/$backup_name"));
+                        $log[]="Backup uploaded to Dropbox";
                     }
                     catch (Exception $e)
                     {
-                        throw new Exception('Failed to upload file to Dropbox: '.$e->getMessage());
+                        $log[]="Failed to upload backup to Dropbox: ".$e->getMessage();
                     }
                 }
             }
             else
-            {
-                $log[]='$res = '.var_export($res, true);
-                $log[]='$output:';
-                $log[]=print_r(array_slice($output, -5), true);
-
-                throw new Exception('Command was not executed correctly, see result and output above');
-            }
+                throw new Exception('This command works only on Unix-like systems');
 
             // Delete old backups, except Monday files
             $files_deleted=0;

@@ -5,6 +5,11 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use App\Models\Vaccine;
+use Illuminate\Filesystem\FilesystemAdapter;
+use Illuminate\Support\Facades\Storage;
+use League\Flysystem\Filesystem;
+use Spatie\Dropbox\Client as DropboxClient;
+use Spatie\FlysystemDropbox\DropboxAdapter;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -36,5 +41,13 @@ class AppServiceProvider extends ServiceProvider
 
         View::share('services', $services);
         View::share('vaccines', $vaccines);
+
+        Storage::extend('dropbox', function ($app, $config) {
+            $client = new DropboxClient($config['authorization_token']);
+            $adapter = new DropboxAdapter($client);
+            $filesystem = new Filesystem($adapter);
+
+            return new FilesystemAdapter($filesystem, $adapter, $config);
+        });
     }
 }

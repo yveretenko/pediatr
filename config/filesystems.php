@@ -36,6 +36,11 @@ return [
             'throw' => false,
         ],
 
+        'dropbox' => [
+            'driver' => 'dropbox',
+            'authorization_token' => env('DROPBOX_TOKEN'),
+        ],
+
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
