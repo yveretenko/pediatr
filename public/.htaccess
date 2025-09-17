@@ -1,10 +1,21 @@
-RewriteEngine On
+<IfModule mod_rewrite.c>
+    <IfModule mod_negotiation.c>
+        Options -MultiViews -Indexes
+    </IfModule>
 
-Redirect 302 "/review" "https://g.page/r/CSGLSyAY-HosEAg/review"
+    RewriteEngine On
 
-# all to index.php
-RewriteCond %{REQUEST_FILENAME} !\.(jpg|jpeg|gif|png|svg|css|js|swf|mp3|flv|mp4|cur|ico|txt|html|woff|ttf|pdf)$
-RewriteRule .* index.php [L]
+    # Handle Authorization Header
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
-# this line must be present
-AddDefaultCharset UTF-8
+    # Redirect Trailing Slashes If Not A Folder...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} (.+)/$
+    RewriteRule ^ %1 [L,R=301]
+
+    # Send Requests To Front Controller...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
+</IfModule>

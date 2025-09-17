@@ -1,7 +1,7 @@
 $(function(){
     let hash=window.location.hash;
 
-    modal_name = modal_name ? modal_name : hash.substring(1);
+    let modal_name=hash.substring(1);
 
     let modal_id='#'+modal_name+'_modal';
 

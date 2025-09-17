@@ -8,22 +8,20 @@ $(document).ready(function(){
 
         $.ajax({
             type: "POST",
-            url: '/admin/index/login/',
+            url: '/admin/index/login',
             data: $("#login_form").serializeArray(),
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
             success: function(data){
-                if (data)
+                if (data && data.success)
                 {
-                    login_form.find('button').prop('disabled', false);
-                    login_form.find('i.fa-spinner').fadeOut(function(){ login_form.find('i.fa-times').fadeIn(); });
+                    login_form.find('i.fa-spinner').fadeOut(function(){ login_form.find('i.fa-check').fadeIn(function(){ setTimeout("location.href='"+data.redirect_to+"';", 1000); }); });
                 }
                 else
                 {
-                    var redirect_to=document.URL.replace(/.*redirect_to=([^&]*).*|(.*)/, '$1');
-
-                    if (!redirect_to)
-                        redirect_to='/admin/';
-
-                    login_form.find('i.fa-spinner').fadeOut(function(){ login_form.find('i.fa-check').fadeIn(function(){ setTimeout("location.href='"+decodeURIComponent(redirect_to)+"';", 1000); }); });
+                    login_form.find('button').prop('disabled', false);
+                    login_form.find('i.fa-spinner').fadeOut(function(){ login_form.find('i.fa-times').fadeIn(); });
                 }
             },
             error: function(){

@@ -21,8 +21,9 @@ $(function(){
     	let dates=$('#dates_disabled').datepicker('getDates');
 
     	$.ajax({
-    		url: '/admin/dates_disabled/save',
+    		url: '/admin/dates-disabled/save',
     		type: 'POST',
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
     		data: {dates: dates},
     		dataType: 'json',
     		success: function(data){

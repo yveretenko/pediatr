@@ -107,6 +107,7 @@ $('#vaccine_save').click(function(){
     $.ajax({
         url: '/admin/vaccines/save',
         data: edit_vaccine_modal.find('form').serializeArray(),
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
         dataType: 'json',
         method: 'POST'
     }).done(function(data){

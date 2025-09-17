@@ -3,9 +3,12 @@ let article_modal=$('#article_modal');
 function open_article(article_id)
 {
     $.ajax({
-        url: '/articles/get',
+        url: '/article/get',
         data: {id: article_id},
         dataType: 'json',
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
         method: 'POST'
     }).done(function(data){
         article_modal.modal('show');

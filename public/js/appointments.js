@@ -100,8 +100,9 @@ $(document).ready(function(){
             }
 
             $(row).find('.hidden_file_upload').find('input[type="file"]').fileupload({
-                url: '/admin/index/upload/?id='+data.id,
+                url: '/admin/appointments/'+data.id+'/file-upload',
                 dataType: 'json',
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                 done: function(e, data){
                     if (data.result.error)
                         alert('Виникла помилка, файл не було завантажено');
@@ -163,7 +164,7 @@ $(document).ready(function(){
                 orderable: false,
                 className: 'small',
                 render: function (data, type, row){
-                    let file = row.file ? '<span class="text-nowrap"><A title="'+(row.file.length>20 ? row.file : '')+'" href="/admin/appointments/file/?id='+row.id+'"><i class="fa fa-paperclip mr-1 mt-2"></i>'+(row.file.length>20 ? row.file.substr(0, 20)+'&hellip;' : row.file)+'</A></span>' : '';
+                    let file = row.file ? '<span class="text-nowrap"><A title="'+(row.file.length>20 ? row.file : '')+'" href="/admin/appointments/'+row.id+'/file"><i class="fa fa-paperclip mr-1 mt-2"></i>'+(row.file.length>20 ? row.file.substr(0, 20)+'&hellip;' : row.file)+'</A></span>' : '';
 
                     let vaccines=[];
                     $.each(row.vaccines, function(index, vaccine){
@@ -180,7 +181,7 @@ $(document).ready(function(){
                 render: function(){
                     let edit_button='<button class="btn btn-sm btn-success edit_appointment"><i class="fa fa-pencil-alt mr-0 mr-md-1"></i><span class="d-none d-md-inline"> Редагувати</span></button>';
 
-                    let attach_file_button='<span class="hidden_file_upload"><label><A class="btn btn-sm text-white btn-info ml-1 ml-md-2 d-none d-sm-inline-block"><i class="fa fa-paperclip mr-0 mr-md-1"></i><span class="d-none d-md-inline"> Файл</span></A><input type="file" name="file_uploader"></label></span>';
+                    let attach_file_button='<span class="hidden_file_upload"><label><A class="btn btn-sm text-white btn-info ml-1 ml-md-2 d-none d-sm-inline-block"><i class="fa fa-paperclip mr-0 mr-md-1"></i><span class="d-none d-md-inline"> Файл</span></A><input type="file" name="file_uploader" accept=".doc,.docx,.pdf"></label></span>';
 
                     let delete_button='<button class="btn btn-sm btn-danger ml-1 ml-md-2 delete_appointment"><i class="fa fa-trash mr-0 mr-md-1"></i><span class="d-none d-md-inline"> Видалити</span></button>';
 
@@ -202,7 +203,7 @@ $(document).ready(function(){
         if (!$(this).hasClass('active'))
             $(this).blur();
 
-        $('#date_comment').closest('.alert').find('button').prop('disabled', !$(this).hasClass('active'));
+        $('#edit_date_comment').toggleClass('disabled', !$(this).hasClass('active'));
 
         filter_form.find('input[type="text"], input[type="tel"], input[type="search"], select').val('');
 
@@ -222,7 +223,7 @@ $(document).ready(function(){
             edit_appointment_modal.find('input[name="date"]').val($('#appointments_calendar').find('A.active').data('date'));
 
         edit_appointment_modal.find('.modal-header').find('h5').text('Новий запис');
-        $('#appoinment_save_errors').empty();
+        $('#appointment_save_errors').empty();
 
         $('#created_at').closest('div').hide();
         $('#updated_at').closest('div').hide();
@@ -264,7 +265,7 @@ $(document).ready(function(){
                 });
 
                 edit_appointment_modal.find('.modal-header').find('h5').text('Редагувати запис');
-                $('#appoinment_save_errors').empty();
+                $('#appointment_save_errors').empty();
 
                 edit_appointment_modal.modal('show');
 
@@ -294,6 +295,7 @@ $(document).ready(function(){
 
                     $.ajax({
                         url: '/admin/appointments/delete',
+                        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                         data: {id: row.id},
                         dataType: 'json',
                         method: 'POST'
@@ -335,8 +337,9 @@ $(document).ready(function(){
                 modal.find('div.alert').hide();
 
                 $.ajax({
-                    url: '/admin/appointments/history/',
+                    url: '/admin/appointments/history',
                     data: {tel: row.tel},
+                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                     dataType: 'json',
                     method: 'POST'
                 }).done(function(data){
@@ -356,7 +359,7 @@ $(document).ready(function(){
 
                             let labels_html=(row.online ? '<span class="badge badge-info">Онлайн</span> ' : '')+(row.neurology ? '<span class="badge badge-danger">Невр</span> ' : '')+vaccines.join(' ');
 
-                            let file_html = row.file ? '<A href="/admin/appointments/file/?id='+row.id+'"><i class="fa fa-paperclip mr-1"></i>'+row.file+'</A>' : '';
+                            let file_html = row.file ? '<A href="/admin/appointments/'+row.id+'/file"><i class="fa fa-paperclip mr-1"></i>'+row.file+'</A>' : '';
 
                             let comment_html='<div>'+[row.comment, labels_html, file_html].filter(function(e){return e}).join('</div><div class="mt-1">')+'</div>';
 
@@ -375,6 +378,7 @@ $(document).ready(function(){
     $('#appointment_save').click(function(){
         $.ajax({
             url: '/admin/appointments/save',
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             data: edit_appointment_modal.find('form').serializeArray(),
             dataType: 'json',
             method: 'POST'
@@ -386,7 +390,7 @@ $(document).ready(function(){
                 datatable.ajax.reload();
             }
             else
-                $('#appoinment_save_errors').html(data.errors.join('<br>'));
+                $('#appointment_save_errors').html(data.errors.join('<br>'));
         });
 
         return false;
@@ -407,7 +411,8 @@ $(document).ready(function(){
         if (tel && !form.find('input[name="name"]').val())
         {
             $.ajax({
-                url: '/admin/appointments/get_by_telephone/',
+                url: '/admin/appointments/get-by-telephone',
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                 data: {
                     tel: tel
                 },
@@ -440,6 +445,8 @@ $(document).ready(function(){
         date_comment_modal.find('textarea').val($('#date_comment').text());
 
         date_comment_modal.modal('show');
+
+        return false;
     });
 
     date_comment_modal.on('shown.bs.modal', function () {
@@ -449,16 +456,21 @@ $(document).ready(function(){
     $('#date_comment_save').click(function(){
         let comment=date_comment_modal.find('textarea').val();
 
-    	$.post('/admin/date_comments/save', {
-            date: $('#appointments_calendar').find('A.active').data('date'),
-            comment: comment
-        })
-        .done(function(){
-            date_comment_modal.modal('hide');
-            $('#date_comment').text(comment);
-        })
-        .fail(function(){
-            alert('Помилка при збереженні коментаря');
+        $.ajax({
+            url: '/admin/date-comments/save',
+            method: 'POST',
+            data: {
+                date: $('#appointments_calendar').find('A.active').data('date'),
+                comment: comment
+            },
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            success: function() {
+                date_comment_modal.modal('hide');
+                $('#date_comment').text(comment);
+            },
+            error: function() {
+                alert('Помилка при збереженні коментаря');
+            }
         });
     });
 
@@ -480,6 +492,7 @@ $(document).ready(function(){
         filter_form.find('select, input').val(''); // don't use reset here because if $_GET['tel'] is set, tel input will not be emptied
 
         $('#appointments_calendar').find('.active').removeClass('active').blur();
+        $('#edit_date_comment').addClass('disabled');
 
         datatable.ajax.reload();
     });

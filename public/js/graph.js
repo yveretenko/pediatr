@@ -2,10 +2,8 @@ let chart, chart_data=[];
 
 $(document).ready(function(){
     $.ajax({
-        url: '/admin/appointments/graph_data/'
+        url: '/admin/appointments/graph-data/'
     }).done(function(data){
-        data=JSON.parse(data);
-
         $.each(data, function(index, value){
             chart_data.push([Date.parse(index), value]);
         });
