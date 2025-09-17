@@ -35,7 +35,7 @@ class SmsService
                'class_version'=>$this->_version];
         $result=$this->execute('send', $data);
 
-        if (is_countable($result['errors']) && count($result['errors']))
+        if (isset($result['errors']) && is_countable($result['errors']) && count($result['errors']))
             $this->_errors=$result['errors'];
 
         return @$result['id'];
