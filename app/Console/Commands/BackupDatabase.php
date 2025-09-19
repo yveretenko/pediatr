@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 use Exception;
@@ -47,7 +48,21 @@ class BackupDatabase extends Command
                 {
                     try
                     {
+                        $response=Http::asForm()->post('https://api.dropboxapi.com/oauth2/token', [
+                            'grant_type'    => 'refresh_token',
+                            'refresh_token' => env('DROPBOX_REFRESH_TOKEN'),
+                            'client_id'     => env('DROPBOX_APP_KEY'),
+                            'client_secret' => env('DROPBOX_APP_SECRET'),
+                        ]);
+
+                        $access_token=$response->json()['access_token'];
+
+                        config([
+                            'filesystems.disks.dropbox.authorization_token' => $access_token,
+                        ]);
+
                         Storage::disk('dropbox')->put('db/'.$backup_name, file_get_contents("$backup_dest/$backup_name"));
+
                         $log[]="Backup uploaded to Dropbox";
                     }
                     catch (Exception $e)
