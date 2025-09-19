@@ -67,6 +67,7 @@ class SendAppointmentSms extends Command
                 }
 
                 $appointment->sms_notified=1;
+                $appointment->timestamps=false;
 
                 $appointment->save();
             }
