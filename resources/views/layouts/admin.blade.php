@@ -6,20 +6,19 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>pediatr.cv.ua admin - @yield('title')</title>
-
-    <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="{{ asset('vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker3.standalone.min.css" integrity="sha512-p4vIrJ1mDmOVghNMM4YsWxm0ELMJ/T0IkdEvrkNHIcgFsSzDi/fV7YxzTzb3mnMvFPawuIyIrHcpxClauEfpQg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="//cdn.datatables.net/responsive/1.0.0/css/dataTables.responsive.css">
-    <link rel="stylesheet" href="/vendor/jquery-multiselect/css/bootstrap-multiselect.css">
+    <link rel="stylesheet" href="{{ asset('vendor/jquery-multiselect/css/bootstrap-multiselect.css') }}">
 
-    <link href="/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/css/custom.css?nocache=<?=filemtime(public_path().'/css/custom.css') ?>" rel="stylesheet">
+    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/custom.css') }}?nocache={{ filemtime(public_path('css/custom.css')) }}" rel="stylesheet">
 
-    <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon">
-    <link rel="icon" href="/img//favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ asset('img/favicon.ico') }}" type="image/x-icon">
+    <link rel="icon" href="{{ asset('img/favicon.ico') }}" type="image/x-icon">
 </head>
 <body>
 <nav class="navbar navbar-expand-lg alert-dark p-0">
@@ -88,17 +87,18 @@
 
 @stack('scripts')
 
-<script src="/vendor/jquery/jquery.min.js"></script>
-<script src="/js/jquery.mark.min.js"></script>
-<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
-<script src="/js/jqBootstrapValidation.js"></script>
+<script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
+<script src="{{ asset('js/jquery.mark.min.js') }}"></script>
+<script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ asset('vendor/jquery-easing/jquery.easing.min.js') }}"></script>
+<script src="{{ asset('js/jqBootstrapValidation.js') }}"></script>
 <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 <script src="//cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.js"></script>
-<script src="/js/file_upload/vendor/jquery.ui.widget.js"></script>
-<script src="/js/file_upload/jquery.fileupload.js"></script>
-<script src="/vendor/jquery-multiselect/js/bootstrap-multiselect.min.js"></script>
+<script src="{{ asset('js/file_upload/vendor/jquery.ui.widget.js') }}"></script>
+<script src="{{ asset('js/file_upload/jquery.fileupload.js') }}"></script>
+<script src="{{ asset('vendor/jquery-multiselect/js/bootstrap-multiselect.min.js') }}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.uk.min.js" integrity="sha512-zj4XeRYWp+L81MSZ3vFuy6onVEgypIi1Ntv1YAA6ThjX4fRhEtW7x+ppVnbugFttWDFe/9qBVdeWRdv9betzqQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 </body>
 </html>
