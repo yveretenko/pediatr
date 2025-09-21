@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>pediatr.cv.ua admin - {{ $title }}</title>
+    <title>pediatr.cv.ua admin - @yield('title')</title>
 
     <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
@@ -81,7 +81,7 @@
 </nav>
 
 <div class="col-12 col-xl-10 container-xl pb-5 px-1 px-md-4">
-    <h5 class="ml-2 ml-md-0 my-4"><i class="{{ $title_icon }}"></i> {{ $title }}</h5>
+    <h5 class="ml-2 ml-md-0 my-4"><i class="@yield('title_icon')"></i> @yield('title')</h5>
 
     @yield('content')
 </div>

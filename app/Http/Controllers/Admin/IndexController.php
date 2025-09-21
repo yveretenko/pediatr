@@ -13,10 +13,7 @@ class IndexController extends Controller
         if (Auth::check())
             return redirect()->route('admin.appointments');
 
-        return view('admin/index/index', [
-            'title'      => 'Вхід',
-            'title_icon' => 'fa fa-sign-in-alt',
-        ]);
+        return view('admin.index.index');
     }
 
     public function login(Request $request)

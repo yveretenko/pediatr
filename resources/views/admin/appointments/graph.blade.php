@@ -1,5 +1,8 @@
 @extends('layouts.admin')
 
+@section('title', 'Статистика')
+@section('title_icon', 'fa fa-chart-bar')
+
 @section('content')
 
 <div class="form-row pl-2 pl-md-0 mb-3">

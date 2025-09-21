@@ -51,8 +51,6 @@ class AppointmentController extends Controller
         }
 
         return view('admin.appointments.index', [
-            'title'        => 'Записи',
-            'title_icon'   => 'fa fa-list',
             'vaccines'     => $vaccines,
             'query'        => $query,
             'weeks'        => $weeks,
@@ -283,8 +281,6 @@ class AppointmentController extends Controller
         ;
 
         return view('admin.appointments.files', [
-            'title'        => 'Файли',
-            'title_icon'   => 'far fa-file-alt',
             'appointments' => $appointments_with_file,
         ]);
     }
@@ -338,10 +334,7 @@ class AppointmentController extends Controller
 
     public function graph()
     {
-        return view('admin.appointments.graph', [
-            'title'      => 'Статистика',
-            'title_icon' => 'fa fa-chart-bar',
-        ]);
+        return view('admin.appointments.graph');
     }
 
     public function graphData()

@@ -16,11 +16,7 @@ class DatesDisabledController extends Controller
 
         $close_dates=$dates_disabled->map(fn($d) => $d->date->format('d.m.Y'));
 
-        return view('admin.dates_disabled.index', [
-            'title'       => 'Закриті дати',
-            'title_icon'  => 'fa fa-calendar-times',
-            'close_dates' => $close_dates,
-        ]);
+        return view('admin.dates_disabled.index', compact('close_dates'));
     }
 
     public function save(Request $request)

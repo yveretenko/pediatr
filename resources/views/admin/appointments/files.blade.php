@@ -1,5 +1,8 @@
 @php use Carbon\Carbon; @endphp
 
+@section('title', 'Файли')
+@section('title_icon', 'far fa-file-alt')
+
 @extends('layouts.admin')
 
 @section('content')

@@ -1,5 +1,8 @@
 @extends('layouts.admin')
 
+@section('title', 'Записи')
+@section('title_icon', 'fa fa-list')
+
 @section('content')
 
 <div class="mb-3 text-nowrap overflow-auto table-responsive" id="appointments_calendar">

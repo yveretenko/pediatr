@@ -11,10 +11,7 @@ class VaccineController extends Controller
 {
     public function index()
     {
-        return view('admin.vaccines.index', [
-            'title'      => 'Вакцини',
-            'title_icon' => 'fa fa-vial',
-        ]);
+        return view('admin.vaccines.index');
     }
 
     public function filter(Request $request)

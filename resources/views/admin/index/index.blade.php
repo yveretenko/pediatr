@@ -1,5 +1,8 @@
 @extends('layouts.admin')
 
+@section('title', 'Вхід')
+@section('title_icon', 'fa fa-sign-in-alt')
+
 @section('content')
 
 <div class="row justify-content-sm-center">

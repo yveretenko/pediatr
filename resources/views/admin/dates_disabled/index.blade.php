@@ -1,5 +1,8 @@
 @extends('layouts.admin')
 
+@section('title', 'Закриті дати')
+@section('title_icon', 'fa fa-calendar-times')
+
 @section('content')
 
 <div type="text" id="dates_disabled"></div>

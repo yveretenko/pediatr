@@ -1,5 +1,8 @@
 @extends('layouts.admin')
 
+@section('title', 'Вакцини')
+@section('title_icon', 'fa fa-vial')
+
 @section('content')
 
 <table class="table table-striped" id="vaccines_grid">
