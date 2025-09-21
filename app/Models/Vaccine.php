@@ -36,8 +36,13 @@ class Vaccine extends Model
     public function getPriceAttribute(): ?int
     {
         if ($this->purchase_price)
-            return (int)ceil((($this->purchase_price+700)*1.06)/100)*100;
+        {
+            if ($this->purchase_price>500)
+                $price=ceil((($this->purchase_price+700)*1.06)/100)*100;
+            else
+                $price=ceil((($this->purchase_price+400)*1.06)/50)*50;
+        }
 
-        return null;
+        return isset($price) ? (int)$price : null;
     }
 }
