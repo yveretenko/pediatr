@@ -470,7 +470,7 @@ class AppointmentController extends Controller
 
                 $old_date = $appointment->date ?? null;
 
-                $appointment->name  =$request->name ?? '';
+                $appointment->name = $request->name ?? '';
                 $appointment->tel = $tel ?: null;
                 $appointment->date=$timestamp;
                 $appointment->comment = $request->comment ?? '';
