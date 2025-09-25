@@ -40,7 +40,7 @@ class Vaccine extends Model
             if ($this->purchase_price>500)
                 $price=ceil((($this->purchase_price+700)*1.06)/100)*100;
             else
-                $price=ceil((($this->purchase_price+400)*1.06)/50)*50;
+                $price=ceil((($this->purchase_price+450)*1.06)/50)*50;
         }
 
         return isset($price) ? (int)$price : null;
