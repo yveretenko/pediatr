@@ -9,24 +9,22 @@ use App\Http\Requests\AppointmentRequest;
 use App\Models\Appointment;
 use App\Models\DateComment;
 use App\Models\DateDisabled;
-use App\Models\Vaccine;
 use App\Repositories\AppointmentRepository;
 use App\Services\BlacklistService;
 use App\Services\FileService;
+use App\Services\VaccineService;
 use DateInterval;
 use DatePeriod;
 use DateTime;
-use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class AppointmentController extends Controller
 {
-    public function __construct(protected AppointmentRepository $appointmentRepository, protected BlacklistService $blacklistService, protected FileService $fileService) {}
+    public function __construct(protected AppointmentRepository $appointmentRepository, protected BlacklistService $blacklistService, protected FileService $fileService, protected VaccineService $vaccineService) {}
 
     public function index(Request $request)
     {
-        $vaccines=Vaccine::orderBy('name', 'asc')->get();
+        $vaccines=$this->vaccineService->allOrderedByName();
         $query=$request->query();
         $query['comment'] = $request->query('age') ? $request->query('age')."\n\n".$request->query('message') : $request->query('message');
         $query['date'] = $request->query('date') ? date('Y-m-d', strtotime($request->query('date'))) : '';
@@ -116,14 +114,7 @@ class AppointmentController extends Controller
             if ($appointment->tel)
                 $visits_to_date=Appointment::where('tel', $appointment->tel)->where('date', '<=', time())->count();
 
-            $vaccines=[];
-            foreach ($appointment->vaccines as $vaccine)
-                $vaccines[]=[
-                    'id'         => $vaccine->id,
-                    'name'       => $vaccine->name,
-                    'short_name' => $vaccine->short_name,
-                    'available'  => $vaccine->available,
-                ];
+            $vaccines=$this->vaccineService->formatForApi($appointment->vaccines);
 
             if ($appointment->isToday())
                 $date_text='сьогодні';
@@ -371,7 +362,7 @@ class AppointmentController extends Controller
 
         $appointment->save();
 
-        $appointment->vaccines()->sync($request->input('vaccines', []));
+        $this->vaccineService->syncAppointmentVaccines($appointment, $request->input('vaccines', []));
 
         return response()->json(['success' => true]);
     }
