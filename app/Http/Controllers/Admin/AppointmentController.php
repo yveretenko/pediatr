@@ -136,8 +136,7 @@ class AppointmentController extends Controller
         $data_by_dates=[];
         foreach ($dates as $date)
         {
-            $appointments=$this->appointmentRepository->findByFilters(['start_timestamp' => $date->getTimestamp(), 'end_timestamp' => $date->getTimestamp()+24*60*60,
-            ]);
+            $appointments=$this->appointmentRepository->findByFilters(['start_timestamp' => $date->getTimestamp(), 'end_timestamp' => $date->getTimestamp()+24*60*60]);
 
             $vaccines_count=0;
             foreach ($appointments as $appointment)
