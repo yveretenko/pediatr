@@ -12,15 +12,8 @@ class Vaccine extends Model
     public $timestamps=false;
 
     protected $fillable=[
-        'name',
-        'short_name',
-        'type',
-        'country',
-        'available',
         'purchase_price',
-        'link',
-        'analogue_vaccine_id',
-        'comment',
+        'available'
     ];
 
     protected $casts=[

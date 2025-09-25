@@ -104,23 +104,22 @@ grid.on('click', '.vaccine_edit', function(){
 });
 
 $('#vaccine_save').click(function(){
+    let id=edit_vaccine_modal.find('input[name="id"]').val();
+
     $.ajax({
-        url: '/admin/vaccines/save',
+        url: '/admin/vaccines/save'+(id ? '/'+id : ''),
         data: edit_vaccine_modal.find('form').serializeArray(),
         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
         dataType: 'json',
         method: 'POST'
-    }).done(function(data){
-        $('#vaccine_save_errors').empty();
+    }).done(function(){
+        edit_vaccine_modal.modal('hide');
 
-        if (!data.errors.length)
-        {
-            edit_vaccine_modal.modal('hide');
+        datatable.ajax.reload();
+    }).fail(function(data){
+        let error_text = (data.status===422 && data.responseJSON?.errors) ? Object.values(data.responseJSON.errors).flat().join('<br>') : 'Помилка при збереженні даних';
 
-            datatable.ajax.reload();
-        }
-        else
-            $('#vaccine_save_errors').html(data.errors.join('<br>'));
+        $('#vaccine_save_errors').html(error_text);
     });
 
     return false;

@@ -47,26 +47,25 @@ class VaccineController extends Controller
         ]);
     }
 
-    public function save(Request $request)
+    public function save(Request $request, Vaccine $vaccine)
     {
-        $errors=[];
+        $vaccine ??= new Vaccine;
 
-        try
-        {
-            $vaccine=Vaccine::findOrFail($request->input('id'));
-
-            $vaccine->purchase_price=$request->input('purchase_price');
-            $vaccine->available=$request->boolean('available');
-
-            $vaccine->save();
-        }
-        catch (Exception)
-        {
-            $errors[]='Помилка збереження даних';
-        }
-
-        return response()->json([
-            'errors' => $errors,
+        $request->validate([
+            'purchase_price' => 'required|integer|min:0',
+            'available'      => 'boolean',
+        ], [
+            'purchase_price.*' => 'Некоректна закупочна ціна',
         ]);
+
+        $vaccine
+            ->fill([
+                'purchase_price' => $request->input('purchase_price'),
+                'available'      => $request->boolean('available'),
+            ])
+            ->save()
+        ;
+
+        return response()->json(['success' => true]);
     }
 }

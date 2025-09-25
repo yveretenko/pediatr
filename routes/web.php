@@ -46,7 +46,7 @@ Route::prefix('admin')->name('admin.')->middleware(['web', 'auth'])->group(funct
     Route::prefix('vaccines')->group(function(){
         Route::get('/', [VaccineController::class, 'index'])->name('vaccines.index');
         Route::get('/filter', [VaccineController::class, 'filter'])->name('vaccines.filter');
-        Route::post('/save', [VaccineController::class, 'save'])->name('vaccines.save');
+        Route::post('/save/{vaccine}', [VaccineController::class, 'save'])->name('vaccines.save');
     });
 
     Route::prefix('dates-disabled')->group(function(){
