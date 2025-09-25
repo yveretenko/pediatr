@@ -25,7 +25,7 @@ class VaccineController extends Controller
 
         $vaccines=Vaccine::orderBy($order_by, $order_dir)->get();
 
-        $data=$vaccines->map(fn($vaccine) => [
+        $data=$vaccines->map(fn(Vaccine $vaccine) => [
             ...$vaccine->only([
                 'id',
                 'name',
