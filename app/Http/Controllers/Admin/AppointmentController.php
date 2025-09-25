@@ -11,16 +11,15 @@ use App\Models\DateComment;
 use App\Models\DateDisabled;
 use App\Repositories\AppointmentRepository;
 use App\Services\BlacklistService;
+use App\Services\CalendarService;
 use App\Services\FileService;
 use App\Services\VaccineService;
-use DateInterval;
-use DatePeriod;
 use DateTime;
 use Illuminate\Http\Request;
 
 class AppointmentController extends Controller
 {
-    public function __construct(protected AppointmentRepository $appointmentRepository, protected BlacklistService $blacklistService, protected FileService $fileService, protected VaccineService $vaccineService) {}
+    public function __construct(protected AppointmentRepository $appointmentRepository, protected BlacklistService $blacklistService, protected FileService $fileService, protected VaccineService $vaccineService, protected CalendarService $calendarService) {}
 
     public function index(Request $request)
     {
@@ -31,18 +30,7 @@ class AppointmentController extends Controller
 
         $working_days = [1, 2, 3, 4, 5, 6];
 
-        $start_date = new DateTime('Monday'.(date('N')<=max($working_days) ? ' this week' : ''));
-
-        $dates = new DatePeriod($start_date, new DateInterval('P1D'), new DateTime($start_date->format('Y-m-d').' + 28 days'));
-
-        $weeks=[];
-        foreach ($dates as $date)
-        {
-            if (!in_array($date->format('N'), $working_days))
-                continue;
-
-            $weeks[$date->format('W')][]=$date;
-        }
+        $weeks=$this->calendarService->getWeeks($working_days, 28);
 
         return view('admin.appointments.index', [
             'vaccines'     => $vaccines,
@@ -164,9 +152,7 @@ class AppointmentController extends Controller
             ];
         }
 
-        $start_date = new DateTime('Monday'.(date('N')<=6 ? ' this week' : ''));
-
-        $dates = new DatePeriod($start_date, new DateInterval('P1D'), new DateTime($start_date->format('Y-m-d').' + 28 days'));
+        $dates=$this->calendarService->getDatesRange(28, 6);
 
         $data_by_dates=[];
         foreach ($dates as $date)
