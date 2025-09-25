@@ -237,21 +237,12 @@ class AppointmentController extends Controller
 
     public function delete(Appointment $appointment)
     {
-        $success=true;
+        if ($appointment->file && Storage::exists('files/'.$appointment->file))
+            Storage::delete('files/'.$appointment->file);
 
-        try
-        {
-            if ($appointment->file && Storage::exists('files/'.$appointment->file))
-                Storage::delete('files/'.$appointment->file);
+        $appointment->delete();
 
-            $appointment->delete();
-        }
-        catch (Exception)
-        {
-            $success=false;
-        }
-
-        return response()->json(['success' => $success]);
+        return response()->json(['success' => true]);
     }
 
     public function file(Appointment $appointment)
