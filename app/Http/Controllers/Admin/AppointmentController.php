@@ -257,11 +257,9 @@ class AppointmentController extends Controller
         return response()->json(['success' => $success]);
     }
 
-    public function file($id)
+    public function file(Appointment $appointment)
     {
-        $appointment=Appointment::find($id);
-
-        if (!$appointment || !$appointment->file)
+        if (!$appointment->file)
             abort(404, 'Файл не знайдено');
 
         $file_path=storage_path('app/public/files/'.$appointment->file);
