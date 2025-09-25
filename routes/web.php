@@ -32,7 +32,7 @@ Route::prefix('admin')->name('admin.')->middleware(['web', 'auth'])->group(funct
     Route::prefix('appointments')->group(function(){
         Route::get('/', [AppointmentController::class, 'index'])->name('appointments');
         Route::get('/filter', [AppointmentController::class, 'filter']);
-        Route::post('/save', [AppointmentController::class, 'save']);
+        Route::post('/save/{appointment?}', [AppointmentController::class, 'save']);
         Route::delete('/{appointment}', [AppointmentController::class, 'delete']);
         Route::get('/files', [AppointmentController::class, 'files'])->name('appointments.files');
         Route::get('/{appointment}/file', [AppointmentController::class, 'file'])->name('appointments.file');

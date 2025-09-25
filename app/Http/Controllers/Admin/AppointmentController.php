@@ -413,7 +413,7 @@ class AppointmentController extends Controller
         ]);
     }
 
-    public function save(Request $request)
+    public function save(Request $request, Appointment $appointment = null)
     {
         $errors=[];
 
@@ -463,10 +463,7 @@ class AppointmentController extends Controller
         {
             try
             {
-                $appointment = $request->id ? Appointment::find($request->id) : new Appointment;
-
-                if (!$appointment)
-                    return response()->json(['errors' => ['Запис не знайдено']], 404);
+                $appointment ??= new Appointment;
 
                 $old_date = $appointment->date ?? null;
 

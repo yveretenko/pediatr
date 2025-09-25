@@ -374,8 +374,10 @@ $(document).ready(function(){
     ;
 
     $('#appointment_save').click(function(){
+        let id=edit_appointment_modal.find('input[name="id"]').val();
+
         $.ajax({
-            url: '/admin/appointments/save',
+            url: '/admin/appointments/save'+(id ? '/'+id : ''),
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             data: edit_appointment_modal.find('form').serializeArray(),
             dataType: 'json',
