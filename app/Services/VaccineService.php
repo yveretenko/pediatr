@@ -3,19 +3,22 @@
 namespace App\Services;
 
 use App\Models\Vaccine;
+use App\Repositories\VaccineRepository;
 use Illuminate\Database\Eloquent\Collection;
 
 class VaccineService
 {
+    public function __construct(protected VaccineRepository $vaccineRepository) {}
+
     public function getFiltered(array $order=[]): array
     {
-        $order_by=$order['column'] ?? 'id';
-        $order_dir=$order['dir'] ?? 'asc';
+        $order_by = $order['column'] ?? 'id';
+        $order_dir = $order['dir'] ?? 'asc';
 
         if ($order_by==='price')
             $order_by='purchase_price';
 
-        $vaccines=Vaccine::orderBy($order_by, $order_dir)->get();
+        $vaccines=$this->vaccineRepository->getFiltered($order_by, $order_dir);
 
         $data=$vaccines->map(fn(Vaccine $vaccine) => [
             ...$vaccine->only([
@@ -62,7 +65,7 @@ class VaccineService
 
     public function allOrderedByName(): Collection
     {
-        return Vaccine::orderBy('name', 'asc')->get();
+        return $this->vaccineRepository->getFiltered('name');
     }
 
     public function update(Vaccine $vaccine, array $data): Vaccine

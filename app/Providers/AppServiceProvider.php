@@ -2,9 +2,9 @@
 
 namespace App\Providers;
 
+use App\Services\VaccineService;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
-use App\Models\Vaccine;
 use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Support\Facades\Storage;
 use League\Flysystem\Filesystem;
@@ -13,17 +13,11 @@ use Spatie\FlysystemDropbox\DropboxAdapter;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
     public function register(): void
     {
     }
 
-    /**
-     * Bootstrap any application services.
-     */
-    public function boot(): void
+    public function boot(VaccineService $vaccineService): void
     {
         $services=[
             'Консультація педіатрична'                                                              => 700,
@@ -37,7 +31,7 @@ class AppServiceProvider extends ServiceProvider
             'Виклик лікаря додому (в межах міста)'                                                  => 2000,
         ];
 
-        $vaccines=Vaccine::orderBy('name', 'asc')->get();
+        $vaccines=$vaccineService->allOrderedByName();
 
         View::share('services', $services);
         View::share('vaccines', $vaccines);
