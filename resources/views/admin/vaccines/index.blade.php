@@ -33,7 +33,7 @@
                 </button>
             </div>
 
-            <div class="modal-body">
+            <div class="modal-body pb-0">
                 <form>
                     <input type="hidden" name="id">
 
