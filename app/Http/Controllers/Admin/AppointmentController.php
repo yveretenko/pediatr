@@ -12,6 +12,7 @@ use App\Models\DateDisabled;
 use App\Models\Vaccine;
 use App\Repositories\AppointmentRepository;
 use App\Services\BlacklistService;
+use App\Services\FileService;
 use DateInterval;
 use DatePeriod;
 use DateTime;
@@ -21,7 +22,7 @@ use Illuminate\Support\Facades\Storage;
 
 class AppointmentController extends Controller
 {
-    public function __construct(protected AppointmentRepository $appointmentRepository, protected BlacklistService $blacklistService) {}
+    public function __construct(protected AppointmentRepository $appointmentRepository, protected BlacklistService $blacklistService, protected FileService $fileService) {}
 
     public function index(Request $request)
     {
@@ -217,9 +218,7 @@ class AppointmentController extends Controller
 
     public function delete(Appointment $appointment)
     {
-        if ($appointment->file && Storage::exists('files/'.$appointment->file))
-            Storage::delete('files/'.$appointment->file);
-
+        $this->fileService->delete($appointment->file);
         $appointment->delete();
 
         return response()->json(['success' => true]);
@@ -227,15 +226,10 @@ class AppointmentController extends Controller
 
     public function file(Appointment $appointment)
     {
-        if (!$appointment->file)
+        if (!$appointment->file || !$this->fileService->exists($appointment->file))
             abort(404, 'Файл не знайдено');
 
-        $file_path=storage_path('app/public/files/'.$appointment->file);
-
-        if (!file_exists($file_path))
-            abort(404, 'Файл не знайдено');
-
-        return response()->download($file_path, basename($file_path));
+        return response()->download($this->fileService->getPath($appointment->file), basename($appointment->file));
     }
 
     public function files()
@@ -253,46 +247,19 @@ class AppointmentController extends Controller
 
     public function fileUpload(Appointment $appointment, Request $request)
     {
-        try
-        {
-            if (!$request->hasFile('file_uploader'))
-                throw new Exception('No file uploaded');
+        $request->validate([
+            'file_uploader' => 'required|mimes:doc,docx,pdf',
+        ]);
 
-            if ($appointment->file)
-                Storage::disk('public')->delete('files/'.$appointment->file);
+        $this->fileService->delete($appointment->file);
 
-            $file=$request->file('file_uploader');
+        $filename=$this->fileService->upload($request->file('file_uploader'));
 
-            $request->validate([
-                'file_uploader' => 'mimes:doc,docx,pdf',
-            ]);
+        $appointment->timestamps=false;
+        $appointment->file=$filename;
+        $appointment->save();
 
-            // generate unique safe filename
-            $filename=pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-            $extension=$file->getClientOriginalExtension();
-            $safe_name=preg_replace("/([^\p{Cyrillic}\w\s\d\-_~,;\[\]\(\).])/u", '', $filename);
-            $final_name=$safe_name.'.'.$extension;
-
-            // ensure uniqueness
-            $i=1;
-            while (Storage::disk('public')->exists("files/$final_name"))
-            {
-                $final_name=$safe_name." ($i).".$extension;
-                $i++;
-            }
-
-            $file->storeAs('files', $final_name, 'public');
-
-            $appointment->timestamps=false;
-            $appointment->file=$final_name;
-            $appointment->save();
-
-            return response()->json(['error' => null]);
-        }
-        catch (Exception $e)
-        {
-            return response()->json(['error' => $e->getMessage()], 500);
-        }
+        return response()->json(['error'=>null]);
     }
 
     public function graph()
