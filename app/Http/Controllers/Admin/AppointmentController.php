@@ -7,11 +7,11 @@ use App\Helpers\StringHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AppointmentRequest;
 use App\Models\Appointment;
-use App\Models\Blacklist;
 use App\Models\DateComment;
 use App\Models\DateDisabled;
 use App\Models\Vaccine;
 use App\Repositories\AppointmentRepository;
+use App\Services\BlacklistService;
 use DateInterval;
 use DatePeriod;
 use DateTime;
@@ -21,12 +21,7 @@ use Illuminate\Support\Facades\Storage;
 
 class AppointmentController extends Controller
 {
-    protected AppointmentRepository $appointmentRepository;
-
-    public function __construct(AppointmentRepository $appointmentRepository)
-    {
-        $this->appointmentRepository=$appointmentRepository;
-    }
+    public function __construct(protected AppointmentRepository $appointmentRepository, protected BlacklistService $blacklistService) {}
 
     public function index(Request $request)
     {
@@ -129,8 +124,6 @@ class AppointmentController extends Controller
                     'available'  => $vaccine->available,
                 ];
 
-            $blacklist = $appointment->tel ? Blacklist::find($appointment->tel) : null;
-
             if ($appointment->isToday())
                 $date_text='сьогодні';
             elseif ($appointment->isTomorrow())
@@ -166,8 +159,8 @@ class AppointmentController extends Controller
                 'is_today'           => date('Y-m-d', $appointment->date)===date('Y-m-d'),
                 'is_tomorrow'        => date('Y-m-d', $appointment->date)===date('Y-m-d', strtotime('tomorrow')),
                 'visits_to_date'     => $visits_to_date,
-                'blacklisted'        => !is_null($blacklist),
-                'blacklisted_reason' => htmlentities($blacklist?->reason_and_name ?? ''),
+                'blacklisted'        => $appointment->tel ? $this->blacklistService->isBlacklisted($appointment->tel) : null,
+                'blacklisted_reason' => $appointment->tel ? htmlentities($this->blacklistService->getBlacklistReason($appointment->tel)) : null,
                 'vaccines'           => $vaccines,
                 'neurology'          => $appointment->neurology,
                 'earlier'            => $appointment->earlier,
@@ -204,26 +197,13 @@ class AppointmentController extends Controller
 
         $tel=trim($filters['tel']);
 
-        $blacklist=[];
+        $blacklisted=[];
         if ($tel)
         {
-            $query=Blacklist::query();
+            $blacklist=$this->blacklistService->search(trim($filters['tel']));
 
-            if (str_starts_with($tel, '*') || str_ends_with($tel, '*'))
-            {
-                if (str_starts_with($tel, '*'))
-                    $query->where('tel', 'like', '%'.substr($tel, 1));
-
-                if (str_ends_with($tel, '*'))
-                    $query->where('tel', 'like', substr($tel, 0, -1).'%');
-            }
-            else
-                $query->where('tel', 'like', '%'.StringHelper::normalizeTelephone($tel).'%');
-
-            $blacklisted=$query->get();
-
-            foreach ($blacklisted as $item)
-                $blacklist[$item->tel]=$item->reason_and_name;
+            foreach ($blacklist as $item)
+                $blacklisted[$item->tel]=$item->reason_and_name;
         }
 
         die(json_encode([
@@ -231,7 +211,7 @@ class AppointmentController extends Controller
             'recordsFiltered' => $this->appointmentRepository->findByFilters($filters)->count(),
             'recordsTotal'    => Appointment::count(),
             'dates'           => $data_by_dates,
-            'blacklist'       => $blacklist,
+            'blacklist'       => $blacklisted,
         ]));
     }
 
@@ -395,12 +375,10 @@ class AppointmentController extends Controller
             ->value('name')
         ;
 
-        $blacklist=Blacklist::find($tel);
-
         return response()->json([
             'name'               => $name,
-            'blacklisted'        => !is_null($blacklist),
-            'blacklisted_reason' => $blacklist?->reason_and_name,
+            'blacklisted'        => $this->blacklistService->isBlacklisted($tel),
+            'blacklisted_reason' => $this->blacklistService->getBlacklistReason($tel),
         ]);
     }
 
