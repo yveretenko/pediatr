@@ -14,6 +14,7 @@ use App\Services\BlacklistService;
 use App\Services\CalendarService;
 use App\Services\FileService;
 use App\Services\VaccineService;
+use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
 
@@ -42,32 +43,6 @@ class AppointmentController extends Controller
 
     function filter(Request $request)
     {
-        $weekdays=[
-            '',
-            'ПН',
-            'ВТ',
-            'СР',
-            'ЧТ',
-            'ПТ',
-            'СБ',
-            'НД',
-        ];
-
-        $months=[
-            'січня',
-            'лютого',
-            'березня',
-            'квітня',
-            'травня',
-            'червня',
-            'липня',
-            'серпня',
-            'вересня',
-            'жовтня',
-            'листопада',
-            'грудня',
-        ];
-
         $start_timestamp=$end_timestamp=null;
 
         if ($request->input('filters.date'))
@@ -95,7 +70,11 @@ class AppointmentController extends Controller
             elseif (date('Ymd', strtotime('tomorrow'))===date('Ymd', $appointment->date))
                 $date='Завтра';
             else
-                $date=date('d/m/y', $appointment->date).' <small>'.$weekdays[date('N', $appointment->date)].'</small>';
+            {
+                $date_obj=Carbon::createFromTimestamp($appointment->date)->locale('uk');
+
+                $date=$date_obj->isoFormat('DD/MM/YY').' <small>'.$date_obj->isoFormat('dd').'</small>';
+            }
 
             $visits_to_date=0;
 
@@ -109,7 +88,7 @@ class AppointmentController extends Controller
             elseif ($appointment->isTomorrow())
                 $date_text='завтра';
             else
-                $date_text=date('j', $appointment->date).' '.$months[date('n', $appointment->date)-1];
+                $date_text=Carbon::createFromTimestamp($appointment->date)->locale('uk')->isoFormat('D MMMM');
 
             $notify_sms_text = ($appointment->isToday() || $appointment->isTomorrow()) ? '' : sprintf("%s вiзиту Вам надiйде смс-нагадування\n\n", (date('H', $appointment->date)<12 || (date('H:i', $appointment->date)==='12:00')) ? 'За день до' : 'В день');
 
