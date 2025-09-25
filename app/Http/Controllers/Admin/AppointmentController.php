@@ -235,11 +235,8 @@ class AppointmentController extends Controller
         ]));
     }
 
-    public function delete(Request $request)
+    public function delete(Appointment $appointment)
     {
-        if (!$appointment=Appointment::find($request->id))
-            return response()->json(['success' => false], 404);
-
         $success=true;
 
         try

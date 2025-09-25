@@ -294,11 +294,9 @@ $(document).ready(function(){
                     var row=datatable.row($(this).closest('tr')).data();
 
                     $.ajax({
-                        url: '/admin/appointments/delete',
+                        url: '/admin/appointments/'+row.id,
                         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                        data: {id: row.id},
-                        dataType: 'json',
-                        method: 'POST'
+                        method: 'DELETE'
                     }).done(function(data){
                         if (data && data.success===true)
                             datatable.ajax.reload();
