@@ -25,20 +25,20 @@ class VaccineController extends Controller
 
         $vaccines=Vaccine::orderBy($order_by, $order_dir)->get();
 
-        $data=$vaccines->map(function($vaccine){
-            return [
-                'id'               => $vaccine->id,
-                'name'             => $vaccine->name,
-                'type'             => $vaccine->type,
-                'available'        => $vaccine->available,
-                'comment'          => $vaccine->comment,
-                'analogue_vaccine' => $vaccine->analogueVaccine?->name,
-                'country'          => $vaccine->country,
-                'purchase_price'   => $vaccine->purchase_price,
-                'price'            => $vaccine->price,
-                'link'             => $vaccine->link,
-            ];
-        });
+        $data=$vaccines->map(fn($vaccine) => [
+            ...$vaccine->only([
+                'id',
+                'name',
+                'type',
+                'available',
+                'comment',
+                'country',
+                'purchase_price',
+                'price',
+                'link'
+            ]),
+            'analogue_vaccine' => $vaccine->analogueVaccine?->name,
+        ]);
 
         return response()->json([
             'data'            => $data,
