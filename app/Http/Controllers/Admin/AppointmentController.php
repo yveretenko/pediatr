@@ -280,11 +280,8 @@ class AppointmentController extends Controller
         ]);
     }
 
-    public function fileUpload(Request $request, $id)
+    public function fileUpload(Appointment $appointment, Request $request)
     {
-        if (!$appointment=Appointment::find($id))
-            return response()->json(['error' => 'Appointment not found'], 404);
-
         try
         {
             if (!$request->hasFile('file_uploader'))

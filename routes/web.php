@@ -36,7 +36,7 @@ Route::prefix('admin')->name('admin.')->middleware(['web', 'auth'])->group(funct
         Route::delete('/{appointment}', [AppointmentController::class, 'delete']);
         Route::get('/files', [AppointmentController::class, 'files'])->name('appointments.files');
         Route::get('/{appointment}/file', [AppointmentController::class, 'file'])->name('appointments.file');
-        Route::post('/{id}/file-upload', [AppointmentController::class, 'fileUpload']);
+        Route::post('/{appointment}/file-upload', [AppointmentController::class, 'fileUpload']);
         Route::get('/graph', [AppointmentController::class, 'graph']);
         Route::get('/graph-data', [AppointmentController::class, 'graphData']);
         Route::post('/history', [AppointmentController::class, 'history']);
