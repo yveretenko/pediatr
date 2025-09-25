@@ -49,8 +49,6 @@ class VaccineController extends Controller
 
     public function save(Request $request, Vaccine $vaccine)
     {
-        $vaccine ??= new Vaccine;
-
         $request->validate([
             'purchase_price' => 'required|integer|min:0',
             'available'      => 'boolean',
