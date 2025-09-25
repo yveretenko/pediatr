@@ -31,8 +31,6 @@ class Appointment extends Model
         'name',
         'tel',
         'comment',
-        'file',
-        'sms_notified',
         'neurology',
         'earlier',
         'online',

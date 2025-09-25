@@ -382,15 +382,14 @@ $(document).ready(function(){
             data: edit_appointment_modal.find('form').serializeArray(),
             dataType: 'json',
             method: 'POST'
-        }).done(function(data){
-            if (!data.errors.length)
-            {
-                edit_appointment_modal.modal('hide');
+        }).done(function(){
+            edit_appointment_modal.modal('hide');
 
-                datatable.ajax.reload();
-            }
-            else
-                $('#appointment_save_errors').html(data.errors.join('<br>'));
+            datatable.ajax.reload();
+        }).fail(function(data){
+            let error_text = (data.status===422 && data.responseJSON?.errors) ? Object.values(data.responseJSON.errors).flat().join('<br>') : 'Помилка при збереженні даних';
+
+            $('#appointment_save_errors').html(error_text);
         });
 
         return false;

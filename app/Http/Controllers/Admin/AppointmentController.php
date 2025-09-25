@@ -5,13 +5,13 @@ namespace App\Http\Controllers\Admin;
 use App\Helpers\DateTimeHelper;
 use App\Helpers\StringHelper;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AppointmentRequest;
 use App\Models\Appointment;
 use App\Models\Blacklist;
 use App\Models\DateComment;
 use App\Models\DateDisabled;
 use App\Models\Vaccine;
 use App\Repositories\AppointmentRepository;
-use Carbon\Carbon;
 use DateInterval;
 use DatePeriod;
 use DateTime;
@@ -413,84 +413,30 @@ class AppointmentController extends Controller
         ]);
     }
 
-    public function save(Request $request, Appointment $appointment = null)
+    public function save(AppointmentRequest $request, Appointment $appointment = null)
     {
-        $errors=[];
+        $appointment ??= new Appointment;
 
-        if (!$request->date)
-            $errors[]='Введіть дату';
-        else
-        {
-            try
-            {
-                Carbon::parse($request->date);
-            }
-            catch (Exception)
-            {
-                $errors[]='Невірна дата';
-            }
-        }
+        $old_date = $appointment->date ?? null;
 
-        if (!$request->time)
-            $errors[]='Введіть час';
-        else
-        {
-            [$hour, $minute]=explode(':', $request->time);
-
-            if ($hour<8 || ($hour>21 || ($hour==21 && $minute>0)))
-                $errors[]='Введіть час між 8:00 та 21:00';
-        }
-
-        $tel=StringHelper::normalizeTelephone($request->tel);
-        if ($request->tel && strlen($tel)!==10)
-            $errors[]='Невірний номер телефону';
-
-        if ($request->date && $request->time)
-        {
-            $timestamp=strtotime($request->date.' '.$request->time);
-
-            $exists=Appointment
-                ::where('date', $timestamp)
-                ->when($request->id, fn($q) => $q->where('id', '!=', $request->id))
-                ->exists()
-            ;
-
-            if ($exists)
-                $errors[]='На цей час вже є запис';
-        }
-
-        if (!count($errors))
-        {
-            try
-            {
-                $appointment ??= new Appointment;
-
-                $old_date = $appointment->date ?? null;
-
-                $appointment->name = $request->name ?? '';
-                $appointment->tel = $tel ?: null;
-                $appointment->date=$timestamp;
-                $appointment->comment = $request->comment ?? '';
-                $appointment->neurology = $request->neurology==='1';
-                $appointment->earlier = $request->earlier==='1';
-                $appointment->online = $request->online==='1';
-                $appointment->call_back = $request->call_back==='1';
-
-                if ($old_date && $old_date!==$appointment->date)
-                    $appointment->sms_notified=0;
-
-                $appointment->save();
-
-                $appointment->vaccines()->sync($request->input('vaccines', []));
-            }
-            catch (Exception $e)
-            {
-                $errors[]=$e->getMessage();
-            }
-        }
-
-        return response()->json([
-            'errors' => $errors,
+        $appointment->fill([
+            'name'       => $request->name ?? '',
+            'tel'        => $request->input('tel'),
+            'date'       => strtotime($request->date.' '.$request->time),
+            'comment'    => $request->comment ?? '',
+            'neurology'  => $request->boolean('neurology'),
+            'earlier'    => $request->boolean('earlier'),
+            'online'     => $request->boolean('online'),
+            'call_back'  => $request->boolean('call_back'),
         ]);
+
+        if ($old_date && $old_date!==$appointment->date)
+            $appointment->sms_notified=0;
+
+        $appointment->save();
+
+        $appointment->vaccines()->sync($request->input('vaccines', []));
+
+        return response()->json(['success' => true]);
     }
 }
