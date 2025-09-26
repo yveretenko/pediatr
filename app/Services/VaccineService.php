@@ -68,13 +68,9 @@ class VaccineService
         return $this->vaccineRepository->getFiltered('name');
     }
 
-    public function update(Vaccine $vaccine, array $data): Vaccine
+    public function update(Vaccine $vaccine, array $data): void
     {
-        $vaccine->fill([
-            'purchase_price' => $data['purchase_price'] ?? $vaccine->purchase_price,
-            'available'      => $data['available'] ?? $vaccine->available,
-        ])->save();
-
-        return $vaccine;
+        $vaccine->fill($data);
+        $vaccine->save();
     }
 }

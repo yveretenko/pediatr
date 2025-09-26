@@ -19,29 +19,24 @@ class VaccineController extends Controller
 
     public function filter(Request $request): JsonResponse
     {
+        $orderParams=$request->input('order.0', []);
         $columns=$request->input('columns', []);
-        $order=$request->input('order.0', []);
+        $columnData = $columns[$orderParams['column']]['data'] ?? 'id';
 
-        $column_data=$columns[$order['column']]['data'] ?? 'id';
-
-        $order_params=[
-            'column' => $column_data,
-            'dir'    => $order['dir'] ?? 'asc',
-        ];
-
-        return response()->json($this->vaccineService->getFiltered($order_params));
+        return response()->json($this->vaccineService->getFiltered(['column' => $columnData, 'dir' => $orderParams['dir'] ?? 'asc',]));
     }
 
     public function save(Request $request, Vaccine $vaccine): JsonResponse
     {
-        $request->validate([
+        $validated=$request->validate([
             'purchase_price' => 'required|integer|min:0',
-            'available'      => 'boolean',
         ], [
             'purchase_price.*' => 'Некоректна закупочна ціна',
         ]);
 
-        $this->vaccineService->update($vaccine, $request->only(['purchase_price', 'available']));
+        $validated['available']=$request->boolean('available');
+
+        $this->vaccineService->update($vaccine, $validated);
 
         return response()->json(['success' => true]);
     }
