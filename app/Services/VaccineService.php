@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\DTO\OrderDTO;
 use App\Models\Vaccine;
 use App\Repositories\VaccineRepository;
 use Illuminate\Database\Eloquent\Collection;
@@ -10,13 +11,12 @@ class VaccineService
 {
     public function __construct(protected VaccineRepository $vaccineRepository) {}
 
-    public function getFiltered(array $order=[]): array
+    public function getFiltered(OrderDTO $order): array
     {
-        $order_by = $order['column'] ?? 'id';
-        $order_dir = $order['dir'] ?? 'asc';
+        $order_by = $order->column==='price' ? 'purchase_price' : $order->column;
+        $order_dir=$order->dir;
 
-        if ($order_by==='price')
-            $order_by='purchase_price';
+        $vaccines = $this->vaccineRepository->getFiltered($order_by, $order_dir);
 
         $vaccines=$this->vaccineRepository->getFiltered($order_by, $order_dir);
 
