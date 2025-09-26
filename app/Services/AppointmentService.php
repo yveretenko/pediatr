@@ -100,7 +100,7 @@ class AppointmentService
         $appointments_by_date=[];
         foreach ($appointments as $appointment)
         {
-            $date=date('Y-m-d', $appointment->date);
+            $date=Carbon::createFromTimestamp($appointment->date)->toDateString();
             $appointments_by_date[$date]=($appointments_by_date[$date] ?? 0)+1;
         }
 
