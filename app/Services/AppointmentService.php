@@ -109,14 +109,13 @@ class AppointmentService
 
     private function buildAppointmentMessage(Appointment $appointment): string
     {
-        $today=Carbon::createFromTimestamp($appointment->date)->isToday();
-        $tomorrow=Carbon::createFromTimestamp($appointment->date)->isTomorrow();
+        $dt=Carbon::createFromTimestamp($appointment->date);
 
-        $date_text = $today ? 'сьогодні' : ($tomorrow ? 'завтра' : Carbon::createFromTimestamp($appointment->date)->locale('uk')->isoFormat('D MMMM'));
+        $date_text = $dt->isToday() ? 'сьогодні' : ($dt->isTomorrow() ? 'завтра' : Carbon::createFromTimestamp($appointment->date)->locale('uk')->isoFormat('D MMMM'));
 
-        $notify_sms_text = ($today || $tomorrow) ? '' : sprintf("%s вiзиту Вам надiйде смс-нагадування\n\n", (date('H', $appointment->date)<12 || (date('H:i', $appointment->date)==='12:00')) ? 'За день до' : 'В день');
+        $notify_sms_text = ($dt->isToday() || $dt->isTomorrow()) ? '' : sprintf("%s вiзиту Вам надiйде смс-нагадування\n\n", ($dt->hour<12 || $dt->format('H:i')==='12:00') ? 'За день до' : 'В день');
 
-        $time_text = (date('H', $appointment->date)==='11' ? 'об' : 'о').' '.date('G:i', $appointment->date);
+        $time_text = ($dt->hour === 11 ? 'об' : 'о').' '.$dt->format('G:i');
 
         return sprintf($appointment->online ? "✅ Лікар зв'яжеться з Вами в Телеграмі %s %s\n\nДякуємо, що довіряєте нам! ❤️" : "✅ Лікар чекатиме Вас %s %s\n\nНаша адреса %s\n\n%sДякуємо, що довіряєте нам! ❤️", $date_text, $time_text, config('business.address'), $notify_sms_text);
     }
