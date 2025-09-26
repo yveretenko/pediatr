@@ -80,4 +80,53 @@ class AppointmentRepository
 
         return $query->get();
     }
+
+    public function findPastByTelephone(string $tel)
+    {
+        return Appointment
+            ::where('tel', $tel)
+            ->where('date', '<', time())
+            ->orderByDesc('date')
+            ->get()
+        ;
+    }
+
+    public function getLastNameByTelephone(string $tel)
+    {
+        return Appointment
+            ::where('tel', $tel)
+            ->whereNotNull('name')
+            ->where('name', '!=', '')
+            ->orderByDesc('date')
+            ->value('name')
+        ;
+    }
+
+    public function getGraphData()
+    {
+        return Appointment
+            ::where('date', '>', strtotime('2021-01-04'))
+            ->orderBy('date', 'asc')
+            ->get()
+            ;
+    }
+
+    public function getNextAppointment(int $timestamp)
+    {
+        return Appointment
+            ::where('date', '>', $timestamp)
+            ->where('date', '<', strtotime('tomorrow', $timestamp))
+            ->orderBy('date', 'asc')
+            ->first()
+            ;
+    }
+
+    public function getAppointmentsWithFiles()
+    {
+        return Appointment
+            ::whereNotNull('file')
+            ->orderBy('file', 'asc')
+            ->get()
+        ;
+    }
 }

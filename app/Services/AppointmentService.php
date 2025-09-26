@@ -52,12 +52,7 @@ class AppointmentService
 
     public function getHistoryByTelephone(string $tel): array
     {
-        $appointments=Appointment
-            ::where('tel', $tel)
-            ->where('date', '<', time())
-            ->orderBy('date', 'DESC')
-            ->get()
-        ;
+        $appointments=$this->appointmentRepository->findPastByTelephone($tel);
 
         return $appointments->map(function ($appointment) {
             $appointmentDate=Carbon::createFromTimestamp($appointment->date)->locale('uk');
@@ -89,13 +84,7 @@ class AppointmentService
     {
         $tel=StringHelper::normalizeTelephone($tel);
 
-        $name=Appointment
-            ::where('tel', $tel)
-            ->whereNotNull('name')
-            ->where('name', '!=', '')
-            ->orderByDesc('date')
-            ->value('name')
-        ;
+        $name=$this->appointmentRepository->getLastNameByTelephone($tel);
 
         return [
             'name'               => $name,
@@ -106,11 +95,7 @@ class AppointmentService
 
     public function getGraphData(): array
     {
-        $appointments=Appointment
-            ::where('date', '>', strtotime('2021-01-04'))
-            ->orderBy('date', 'asc')
-            ->get()
-        ;
+        $appointments=$this->appointmentRepository->getGraphData();
 
         $appointments_by_date=[];
         foreach ($appointments as $appointment)
@@ -168,12 +153,7 @@ class AppointmentService
 
             $vaccines=$this->vaccineService->formatForApi($appointment->vaccines);
 
-            $next_appointment=Appointment
-                ::where('date', '>', $appointment->date)
-                ->where('date', '<', strtotime('tomorrow', $appointment->date))
-                ->orderBy('date', 'asc')
-                ->first()
-            ;
+            $next_appointment=$this->appointmentRepository->getNextAppointment($appointment->date);
 
             $data[]=[
                 'id'                 => $appointment->id,
@@ -261,10 +241,6 @@ class AppointmentService
 
     public function getAppointmentsWithFiles()
     {
-        return Appointment
-            ::whereNotNull('file')
-            ->orderBy('file', 'asc')
-            ->get()
-        ;
+        return $this->appointmentRepository->getAppointmentsWithFiles();
     }
 }
