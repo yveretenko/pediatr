@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Services\SmsService;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 use App\Models\Appointment;
 use Illuminate\Support\Facades\Log;
@@ -39,11 +40,13 @@ class SendAppointmentSms extends Command
 
             foreach ($appointments as $appointment)
             {
+                $dt=Carbon::createFromTimestamp($appointment->date);
+
                 $sms_text=sprintf(
                     'Чекаємо Вас%s о%s %s в кабінеті педіатра ДітиКвіти, %s',
-                    $appointment->isTomorrow() ? ' завтра' : '',
-                    date('G', $appointment->date)=='11' ? 'б' : '',
-                    date('G:i', $appointment->date),
+                    $dt->isTomorrow() ? ' завтра' : '',
+                    $dt->hour === 11 ? 'б' : '',
+                    $dt->format('G:i'),
                     config('business.address')
                 );
 
