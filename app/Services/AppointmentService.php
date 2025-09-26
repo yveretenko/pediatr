@@ -157,6 +157,8 @@ class AppointmentService
 
             $next_appointment=$this->appointmentRepository->getNextAppointment($appointment->date);
 
+            $dt=Carbon::createFromTimestamp($appointment->date);
+
             $data[]=[
                 'id'                 => $appointment->id,
                 'name'               => trim($appointment->name),
@@ -165,12 +167,12 @@ class AppointmentService
                 'comment_formatted'  => $appointment->getCommentFormattedAttribute(),
                 'file'               => $appointment->file,
                 'readable_date'      => $date,
-                'date'               => date('Y-m-d', $appointment->date),
-                'time'               => date('H:i', $appointment->date),
-                'duration'           => $next_appointment ? round(($next_appointment->date-$appointment->date)/60) : null,
-                'is_future'          => $appointment->date>time(),
-                'is_today'           => date('Y-m-d', $appointment->date)===date('Y-m-d'),
-                'is_tomorrow'        => date('Y-m-d', $appointment->date)===date('Y-m-d', strtotime('tomorrow')),
+                'date'               => $dt->toDateString(),
+                'time'               => $dt->format('H:i'),
+                'duration'           => $next_appointment ? round(($next_appointment->date - $appointment->date) / 60) : null,
+                'is_future'          => $dt->isFuture(),
+                'is_today'           => $dt->isToday(),
+                'is_tomorrow'        => $dt->isTomorrow(),
                 'visits_to_date'     => $visits_to_date,
                 'blacklisted'        => $appointment->tel ? $this->blacklistService->isBlacklisted($appointment->tel) : null,
                 'blacklisted_reason' => $appointment->tel ? htmlentities($this->blacklistService->getBlacklistReason($appointment->tel)) : null,
