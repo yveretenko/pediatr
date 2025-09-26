@@ -109,9 +109,12 @@ class AppointmentService
 
     private function buildAppointmentMessage(Appointment $appointment): string
     {
-        $date_text = $appointment->isToday() ? 'сьогодні' : ($appointment->isTomorrow() ? 'завтра' : Carbon::createFromTimestamp($appointment->date)->locale('uk')->isoFormat('D MMMM'));
+        $today=Carbon::createFromTimestamp($appointment->date)->isToday();
+        $tomorrow=Carbon::createFromTimestamp($appointment->date)->isTomorrow();
 
-        $notify_sms_text = ($appointment->isToday() || $appointment->isTomorrow()) ? '' : sprintf("%s вiзиту Вам надiйде смс-нагадування\n\n", (date('H', $appointment->date)<12 || (date('H:i', $appointment->date)==='12:00')) ? 'За день до' : 'В день');
+        $date_text = $today ? 'сьогодні' : ($tomorrow ? 'завтра' : Carbon::createFromTimestamp($appointment->date)->locale('uk')->isoFormat('D MMMM'));
+
+        $notify_sms_text = ($today || $tomorrow) ? '' : sprintf("%s вiзиту Вам надiйде смс-нагадування\n\n", (date('H', $appointment->date)<12 || (date('H:i', $appointment->date)==='12:00')) ? 'За день до' : 'В день');
 
         $time_text = (date('H', $appointment->date)==='11' ? 'об' : 'о').' '.date('G:i', $appointment->date);
 

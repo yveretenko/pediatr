@@ -63,16 +63,6 @@ class Appointment extends Model
         }, explode("\n", $this->comment)));
     }
 
-    public function isToday(): bool
-    {
-        return $this->date>=strtotime('today') && $this->date<strtotime('tomorrow');
-    }
-
-    public function isTomorrow(): bool
-    {
-        return $this->date>=strtotime('tomorrow') && $this->date<strtotime('tomorrow +1 day');
-    }
-
     public static function thirdVisitsYesterday(): Collection
     {
         return self
