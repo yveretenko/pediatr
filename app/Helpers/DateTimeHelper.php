@@ -2,6 +2,8 @@
 
 namespace App\Helpers;
 
+use Carbon\Carbon;
+
 class DateTimeHelper
 {
     public static function formatTimestamp(?int $timestamp): ?string
@@ -9,21 +11,25 @@ class DateTimeHelper
         if (!$timestamp)
             return null;
 
-        if (date('Ymd', $timestamp)===date('Ymd'))
+        $dt=Carbon::createFromTimestamp($timestamp);
+
+        if ($dt->isToday())
             $date='Сьогодні';
-        elseif (date('Ymd', $timestamp)===date('Ymd', strtotime('-1 day')))
+        elseif ($dt->isYesterday())
             $date='Вчора';
         else
-            $date=date('d/m/Y', $timestamp);
+            $date=$dt->format('d/m/Y');
 
-        return $date.' '.date('H:i', $timestamp);
+        return $date.' '.$dt->format('H:i');
     }
 
     public static function daysAgo($timestamp): string
     {
-        $days_ago=(strtotime('today')-strtotime(date('Y-m-d', $timestamp)))/86400;
+        $dt=Carbon::createFromTimestamp($timestamp);
 
-        $class='text=muted';
+        $days_ago=Carbon::today()->diffInDays($dt);
+
+        $class='text-muted';
 
         if ($days_ago<1)
             $text='';
