@@ -144,11 +144,12 @@ class AppointmentService
         $data=[];
         foreach ($appointments as $appointment)
         {
-            $date = match (true)
-            {
-                date('Ymd')===date('Ymd', $appointment->date) => 'Сьогодні',
-                date('Ymd', strtotime('tomorrow'))===date('Ymd', $appointment->date) => 'Завтра',
-                default => Carbon::createFromTimestamp($appointment->date)->locale('uk')->isoFormat('DD/MM/YY').' <small>'.Carbon::createFromTimestamp($appointment->date)->locale('uk')->isoFormat('dd').'</small>',
+            $dt=Carbon::createFromTimestamp($appointment->date)->locale('uk');
+
+            $date = match (true) {
+                $dt->isToday()    => 'Сьогодні',
+                $dt->isTomorrow() => 'Завтра',
+                default           => $dt->isoFormat('DD/MM/YY').' <small>'.strtoupper($dt->isoFormat('dd')).'</small>',
             };
 
             $visits_to_date = $appointment->tel ? Appointment::where('tel', $appointment->tel)->where('date', '<=', time())->count() : 0;
