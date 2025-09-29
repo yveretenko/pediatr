@@ -31,7 +31,7 @@ class AppointmentService
 
         $appointment->fill([
             'name'      => $request->name ?? '',
-            'tel'       => $request->input('tel'),
+            'tel'       => StringHelper::normalizeTelephone($request->input('tel')),
             'date'      => strtotime($request->date.' '.$request->time),
             'comment'   => $request->comment ?? '',
             'neurology' => $request->boolean('neurology'),
