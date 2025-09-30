@@ -23,7 +23,7 @@ class AppointmentService
         protected FileService $fileService,
     ) {}
 
-    public function save(AppointmentRequest $request, ?Appointment $appointment=null): Appointment
+    public function save(AppointmentRequest $request, ?Appointment $appointment=null): array
     {
         $appointment ??= new Appointment;
 
@@ -47,7 +47,10 @@ class AppointmentService
 
         $this->vaccineService->syncAppointmentVaccines($appointment, $request->input('vaccines', []));
 
-        return $appointment;
+        return [
+            'id'           => $appointment->id,
+            'show_message' => $appointment->tel && (!$old_date || $old_date!==$appointment->date),
+        ];
     }
 
     public function getHistoryByTelephone(string $tel): array

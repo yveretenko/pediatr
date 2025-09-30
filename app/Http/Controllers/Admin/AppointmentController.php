@@ -113,8 +113,8 @@ class AppointmentController extends Controller
 
     public function save(AppointmentRequest $request, Appointment $appointment=null): JsonResponse
     {
-        $this->appointmentService->save($request, $appointment);
+        $result=$this->appointmentService->save($request, $appointment);
 
-        return response()->json(['success' => true]);
+        return response()->json($result);
     }
 }

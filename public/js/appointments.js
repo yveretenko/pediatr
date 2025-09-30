@@ -89,6 +89,8 @@ $(document).ready(function(){
             }
         },
         createdRow: function(row, data, dataIndex){
+            $(row).attr('data-id', data.id);
+
             if (data.is_future)
             {
                 if (data.is_today)
@@ -382,10 +384,16 @@ $(document).ready(function(){
             data: edit_appointment_modal.find('form').serializeArray(),
             dataType: 'json',
             method: 'POST'
-        }).done(function(){
+        }).done(function(data){
             edit_appointment_modal.modal('hide');
 
-            datatable.ajax.reload();
+            let show_message=data.show_message;
+            let id=data.id;
+
+            datatable.ajax.reload(function(){
+                if (show_message)
+                    grid.find('tr[data-id="'+id+'"] button.copy_appointment_text').trigger('click');
+            });
         }).fail(function(data){
             let error_text = (data.status===422 && data.responseJSON?.errors) ? Object.values(data.responseJSON.errors).flat().join('<br>') : 'Помилка при збереженні даних';
 
