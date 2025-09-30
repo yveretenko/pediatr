@@ -241,7 +241,7 @@ class AppointmentService
         $appointment->timestamps=false;
         $appointment->file=$filename;
 
-        $appointment->save();
+        $appointment->saveQuietly();
     }
 
     public function getAppointmentsWithFiles()
