@@ -48,8 +48,7 @@ class AppointmentService
         $this->vaccineService->syncAppointmentVaccines($appointment, $request->input('vaccines', []));
 
         return [
-            'id'           => $appointment->id,
-            'show_message' => $appointment->tel && (!$old_date || $old_date!==$appointment->date),
+            'message' => ($appointment->tel && (!$old_date || $old_date!==$appointment->date)) ? $this->buildAppointmentMessage($appointment) : null,
         ];
     }
 

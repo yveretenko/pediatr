@@ -21,6 +21,23 @@ var grid_default_params={
     dom: '<"datatable_container position-relative"rti><"mt-2"p>'
 };
 
+function show_appointment_message(message)
+{
+    let textarea=$('<textarea style="width:0; height:0;">'+message+'</textarea>');
+    textarea.appendTo('body');
+    textarea[0].select();
+    document.execCommand('copy');
+    textarea.remove();
+
+    clearTimeout(popup_message_timeout);
+
+    $('#popup_message').html('<b>Текст скопійовано:</b><br><br>'+message.replace(/\n\n/g, "<br />")).show();
+
+    popup_message_timeout=setTimeout(function(){
+        $('#popup_message').fadeOut(750);
+    }, 2000);
+}
+
 $(document).ready(function(){
     datatable=grid.DataTable(jQuery.extend(grid_default_params, {
         order: [[0, 'desc']],
@@ -310,19 +327,7 @@ $(document).ready(function(){
             click: function(){
                 let row=datatable.row($(this).closest('tr')).data();
 
-                let textarea=$('<textarea style="width:0; height:0;">'+row.appointment_text+'</textarea>');
-                textarea.appendTo('body');
-                textarea[0].select();
-                document.execCommand('copy');
-                textarea.remove();
-
-                clearTimeout(popup_message_timeout);
-
-                $('#popup_message').html('<b>Текст скопійовано:</b><br><br>'+row.appointment_text.replace(/\n\n/g, "<br />")).show();
-
-                popup_message_timeout=setTimeout(function(){
-                    $('#popup_message').fadeOut(750);
-                }, 2000);
+                show_appointment_message(row.appointment_text);
             }
         }, ".copy_appointment_text")
         .on({
@@ -387,12 +392,11 @@ $(document).ready(function(){
         }).done(function(data){
             edit_appointment_modal.modal('hide');
 
-            let show_message=data.show_message;
-            let id=data.id;
+            let message=data.message;
 
             datatable.ajax.reload(function(){
-                if (show_message)
-                    grid.find('tr[data-id="'+id+'"] button.copy_appointment_text').trigger('click');
+                if (message)
+                    show_appointment_message(message);
             });
         }).fail(function(data){
             let error_text = (data.status===422 && data.responseJSON?.errors) ? Object.values(data.responseJSON.errors).flat().join('<br>') : 'Помилка при збереженні даних';
