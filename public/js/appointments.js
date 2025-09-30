@@ -23,11 +23,7 @@ var grid_default_params={
 
 function show_appointment_message(message)
 {
-    let textarea=$('<textarea style="width:0; height:0;">'+message+'</textarea>');
-    textarea.appendTo('body');
-    textarea[0].select();
-    document.execCommand('copy');
-    textarea.remove();
+    navigator.clipboard.writeText(message);
 
     clearTimeout(popup_message_timeout);
 
