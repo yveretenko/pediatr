@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Application;
 use App\Helpers\StringHelper;
 use App\Models\Blacklist;
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\Appointment;
 use Illuminate\Support\Facades\Mail;
@@ -12,7 +13,7 @@ use App\Http\Controllers\Controller;
 
 class AppointmentRequestController extends Controller
 {
-    public function submit(Request $request)
+    public function submit(Request $request): JsonResponse
     {
         $request->validate([
             'name'    => 'required|string|max:255',
