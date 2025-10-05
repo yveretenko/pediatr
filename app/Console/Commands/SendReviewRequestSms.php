@@ -13,7 +13,7 @@ class SendReviewRequestSms extends Command
     protected $signature='sms:send-review-request-sms';
     protected $description='Send review request SMS to patients after their third visit';
 
-    public function handle()
+    public function handle(): void
     {
         $log=[];
 
