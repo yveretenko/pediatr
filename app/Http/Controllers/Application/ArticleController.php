@@ -4,11 +4,12 @@ namespace App\Http\Controllers\Application;
 
 use App\Models\Article;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class ArticleController extends Controller
 {
-    public function get(Request $request)
+    public function get(Request $request): JsonResponse
     {
         $id=$request->input('id');
         $article=Article::find($id);
