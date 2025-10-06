@@ -15,6 +15,7 @@ Route::get('/online', [IndexController::class, 'index'])->defaults('modal', 'pay
 Route::get('/price', [IndexController::class, 'index'])->defaults('modal', 'price_modal');
 Route::get('/nutrition-webinar', [IndexController::class, 'index'])->defaults('modal', 'nutrition_webinar_modal');
 Route::get('/newborn-webinar', [IndexController::class, 'index'])->defaults('modal', 'newborn_webinar_modal');
+Route::get('/review', function(){ return redirect('https://g.page/r/CSGLSyAY-HosEBE/review'); });
 
 Route::post('/article/get', [ArticleController::class, 'get']);
 Route::post('/appointments/request', [AppointmentRequestController::class, 'submit'])->name('appointments.request');
