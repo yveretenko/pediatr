@@ -58,6 +58,12 @@ return [
             'ignore_exceptions' => false,
         ],
 
+        'cron' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/cron.log'),
+            'level' => 'info',
+        ],
+
         'single' => [
             'driver' => 'single',
             'path' => storage_path('logs/laravel.log'),

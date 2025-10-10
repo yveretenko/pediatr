@@ -95,6 +95,6 @@ class BackupDatabase extends Command
             $log[]='Error: '.$e->getMessage();
         }
 
-        Log::info(implode(PHP_EOL, $log));
+        Log::channel('cron')->info(implode(PHP_EOL, $log));
     }
 }

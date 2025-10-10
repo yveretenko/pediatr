@@ -59,6 +59,6 @@ class SendNewYearGreetingsSms extends Command
 
         $log[]="Відправлено $sent смс";
 
-        Log::info(implode(PHP_EOL, $log));
+        Log::channel('cron')->info(implode(PHP_EOL, $log));
     }
 }

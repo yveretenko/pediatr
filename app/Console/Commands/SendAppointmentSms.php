@@ -76,6 +76,6 @@ class SendAppointmentSms extends Command
             }
         }
 
-        Log::info(implode(PHP_EOL, $log));
+        Log::channel('cron')->info(implode(PHP_EOL, $log));
     }
 }
