@@ -37,7 +37,7 @@ class SendNewYearGreetingsSms extends Command
         {
             $sms_text=sprintf('Кабінет дитячого лікаря ДітиКвіти щиро вітає Вас з Новим %d роком. Бажаємо міцного здоров\'я Вашій родині та лише профілактичних оглядів. Дякуємо за довіру!', (int)date('Y')+1);
 
-            if (config('sms.send_sms'))
+            if (env('SEND_SMS', false))
             {
                 $service->sendSMS('DitiKviti', $appointment->tel, $sms_text);
 

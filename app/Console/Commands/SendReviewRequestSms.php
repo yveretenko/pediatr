@@ -32,7 +32,7 @@ class SendReviewRequestSms extends Command
 
             $log[]=sprintf("Відправляємо смс на номер `%s` з текстом: `%s`", $appointment->tel, $sms_text);
 
-            if (config('sms.send_sms'))
+            if (env('SEND_SMS', false))
             {
                 $service->sendSMS('DitiKviti', $appointment->tel, $sms_text);
 
