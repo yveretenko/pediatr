@@ -2,19 +2,18 @@
 
 namespace App\Console\Commands;
 
-use App\Services\SmsService;
+use App\Services\SmsManager;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use App\Models\Appointment;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
 
 class SendAppointmentSms extends Command
 {
     protected $signature='sms:send-appointment-sms';
     protected $description='Send SMS to upcoming appointments';
 
-    public function handle()
+    public function handle(): void
     {
         $log=[];
 
@@ -23,8 +22,6 @@ class SendAppointmentSms extends Command
             $log[]='Ранувато будити людей';
         else
         {
-            $service = new SmsService('', '', config('sms.key'));
-
             $from_time=now()->timestamp;
             $to_time=now()->addHours($hour===20 ? 16 : 6)->timestamp;
 
@@ -37,6 +34,8 @@ class SendAppointmentSms extends Command
             ;
 
             $log[]="Знайдено записів на найближчі години: ".$appointments->count();
+
+            $sms_manager = new SmsManager;
 
             foreach ($appointments as $appointment)
             {
@@ -54,20 +53,11 @@ class SendAppointmentSms extends Command
 
                 if (env('SEND_SMS', false))
                 {
-                    $service->sendSMS('DitiKviti', $appointment->tel, $sms_text);
-
-                    if ($service->hasErrors())
-                    {
-                        Mail::html("СМС на номер `".$appointment->tel."` з текстом: <blockquote>$sms_text</blockquote>Помилки:<blockquote>".implode('<br><br>', $service->getErrors())."</blockquote>", function($message){
-                            $message
-                                ->to('yura11v@gmail.com')
-                                ->subject('ДітиКвіти - помилка при відправці смс')
-                            ;
-                        });
-
-                        $log[]="Помилки при відправці смс: ".implode("\n\n", $service->getErrors());
-                    }
+                    if (!$sms_manager->send($appointment->tel, $sms_text))
+                        $log[]="Помилки при відправці смс: ".implode("\n\n", $sms_manager->getErrors());
                 }
+                else
+                    $log[]='СМС не відправлено, тому що в налаштуваннях вимкнено відправку смс';
 
                 $appointment->sms_notified=1;
                 $appointment->timestamps=false;

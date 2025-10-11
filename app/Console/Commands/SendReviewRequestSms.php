@@ -2,11 +2,11 @@
 
 namespace App\Console\Commands;
 
+use App\Services\SmsManager;
 use App\Services\SmsService;
 use Illuminate\Console\Command;
 use App\Models\Appointment;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
 
 class SendReviewRequestSms extends Command
 {
@@ -23,6 +23,8 @@ class SendReviewRequestSms extends Command
 
         $log[]='Знайдено телефонів для відправки смс: '.count($appointments);
 
+        $sms_manager = new SmsManager;
+
         foreach ($appointments as $appointment)
         {
             $sms_text=sprintf(
@@ -34,20 +36,11 @@ class SendReviewRequestSms extends Command
 
             if (env('SEND_SMS', false))
             {
-                $service->sendSMS('DitiKviti', $appointment->tel, $sms_text);
-
-                if ($service->hasErrors())
-                {
-                    Mail::html("СМС на номер `".$appointment->tel."` з текстом: <blockquote>$sms_text</blockquote>Помилки:<blockquote>".implode('<br><br>', $service->getErrors())."</blockquote>", function($message){
-                        $message
-                            ->to('yura11v@gmail.com')
-                            ->subject('ДітиКвіти - помилка при відправці смс')
-                        ;
-                    });
-
-                    $log[]="Помилки при відправці смс: ".implode("\n\n", $service->getErrors());
-                }
+                if (!$sms_manager->send($appointment->tel, $sms_text))
+                    $log[]="Помилки при відправці смс: ".implode("\n\n", $sms_manager->getErrors());
             }
+            else
+                $log[]='СМС не відправлено, тому що в налаштуваннях вимкнено відправку смс';
         }
 
         Log::channel('cron')->info(implode(PHP_EOL, $log));
