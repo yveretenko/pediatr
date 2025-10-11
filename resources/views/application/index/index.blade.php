@@ -15,11 +15,11 @@
                 </div>
 
                 <div class="col-12 col-sm-auto text-center col-lg-auto text-nowrap mb-1 mb-sm-0">
-                    <A href="http://t.me/DitiKviti" class="text-dark"><i class="fab fa-telegram text-muted"></i> DitiKviti</A>
+                    <A href="http://t.me/{{ config('business.telegram') }}" class="text-dark"><i class="fab fa-telegram text-muted"></i> DitiKviti</A>
                 </div>
 
                 <div class="col-12 col-sm-auto text-center col-lg-auto text-nowrap">
-                    <A href="https://www.instagram.com/dr_svitlana/" class="text-dark"><i class="fab fa-instagram text-muted"></i> dr_svitlana</A>
+                    <A href="https://www.instagram.com/{{ config('business.instagram') }}/" class="text-dark"><i class="fab fa-instagram text-muted"></i> dr_svitlana</A>
                 </div>
             </div>
 

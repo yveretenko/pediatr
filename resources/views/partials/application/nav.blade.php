@@ -35,7 +35,7 @@
                             Онлайн<span class="d-none d-sm-inline">-консультація</span>
                         </A>
 
-                        <A class="btn btn-outline-secondary rounded-circle d-inline-flex justify-content-center align-items-center ml-1 ml-xl-3" title="Instagram" href="https://www.instagram.com/dr_svitlana/" style="width:2.5em; aspect-ratio:1/1;">
+                        <A class="btn btn-outline-secondary rounded-circle d-inline-flex justify-content-center align-items-center ml-1 ml-xl-3" title="Instagram" href="https://www.instagram.com/{{ config('business.instagram') }}/" style="width:2.5em; aspect-ratio:1/1;">
                             <i class="fab fa-fw fa-instagram" style="font-size:150%;"></i>
                         </A>
                     </div>
