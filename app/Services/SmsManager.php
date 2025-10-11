@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use Illuminate\Support\Facades\Mail;
+use App\Events\SmsFailed;
 
 class SmsManager
 {
@@ -19,17 +19,7 @@ class SmsManager
 
         if ($this->service->hasErrors())
         {
-            $errors=implode('<br><br>', $this->service->getErrors());
-
-            Mail::html(
-                "СМС на номер `$to` з текстом: <blockquote>$text</blockquote>Помилки:<blockquote>$errors</blockquote>",
-                function ($message) {
-                    $message
-                        ->to('yura11v@gmail.com')
-                        ->subject('ДітиКвіти - помилка при відправці смс')
-                    ;
-                }
-            );
+            event(new SmsFailed($to, $text, $this->service->getErrors()));
 
             return false;
         }
