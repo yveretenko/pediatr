@@ -3,7 +3,6 @@
 namespace App\Console\Commands;
 
 use App\Services\SmsManager;
-use App\Services\SmsService;
 use Illuminate\Console\Command;
 use App\Models\Appointment;
 use Illuminate\Support\Facades\Log;
@@ -16,8 +15,6 @@ class SendReviewRequestSms extends Command
     public function handle(): void
     {
         $log=[];
-
-        $service = new SmsService('', '', config('sms.key'));
 
         $appointments=Appointment::thirdVisitsYesterday(); // TODO: Implement this method in the Appointment model
 
