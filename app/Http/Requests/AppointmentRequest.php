@@ -56,7 +56,7 @@ class AppointmentRequest extends FormRequest
 
                 $exists=Appointment::
                     where('date', $timestamp)
-                    ->when($id, fn($q)  =>  $q->where('id', '!=', $id))
+                    ->when($id, fn($q) => $q->where('id', '!=', $id))
                     ->exists()
                 ;
 
