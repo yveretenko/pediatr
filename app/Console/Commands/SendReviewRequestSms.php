@@ -17,8 +17,6 @@ class SendReviewRequestSms extends Command
     {
         $log=[];
 
-        $service = new SmsService('', '', config('sms.key'));
-
         $appointments=Appointment::thirdVisitsYesterday(); // TODO: Implement this method in the Appointment model
 
         $log[]='Знайдено телефонів для відправки смс: '.count($appointments);
