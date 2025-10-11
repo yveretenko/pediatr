@@ -7,12 +7,7 @@ use App\Models\Appointment;
 
 class AppointmentRepository
 {
-    protected Appointment $model;
-
-    public function __construct(Appointment $model)
-    {
-        $this->model=$model;
-    }
+    public function __construct(protected Appointment $model) {}
 
     public function findByFilters(array $filters, $order_field=null, $order_where=null, $start=null, $limit=null)
     {
